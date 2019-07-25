@@ -64,7 +64,7 @@ def vector2raster(fileFormat, cloneFile, inFile, attribute, layer = None):
     layer:      'PAL', 'LAB', or 'ARC' for AVCBin polygon, point, or line coverages
     layer:      layer in the fileGDB 
     """
-    print '\n\tvector2raster of %s ' % inFile
+    print('\n\tvector2raster of %s ' % inFile)
     xmin, xmax, ymin, ymax = getBoundingBox(cloneFile)
     cellLength = getMapAttr(cloneFile)['cell_length']
         
@@ -92,7 +92,7 @@ def vector2raster(fileFormat, cloneFile, inFile, attribute, layer = None):
                               '-of GTiff ' 
                               '%s tmp.tif ' ) %\
               (xmin, ymin, xmax, ymax, cellLength, cellLength, attribute, inFile)
-    print '\n', cmd
+    print('\n', cmd)
     subprocess.call(cmd, shell=True)
     cmd = 'gdal_translate -of PCRaster -ot Float64 tmp.tif tmp.map'
     subprocess.call(cmd, shell=True)
@@ -111,7 +111,7 @@ def rasterizeFID(fileFormat, cloneFile, inFile, layer = None):
     layer:      'PAL', 'LAB', or 'ARC' for AVCBin polygon, point, or line coverages
     layer:      layer in the fileGDB 
     """
-    print '\n\trasterizeFID of layer %s in %s' % (layer, inFile)
+    print('\n\trasterizeFID of layer %s in %s' % (layer, inFile))
     xmin, xmax, ymin, ymax = getBoundingBox(cloneFile)
     cellLength = getMapAttr(cloneFile)['cell_length']
         
@@ -138,7 +138,7 @@ def rasterizeFID(fileFormat, cloneFile, inFile, layer = None):
                               '-of GTiff ' 
                               '%s tmp.tif ') %\
               (xmin, ymin, xmax, ymax, cellLength, cellLength, layer, inFile)
-        print cmd
+        print(cmd)
     #stop
     subprocess.call(cmd, shell=True)
     cmd = 'gdal_translate -of PCRaster -ot Float32 tmp.tif tmp.map'
@@ -271,7 +271,7 @@ def cropRaster(inFile, cloneFile):
                               '-of PCRaster ' 
                               '%s tmp.map ' ) %\
               (xmin, ymax, xmax, ymin, inFile)
-    print '\n', cmd
+    print('\n', cmd)
     subprocess.call(cmd, shell=True)
     outMap = pcr.readmap('tmp.map')
     os.remove('tmp.map')
@@ -314,7 +314,7 @@ def col2map(arr, cloneMapName, x=0, y=1, v=2, args = ''):
     g = np.hstack((arr[:,x:x+1],arr[:,y:y+1],arr[:,v:v+1]))
     np.savetxt('temp.txt', g, delimiter=',')
     cmd = 'col2map --clone %s %s temp.txt temp.map'% (cloneMapName, args)
-    print '\n', cmd
+    print('\n', cmd)
     subprocess.call(cmd, shell=True)
     outMap = pcr.readmap('temp.map')
     os.remove('temp.txt')
@@ -543,7 +543,7 @@ def read_pli(pli_file):
         pol_data = [line2floats(line) for line in lines[cnt+2: cnt+2+nrow]]
         cnt += nrow + 2
         data[label] = np.array(pol_data)
-    print len(data.keys()), 'polylines read in:\n\t %s' % (pli_file,)
+    print(len(data.keys()), 'polylines read in:\n\t %s' % (pli_file,))
     return data
 
 def pli_dict2geodataframe(pli_dict, out_type = 'Point'):
@@ -600,7 +600,7 @@ def geoDataFrame2pli(geodataframe, pli_file, geometry = 'Point'):
         geometry      :    shapely geometry (Point, LineString, Polygon)    
     Returns the file path.
     """
-    print 'Writing polyline data to:\n\t', pli_file
+    print('Writing polyline data to:\n\t', pli_file)
     with open(pli_file, 'w') as f:
         if geometry == 'Point':
             for label, df in geodataframe.groupby('label'):

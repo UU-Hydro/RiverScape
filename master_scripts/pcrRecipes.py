@@ -141,11 +141,6 @@ def representativePoint(nominalMap):
     dist = dist + pcr.uniform(pcr.defined(nominalMap))
     points = dist == pcr.areamaximum(dist, nominalMap)
     return pcr.ifthen(points, nominalMap)
-
-def riversFromLDD(ldd, streamOrder):
-    ''' flow direction, Strahler stream order'''
-    so = pcr.streamorder(ldd)
-    return pcr.ifthen(so >= streamOrder, so)
     	
 def getCoordinates(cloneMap,MV= -9999):
 	'''returns cell centre coordinates for a clone map as numpy array
