@@ -1027,7 +1027,7 @@ class RiverMeasures(object):
         
         for ID in flpl_IDs[:]:
             flpl_section = pcr.ifthen(
-                                self.r.geom.flpl_wide == pcr.nominal(ID),
+                                self.r.geom.flpl_wide == pcr.spatial(pcr.nominal(ID)),
                                 pcr.boolean(1))
             channel = self.side_channel_positioning(friction, flpl_section)
             center_lines = pcr.cover(center_lines, 
@@ -1208,7 +1208,9 @@ if __name__ == "__main__":
     start_time = time.time()
     output_dir = 'D:/projecten/RiverScapeWaal2/output/waal_XL'
     input_dir = 'D:/projecten/RiverScapeWaal2/input'
-    restraints_dir = os.path.join(input_dir, 'restraints')
+
+    #~ restraints_dir = os.path.join(input_dir, 'restraints') - NOT NEEDED
+
     scratch_dir  = 'D:/projecten/RiverScapeWaal2/scratch'
     pcr.setglobaloption('unittrue')
     os.chdir(scratch_dir)
