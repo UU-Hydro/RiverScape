@@ -1022,7 +1022,7 @@ class RiverMeasures(object):
             selected_sections = pcr.ifthen(mask, selected_sections)
         
         # Loop over selected sections to position side channels
-        flpl_IDs  = np.unique(pcr.pcr2numpy(selected_sections, -9999))[1:]
+        flpl_IDs  = list(np.unique(pcr.pcr2numpy(selected_sections, -9999))[1:])
         center_lines = pcr.nominal(mapIO.emptyMap(self.r.geom.dem))
         
         print(flpl_IDs)
