@@ -18,8 +18,8 @@ import pcraster as pcr
 #-import RiverScape modules
 import mapIO
 import pcrRecipes
-reload(mapIO)
-reload(pcrRecipes)
+#~ reload(mapIO)
+#~ reload(pcrRecipes)
 
 def assign_ecotopes(area, eco_string, legend_df):
     """
