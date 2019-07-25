@@ -439,7 +439,7 @@ def write_measure(msr, msr_root_dir):
     msr_dir_name = string.join([settings['msr_type'], settings['ID']], sep='_')
     msr_dir_path = os.path.join(msr_root_dir, msr_dir_name)
     pcrRecipes.make_dir(msr_dir_path)
-    print msr_dir_path
+    print(msr_dir_path)
     
     # Report the maps
     pcr.report(msr.area, os.path.join(msr_dir_path, 'area.map'))
