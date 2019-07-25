@@ -1029,7 +1029,7 @@ class RiverMeasures(object):
         
         for ID in flpl_IDs[:]:
             print(ID)
-            flpl_section = pcr.ifthen(pcr.scalar(self.r.geom.flpl_wide) == (2.0)),
+            flpl_section = pcr.ifthen(self.r.geom.flpl_wide == int(ID)),
                                 pcr.boolean(1))
             channel = self.side_channel_positioning(friction, flpl_section)
             center_lines = pcr.cover(center_lines, 
