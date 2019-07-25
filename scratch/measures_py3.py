@@ -1025,13 +1025,15 @@ class RiverMeasures(object):
         flpl_IDs  = np.unique(pcr.pcr2numpy(selected_sections, -9999))[1:]
         center_lines = pcr.nominal(mapIO.emptyMap(self.r.geom.dem))
         
-        for ID in flpl_IDs[:]:
-            print(ID)
-            flpl_section = pcr.ifthen(self.r.geom.flpl_wide == pcr.nominal(int(ID)),
-                                pcr.boolean(1))
-            channel = self.side_channel_positioning(friction, flpl_section)
-            center_lines = pcr.cover(center_lines, 
-                                     pcr.ifthen(channel, pcr.nominal(ID)))
+        print(flpl_IDs)
+        
+        #~ for ID in flpl_IDs[:]:
+            #~ print(ID)
+            #~ flpl_section = pcr.ifthen(self.r.geom.flpl_wide == pcr.nominal(int(ID)),
+                                #~ pcr.boolean(1))
+            #~ channel = self.side_channel_positioning(friction, flpl_section)
+            #~ center_lines = pcr.cover(center_lines, 
+                                     #~ pcr.ifthen(channel, pcr.nominal(ID)))
             
         return center_lines
     
