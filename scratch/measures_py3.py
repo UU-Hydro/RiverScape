@@ -456,7 +456,7 @@ def write_measure(msr, msr_root_dir):
     report_map_with_legend(msr.ecotopes, 
                            os.path.join(msr_dir_path, 'ecotopes.map'))
     with open(os.path.join(msr_dir_path, 'settings.txt'), 'w') as outfile:
-        for k,v in settings.iteritems():
+        for k,v in settings.items():
             outfile.write('%s:%s\n' % (k,v))
 
 
