@@ -1032,7 +1032,11 @@ class RiverMeasures(object):
             flpl_section = pcr.ifthen(pcr.scalar(self.r.geom.flpl_wide) == float(ID), pcr.boolean(1))
             channel = self.side_channel_positioning(friction, flpl_section)
             pcr.aguila(channel)
-            center_lines = pcr.cover(center_lines, pcr.ifthen(channel, int(float(ID))))
+            pcr.aguila(channel)
+            try:
+                center_lines = pcr.cover(center_lines, pcr.ifthen(channel, int(float(ID))))
+            except:
+                pass
             
         return center_lines
     
