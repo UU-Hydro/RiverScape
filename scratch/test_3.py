@@ -248,7 +248,6 @@ print(ID
 # In[ ]:
 
 
-print(flpl_IDs[:])
 
 
 # In[ ]:
