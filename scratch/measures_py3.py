@@ -1036,7 +1036,7 @@ class RiverMeasures(object):
                                 #~ pcr.boolean(1))
             #~ channel = self.side_channel_positioning(friction, flpl_section)
             #~ center_lines = pcr.cover(center_lines, 
-                                     pcr.ifthen(channel, pcr.nominal(ID)))
+                                     #~ pcr.ifthen(channel, pcr.nominal(ID)))
             
         return center_lines
     
