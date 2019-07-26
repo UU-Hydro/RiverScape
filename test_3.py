@@ -103,8 +103,6 @@ settings = OrderedDict([
 # In[150]:
 
 
-print(current_dir)
-
 
 # In[151]:
 
