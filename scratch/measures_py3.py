@@ -1029,7 +1029,7 @@ class RiverMeasures(object):
         
         for ID in flpl_IDs[:]:
             print(ID)
-            flpl_section = pcr.ifthen(pcr.scalar(self.r.geom.flpl_wide) == float(ID)), pcr.boolean(1))
+            flpl_section = pcr.ifthen(pcr.scalar(self.r.geom.flpl_wide) == float(ID), pcr.boolean(1))
             print(ID)
             flpl_section = pcr.ifthen(pcr.scalar(self.r.geom.flpl_wide) == 1.0),
                                 pcr.boolean(1))
