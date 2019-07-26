@@ -255,3 +255,4 @@ print(ID
 
 
 
+os.system("killall aguila")
