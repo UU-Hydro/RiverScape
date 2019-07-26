@@ -165,7 +165,7 @@ pcr.aguila(geom.dem)
 waal = msr.River('Waal', axis, main_dike, minemb, groynes, hydro, 
              mesh, lulc, geom)
 waal_msr = msr.RiverMeasures(waal)
-waal_msr.settings = settings_smooth
+waal_msr.settings = settings
 
 
 # In[157]:
