@@ -691,7 +691,7 @@ class Measure(object):
                    self.minemb_height, self.main_dike_height)
         pcr.plot(self.area)
         pcr.plot(self.dem)
-        pcr.plot(self.ecotopes.pcr_map)
+        test = self.ecotopes.pcr_map ; pcr.plot(test)
         pcr.plot(self.trachytopes)
         pcr.plot(self.groyne_height)
         pcr.plot(self.minemb_height)
