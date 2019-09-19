@@ -689,7 +689,7 @@ class Measure(object):
         pcr.aguila(self.area, self.dem, self.ecotopes.pcr_map, 
                    self.trachytopes, self.groyne_height, 
                    self.minemb_height, self.main_dike_height)
-        pcr.plot(self.area)
+        area = self.area ; pcr.plot(self.area)
         pcr.plot(self.dem)
         test = self.ecotopes.pcr_map ; pcr.plot(test)
         pcr.plot(self.trachytopes)
