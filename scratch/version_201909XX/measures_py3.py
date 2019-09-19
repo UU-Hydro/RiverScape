@@ -689,13 +689,13 @@ class Measure(object):
         pcr.aguila(self.area, self.dem, self.ecotopes.pcr_map, 
                    self.trachytopes, self.groyne_height, 
                    self.minemb_height, self.main_dike_height)
-        area             = self.area             ; pcr.plot(self.area)
-        dem              = self.dem              ; pcr.plot(self.dem)
-        ecotopes         = self.ecotopes.pcr_map ; pcr.plot(ecotopes)
-        trachytopes      = self.trachytopes      ; pcr.plot(self.trachytopes)
-        groyne_height    = self.groyne_height    ; pcr.plot(self.groyne_height)
-        minemb_height    = self.minemb_height    ; pcr.plot(self.minemb_height)
-        main_dike_height = self.main_dike_height ; pcr.plot(self.main_dike_height)
+        area             = self.area                     ; pcr.plot(self.area)
+        dem              = self.dem                      ; pcr.plot(self.dem)
+        ecotopes         = self.ecotopes.pcr_map         ; pcr.plot(ecotopes)
+        trachytopes      = pcr.nominal(self.trachytopes) ; pcr.plot(self.trachytopes)
+        groyne_height    = self.groyne_height            ; pcr.plot(self.groyne_height)
+        minemb_height    = self.minemb_height            ; pcr.plot(self.minemb_height)
+        main_dike_height = self.main_dike_height         ; pcr.plot(self.main_dike_height)
                    
     
     def mask_out(self, out_mask):
