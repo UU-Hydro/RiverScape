@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 #-import generic modules
 import os
 import string
@@ -511,12 +514,23 @@ class RiverEmbankments(object):
         self.volume = volume
         self.height = height
     
+    
     def plot(self):
         """
         Plot all PCRaster maps using aguila
         """
-        ll = [pcr_map for var, pcr_map in self.__dict__.iteritems()]
-        pcr.aguila(ll)
+        #~ ll = [pcr_map for var, pcr_map in self.__dict__.iteritems()]
+        #~ pcr.aguila(ll)
+        pcr.aguila(self.location, \
+                   self.length, \
+                   self.volume, \
+                   self.height)
+        # - also plot them using matplotlib
+        location = self.location ; pcr.plot(location)
+        length   = self.length   ; pcr.plot(length)
+        volume   = self.volume   ; pcr.plot(volume)
+        height   = self.height   ; pcr.plot(height)
+        
 
 
 class RiverHydro(object):
@@ -539,6 +553,7 @@ class RiverHydro(object):
          self.wl_exc100d = wl_exc100d
          self.wl_exc150d = wl_exc150d
          self.wl_exc363d = wl_exc363d
+         
 
 
 class Mesh(object):
@@ -689,13 +704,13 @@ class Measure(object):
         pcr.aguila(self.area, self.dem, self.ecotopes.pcr_map, 
                    self.trachytopes, self.groyne_height, 
                    self.minemb_height, self.main_dike_height)
-        area             = self.area                     ; pcr.plot(self.area)
-        dem              = self.dem                      ; pcr.plot(self.dem)
+        area             = self.area                     ; pcr.plot(area)
+        dem              = self.dem                      ; pcr.plot(dem)
         ecotopes         = self.ecotopes.pcr_map         ; pcr.plot(ecotopes)
-        trachytopes      = pcr.nominal(self.trachytopes) ; pcr.plot(self.trachytopes)
-        groyne_height    = self.groyne_height            ; pcr.plot(self.groyne_height)
-        minemb_height    = self.minemb_height            ; pcr.plot(self.minemb_height)
-        main_dike_height = self.main_dike_height         ; pcr.plot(self.main_dike_height)
+        trachytopes      = pcr.nominal(self.trachytopes) ; pcr.plot(trachytopes)
+        groyne_height    = self.groyne_height            ; pcr.plot(groyne_height)
+        minemb_height    = self.minemb_height            ; pcr.plot(minemb_height)
+        main_dike_height = self.main_dike_height         ; pcr.plot(main_dike_height)
                    
     
     def mask_out(self, out_mask):
