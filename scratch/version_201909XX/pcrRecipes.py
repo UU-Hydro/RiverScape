@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 #-modules
 import os, sys, subprocess, gc
 import uuid
