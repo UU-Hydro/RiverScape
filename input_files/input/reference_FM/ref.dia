@@ -1,0 +1,805 @@
+* Deltares, D-Flow FM Version 1.1.198.48807, Nov 30 2016, 20:10:08
+* File creation date: 13:14:44, 22-08-2017
+** DEBUG  :            0  0.1000020     NOD(KMAX)
+** DEBUG  :            6  0.7000140     XK (KMAX), YK (KMAX), ZK (KMAX), KC (KMAX), NMK (KMAX), RNOD(KMAX)
+** DEBUG  :            6  9.9999998E-03 XS(NSMAX),YS(NSMAX),ZS(NSMAX),IPSAM(NSMAX)
+** DEBUG  :            6  5.0000001E-02 xlan(maxlan)
+** DEBUG  :            7  5.0000001E-02 ylan(maxlan)
+** DEBUG  :            7  5.0000001E-02 zlan(maxlan)
+** DEBUG  :            7  2.5000000E-02 nclan(maxlan)
+ Until here copy of previous diagnostic file
+** WARNING: readMDUFile: [numerics] cflwavefrac=0. was in file, but not used. Check possible typo.
+** WARNING: readMDUFile: [output] snapshotdir=BMP was in file, but not used. Check possible typo.
+** DEBUG  : unc_read_net_ugrid: net file 'ref_net.nc' is not UGRID. No problem, will fall back to old format reader.
+** DEBUG  : Opened 'ref_net.nc' as #         3.
+** DEBUG  : Closed NetCDF file 'ref_net.nc.
+** INFO   : Opened file : wl_j95_5_obs.xyn
+** INFO   : Closed file : wl_j95_5_obs.xyn
+** INFO   : Opened file : ref_thin_dams.pli
+** INFO   : Closed file : ref_thin_dams.pli
+** INFO   : Opened file : sections_crs.pli
+** INFO   : Closed file : sections_crs.pli
+** INFO   : Initializing flow model geometry...
+** DEBUG  : Opened 'ref_net.nc' as #         3.
+** WARNING: Could not read net cells from NetCDF file 'ref_net.nc' (is not critical). Details follow:
+** WARNING: NetCDF error: Variable not found (NetElemLink)
+** DEBUG  :            9  0.1386750     netcell(numpx1)
+** DEBUG  :           10  0.2125430     lnn(numl)
+** DEBUG  :           14  0.4250860     lne(2,numl)
+** DEBUG  :           15  0.1200910     xz(numc)
+** DEBUG  :           16  0.1200910     yz(numc)
+** DEBUG  :           17  0.1200910     xzw(numc)
+** DEBUG  :           17  0.1200910     yzw(numc)
+** DEBUG  :           18  0.1200910     ba(numc)
+** INFO   : Opened file : ref_dry_areas.pol
+** INFO   : Closed file : ref_dry_areas.pol
+** INFO   : Building kdtree...
+** DEBUG  :           19  4.3940000E-02 sample_coords(NTREEDIM,N)
+** INFO   : done
+** INFO   : Finding crossed flowlinks...
+** INFO   : done
+** INFO   : Delete kdtree...
+** INFO   : thin dams with kdtree2, elapsed time:     0.21900    s.
+** DEBUG  :  Renumber flow nodes...
+** DEBUG  :  Sumdiff:   348902753  Sumdiff renum:    145360418
+** DEBUG  :  Bandwidth:      120821  Bandwidth renum:          205
+** INFO   : Opened file : wl_j95_5_hoog.ext
+** DEBUG  :           20  0.2125430     xe (nx)
+** DEBUG  :           22  0.2125430     ye (nx)
+** DEBUG  :           24  0.2125430     xyen(2, nx)
+** DEBUG  :           53   3.613231     kce(nx), ke(nx), kez(nx), keu(nx), kes(nx), ketm(nx), kesd(nx), keuxy(nx), ket(nx), ken(nx), ke1d2d(nx), keg(nx), ked(nx), kep(nx), keklep(nx), kegs(nx), kegen(nx), itpez(nx), itpenz(nx), itpeu(nx) , itpenu(nx) , kew(nx)
+** DEBUG  :           54  0.2125430     ketr(1,nx)
+** INFO   : Opened file : wl_j95_5_bndin.pli
+** INFO   : Closed file : wl_j95_5_bndin.pli
+** INFO   : boundary: 'wl_j95_5_bndin.pli' opened 14 cells.
+** INFO   : dischargebnd wl_j95_5_bndin.pli      14 nr of open bndcells
+** INFO   : Opened file : wl_j95_5_bndout.pli
+** INFO   : Closed file : wl_j95_5_bndout.pli
+** INFO   : boundary: 'wl_j95_5_bndout.pli' opened 20 cells.
+** INFO   : waterlevelbnd wl_j95_5_bndout.pli      20 nr of open bndcells
+** DEBUG  :           59  0.5531760     nd(ndx), bl(ndx), bai(ndx), kcs(ndx), aif(ndx)
+** DEBUG  :           67  0.2646920     ln   (2,lnx)
+** DEBUG  :           70  0.2646920     lncn (2,lnx)
+** DEBUG  :           72  0.2646920     bob  (2,lnx)
+** DEBUG  :           73  0.1323460     dx   (  lnx)
+** DEBUG  :           74  0.1323460     dxi  (  lnx)
+** DEBUG  :           75  0.1323460     wu   (  lnx)
+** DEBUG  :           76  0.1323460     wui  (  lnx)
+** DEBUG  :           77  0.1323460     kcu  (  lnx)
+** DEBUG  :           78  0.1323460     csu  (  lnx)
+** DEBUG  :           79  0.1323460     snu  (  lnx)
+** DEBUG  :           80  0.1323460     acl  (  lnx)
+** DEBUG  :           81  0.1323460     acn  (2,lnx)
+** DEBUG  :           82  0.1323460     iadv   (lnx)
+** DEBUG  :           83  0.1323460     teta   (lnx)
+** DEBUG  :           84  0.1323460     ibot   (lnx)
+** DEBUG  :           88  0.3970380     xu(lnx), yu(lnx) , blu(lnx)
+** DEBUG  :           89  0.2125430     ln2lne (nex)
+** DEBUG  :           91  0.2125430     lne2ln (nex)
+** DEBUG  : addexternalboundarypoints: added 0 bnd points for SOBEK1D-FM2D connections.
+** DEBUG  :           94  9.2450000E-02  cn (numk)
+** DEBUG  :           95  9.2450000E-02 ucnx(numk)
+** DEBUG  :           95  9.2450000E-02 ucny(numk)
+** DEBUG  :           96  9.2450000E-02 ban (numk)
+** DEBUG  :           97  0.1323460     wcx1(lnx)
+** DEBUG  :           98  0.1323460     wcy1(lnx)
+** DEBUG  :           99  0.1323460     wcx2(lnx)
+** DEBUG  :          100  0.1323460     wcy2(lnx)
+** DEBUG  :          101  0.1382940     wcxy (2,ndx)
+** DEBUG  :          104  0.2646920     wcL  (2,Lnx)
+** DEBUG  :          104  6.9146998E-02 wc     (ndx)
+** DEBUG  :          105  0.1323460     wcnx3(lnx)
+** DEBUG  :          106  0.1323460     wcny3(lnx)
+** DEBUG  :          107  0.1323460     wcnx4(lnx)
+** DEBUG  :          108  0.1323460     wcny4(lnx)
+** DEBUG  :          111  0.2773500     wcnxy (3,numk)
+** DEBUG  :          111  9.2450000E-02 jacorner(numk)
+** DEBUG  :          111  3.5760000E-03 cscnw(nrcnw)
+** DEBUG  :          111  3.5760000E-03 sncnw(nrcnw)
+** DEBUG  :          111  3.5760000E-03  kcnw(nrcnw)
+** DEBUG  :          111  7.1520000E-03  nwalcnw(2,nrcnw)
+** DEBUG  :          111  3.5760000E-03  sfcnw(nrcnw)
+** DEBUG  :          112  5.8720000E-02 walls(17,nw)
+** INFO   : Done initializing flow model geometry.
+** DEBUG  :          115  0.1382940     s0  (ndx) , s1  (ndx)
+** DEBUG  :          116  0.1382940     a0  (ndx) , a1  (ndx)
+** DEBUG  :          117  0.1382940     hs  (ndx) , s00 (ndx)
+** DEBUG  :          118  6.9146998E-02 cfs (ndx)
+** DEBUG  :          119  6.9146998E-02 kbot (ndx)
+** DEBUG  :          119  6.9146998E-02 ktop (ndx)
+** DEBUG  :          120  6.9146998E-02 ktop0(ndx)
+** DEBUG  :          120  6.9146998E-02 kmxn (ndx)
+** DEBUG  :          121  0.1323460     Lbot (Lnx)
+** DEBUG  :          122  0.1323460     Ltop (Lnx)
+** DEBUG  :          123  0.1323460     kmxL (Lnx)
+** DEBUG  :          124  0.1323460     ustb  (lnx)
+** DEBUG  :          125  0.1323460     ustw  (lnx)
+** DEBUG  :          126  6.9146998E-02 laydefnr(ndx)
+** DEBUG  :          127  6.9146998E-02 rho (ndkx)
+** DEBUG  :          128  0.1382940     ucx (ndkx) , ucy (ndkx)
+** DEBUG  :          128  6.9146998E-02 workx (ndkx)
+** DEBUG  :          129  6.9146998E-02 worky (ndkx)
+** DEBUG  :          130  0.1323460     work0 (0:max(kmx,1),max(ndx,lnx))
+** DEBUG  :          131  0.1323460     work1 (max(kmx,1),max(ndx,lnx))
+** DEBUG  :          132  0.1382940     uqcx(ndkx) , uqcy(ndkx)
+** DEBUG  :          133  0.1382940     ucxq(ndkx) , ucyq(ndkx)
+** DEBUG  :          134  0.1382940     qin (ndkx) , vih (ndkx)
+** DEBUG  :          135  0.1382940     dvxc(ndkx) , dvyc(ndkx)
+** DEBUG  :          136  6.9146998E-02 cfli(ndkx)
+** DEBUG  :          136  6.9146998E-02 squ (ndkx)
+** DEBUG  :          137  6.9146998E-02 sqi (ndkx)
+** DEBUG  :          138  6.9146998E-02 sq  (ndkx)
+** DEBUG  :          138  6.9146998E-02 vol0(ndkx)
+** DEBUG  :          139  6.9146998E-02 vol1(ndkx)
+** DEBUG  :          139  6.9146998E-02 volerror(ndkx)
+** DEBUG  :          140  0.1323460     voldhu(ndx)
+** DEBUG  :          141  6.9146998E-02 sqa(ndkx)
+** DEBUG  :          142  0.1323460     cfuhi(lnx)
+** DEBUG  :          142  6.9146998E-02 frcu (lnx)
+** DEBUG  :          143  6.9146998E-02 ifrcutp(lnx)
+** DEBUG  :          144  0.1323460     wdsu  (lnx)
+** DEBUG  :          146  0.2125430     cftrt(numl,3)
+** DEBUG  :          146  6.9146998E-02 czs(ndx)
+** DEBUG  :          147  6.9146998E-02 frculin (lnx)
+** DEBUG  :          148  0.1323460     u0   (lnkx)
+** DEBUG  :          149  0.1323460     u1   (lnkx)
+** DEBUG  :          150  0.1323460     q1   (lnkx)
+** DEBUG  :          151  0.1323460     qa   (lnkx)
+** DEBUG  :          152  0.1323460     v    (lnkx)
+** DEBUG  :          153  0.1323460     ucxu (lnkx)
+** DEBUG  :          154  0.1323460     ucyu (lnkx)
+** DEBUG  :          155  0.1323460     hu   (lnkx)
+** DEBUG  :          156  0.1323460     huvli(lnkx)
+** DEBUG  :          157  0.1323460     au   (lnkx)
+** DEBUG  :          159  0.1323460     viu  (lnkx)
+** DEBUG  :          160  0.1323460     cflj (lnkx)
+** DEBUG  :          161  0.1323460     tetaj(lnkx)
+** DEBUG  :          162  0.1323460     suu  (lnkx)
+** DEBUG  :          163  0.1323460     advi (lnkx)
+** DEBUG  :          164  0.1323460     adve (lnkx)
+** DEBUG  :          165  0.1323460     plotlin(max(lnkx,ndkx))
+** DEBUG  :          165  6.9146998E-02 numlimdt(ndx)
+** DEBUG  :          166  6.9146998E-02 bb   (ndx )
+** DEBUG  :          167  6.9146998E-02 dd   (ndx )
+** DEBUG  :          167  6.9146998E-02 fu   (lnkx)
+** DEBUG  :          168  6.9146998E-02 ru   (lnkx)
+** DEBUG  :          168  6.9146998E-02 rich(lnkx)
+*** Start  of trachytopes input
+DtTrt               :  60.000 seconds
+DtTrt               : every     1 timesteps
+Trtdef              : riverScape.ttd
+Trtl                : ref_trachytopes.arl
+TrtCll              : 
+TrtMnH              :   0.100 m
+TrtMth              :   1
+*** End    of trachytopes input
+ 
+** INFO   : Building kdtree...
+** DEBUG  :          172  0.4250860     sample_coords(NTREEDIM,N)
+** INFO   : done
+** INFO   : Delete kdtree...
+** INFO   : Building kdtree...
+** DEBUG  :          172  1.1604000E-02 sample_coords(NTREEDIM,N)
+** INFO   : done
+** INFO   : Finding crossed flowlinks...
+** INFO   : done
+** INFO   : Delete kdtree...
+** INFO   : Building kdtree...
+** INFO   : done
+** INFO   : Finding flow nodes...
+** INFO   : done in      0.01600 sec.
+** INFO   : Delete kdtree...
+** INFO   : Start initializing external forcings...
+** INFO   : External Forcing or Initialising 'dischargebnd' from file 'wl_j95_5_bndin.pli'.
+** INFO   : External Forcing or Initialising 'waterlevelbnd' from file 'wl_j95_5_bndout.pli'.
+** INFO   : Closed file : wl_j95_5_hoog.ext
+** INFO   : No wind, so waves is switched off
+** INFO   : Done initializing external forcings.
+** INFO   : Opened file : ref_fixed_weirs.pliz
+** INFO   : Opened file : DFM_interpreted_fxwvalues_ref_fixed_weirs.xyz
+** INFO   : Closed file : ref_fixed_weirs.pliz
+** INFO   : Building kdtree...
+** DEBUG  :          174  0.2336300     sample_coords(NTREEDIM,N)
+** INFO   : done
+** INFO   : Finding crossed flowlinks...
+** INFO   : done
+** INFO   : Delete kdtree...
+** INFO   : Closed file : DFM_interpreted_fxwvalues_ref_fixed_weirs.xyz
+** DEBUG  :          174  2.2337999E-02 lnfxw(nfxw)
+** DEBUG  :          174  2.2337999E-02 csfxw(nfxw)
+** DEBUG  :          174  2.2337999E-02 snfxw(nfxw)
+** DEBUG  :          175  0.1323460     nfxwL(Lnx)
+** DEBUG  :          175  2.2337999E-02 crestxw(nfxw)
+** DEBUG  :          176  2.2337999E-02 shlxw(nfxw)
+** DEBUG  :          176  2.2337999E-02 shrxw(nfxw)
+** DEBUG  :          176  2.2337999E-02 taludlxw(nfxw)
+** DEBUG  :          176  2.2337999E-02 taludrxw(nfxw)
+** DEBUG  :          176  2.2337999E-02 vegxw(nfxw)
+** INFO   : Number of flow Links with fixed weirs ::          22338
+** INFO   : Opened file : waterlevels.xyz
+** DEBUG  :          177  8.2935996E-02 XS(NSMAX),YS(NSMAX),ZS(NSMAX)
+** DEBUG  :          178  8.2935996E-02 ipsam(NSMAX)
+** INFO   : Building kdtree...
+** DEBUG  :          179  0.1382240     sample_coords(NTREEDIM,N)
+** INFO   : done
+** INFO   : merged 0 samples in .03 seconds.
+** INFO   : Delete kdtree...
+** INFO   : Closed file : waterlevels.xyz
+** INFO   : Building kdtree...
+** DEBUG  :          180  0.1382240     sample_coords(NTREEDIM,N)
+** INFO   : done
+** INFO   : Finding flow nodes...
+** INFO   : done in      1.93800 sec.
+** INFO   : Delete kdtree...
+** DEBUG  :          181  0.1323460     klnup(6,lnx)
+** DEBUG  :          182  0.1323460     slnup(6,lnx)
+** DEBUG  :          182  6.9146998E-02 ij(nodtot)
+** DEBUG  :          183  6.9146998E-02 nodbr2(nodtot)
+** DEBUG  :          184  6.9146998E-02 nbrstk(nodtot)
+** DEBUG  :          184  6.9146998E-02 nodstk(nodtot)
+** DEBUG  :          185  6.9146998E-02 noel(nodtot)
+** DEBUG  :          185  6.9146998E-02 noel0(nodtot)
+** DEBUG  :          186  6.9146998E-02 ia(nodtot)
+** DEBUG  :          186  6.9146998E-02 row(nodtot)
+** DEBUG  :          187  0.1323460     lv2(lintot)
+** DEBUG  :          188  6.9146998E-02 jagauss(nodtot)
+** DEBUG  :          197  0.2766620     ccr(0:ijstck)
+** DEBUG  :          199  0.2766620     bbl(0:ijstck)
+** DEBUG  :          200  0.1382940     bbr(nodtot), ddr(nodtot)
+** DEBUG  :          203  0.3457350     d0(nodtot), zkr(nodtot),pk(0:nodtot), apk(nodtot), rk(nodtot)
+** INFO   : nogauss , nocg :          36628         32438
+** DEBUG  :          217   1.798774     iao(nn+1)
+** DEBUG  :          223  0.7607580     ao(na)
+** DEBUG  :          239   1.946280     wk(nwk)
+** INFO   : Building kdtree...
+** DEBUG  :          239  1.1604000E-02 sample_coords(NTREEDIM,N)
+** INFO   : done
+** INFO   : Finding crossed flowlinks...
+** INFO   : done
+** INFO   : Delete kdtree...
+** INFO   : Building kdtree...
+** INFO   : done
+** INFO   : Finding flow nodes...
+** INFO   : done in      0.01600 sec.
+** INFO   : Delete kdtree...
+** INFO   : Modelinit finished   at: 13:15:06, 22-08-2017
+** INFO   : ** Model initialization was successful **
+** INFO   : * Active Model definition:
+# Generated on 13:15:06, 22-08-2017
+# Deltares, D-Flow FM Version 1.1.198.48807, Nov 30 2016, 20:10:08
+
+[model]
+Program                           = D-Flow FM
+Version                           = 1.1.198.48807
+MDUFormatVersion                  = 1.05                # File format version (do not edit this)
+AutoStart                         = 2                   # Autostart simulation after loading MDU (0: no, 1: autostart, 2: autostartstop)
+
+[geometry]
+NetFile                           = ref_net.nc          # Unstructured grid file *_net.nc
+BedlevelFile                      =                     # Bedlevels points file e.g. *.xyz, only needed for bedlevtype not equal 3
+DryPointsFile                     = ref_dry_areas.pol   # Dry points file *.xyz (third column dummy z values), or dry areas polygon file *.pol (third column 1/-1: inside/outside)
+WaterLevIniFile                   = waterlevels.xyz     # Initial water levels sample file *.xyz
+LandBoundaryFile                  =                     # Land boundaries file *.ldb, used for visualization
+ThinDamFile                       = ref_thin_dams.pli   # Polyline file *_thd.pli, containing thin dams
+FixedWeirFile                     = ref_fixed_weirs.pliz# Polyline file *_fxw.pliz, containing fixed weirs with rows x, y, crest level, left ground level, right ground level
+VertplizFile                      =                     # Vertical layering file *_vlay.pliz with rows x, y, Z, first Z, nr of layers, second Z, layer type
+ProflocFile                       =                     # Channel profile location file *_proflocation.xyz with rows x, y, z, profile number ref
+ProfdefFile                       =                     # Channel profile definition file *_profdefinition.def with definition for all profile numbers
+ProfdefxyzFile                    =                     # Channel profile definition file _profdefinition.def with definition for all profile numbers
+Uniformwidth1D                    = 2.                  # Uniform width for channel profiles not specified by profloc
+StructureFile                     =                     # File *.ini containing list of structures (pumps, weirs, gates and general structures)
+ManholeFile                       =                     # File *.ini containing manholes
+ShipdefFile                       =                     # File *.shd containing ship definitions
+WaterLevIni                       = 0.                  # Initial water level at missing s0 values
+BedlevUni                         = -5.                 # Uniform bed level used at missing z values if BedlevType > 2
+Bedslope                          = 0.                  # Bed slope inclination if BedlevType > 2
+BedlevType                        = 3                   # Bathymetry specification
+                                                        # 1: at cell centers (from BathymetryFile)
+                                                        # 2: at faces (from BathymetryFile)
+                                                        # 3: at nodes, face levels mean of node values
+                                                        # 4: at nodes, face levels min. of node values
+                                                        # 5: at nodes, face levels max. of node values
+                                                        # 6: at nodes, face levels max. of cell-center values
+Blmeanbelow                       = -999.               # If not -999d0, below this level the cell center bed level is the mean of surrouding net nodes
+Blminabove                        = -999.               # If not -999d0, above this level the cell center bed level is the min. of surrouding net nodes
+PartitionFile                     =                     # Domain partition polygon file *_part.pol for parallel run
+AngLat                            = 0.                  # Angle of latitude S-N (deg), 0: no Coriolis
+AngLon                            = 0.                  # Angle of longitude E-W (deg), 0: Greenwich, used in solar heat flux computation.
+Conveyance2D                      = -1                  # -1: R=HU,0: R=H, 1: R=A/P, 2: K=analytic-1D conv, 3: K=analytic-2D conv
+Nonlin2D                          = 0                   # Non-linear 2D volumes, only used if ibedlevtype=3 and Conveyance2D>=1
+Sillheightmin                     = 0.                  # Weir treatment only if both sills larger than this value (m)
+Makeorthocenters                  = 0                   # Switch from circumcentres to orthocentres in geominit (i>=1: number of iterations, 0: do not use)
+Dcenterinside                     = 1.                  # Limit cell center (1.0: in cell, 0.0: on c/g)
+Bamin                             = 1.d-6               # Minimum grid cell area, in combination with cut cells
+OpenBoundaryTolerance             = 3.                  # Search tolerance factor between boundary polyline and grid cells, in cell size units
+RenumberFlowNodes                 = 1                   # Renumber the flow nodes (1: yes, 0: no)
+Kmx                               = 0                   # Maximum number of vertical layers
+Layertype                         = 1                   # Vertical layer type (1: all sigma, 2: all z, 3: use VertplizFile)
+Numtopsig                         = 0                   # Number of sigma layers in top of z-layer model
+SigmaGrowthFactor                 = 1.                  # Layer thickness growth factor from bed up
+StretchType                       = 0                   # Type of layer stretching, 0 = uniform, 1 = user defined, 2 = fixed level double exponential
+
+[numerics]
+CFLMax                            = 0.7                 # Maximum Courant number
+Lincontin                         = 0                   # Default 0; Set to 1 for linearizing d(Hu)/dx; link to AdvecType
+AdvecType                         = 33                  # Advection type (0: none, 1: Wenneker, 2: Wenneker q(uio-u), 3: Perot q(uio-u), 4: Perot q(ui-u), 5: Perot q(ui-u) without itself)
+TimeStepType                      = 2                   # Time step handling (0: only transport, 1: transport + velocity update, 2: full implicit step-reduce, 3: step-Jacobi, 4: explicit)
+Icoriolistype                     = 5
+Limtyphu                          = 0                   # Limiter type for waterdepth in continuity eqn. (0: none, 1: minmod, 2: van Leer, 3: Kooren, 4: monotone central)
+Limtypmom                         = 4                   # Limiter type for cell center advection velocity (0: none, 1: minmod, 2: van Leer, 3: Kooren, 4: monotone central)
+Limtypsa                          = 0                   # Limiter type for salinity transport (0: none, 1: minmod, 2: van Leer, 3: Kooren, 4: monotone central)
+TransportMethod                   = 1                   # Transport method (0: Herman's method, 1: transport module)
+TransportTimestepping             = 0                   # Timestepping method in Transport module, 0 = global (default) , 1 = local
+Vertadvtypsal                     = 5                   # Vertical advection type for salinity (0: none, 1: upwind explicit, 2: central explicit, 3: upwind implicit, 4: central implicit, 5: central implicit but upwind for neg. stratif., 6: higher order explicit, no Forester)
+Vertadvtyptem                     = 6                   # Vertical advection type for temperature (0: none, 1: upwind explicit, 2: central explicit, 3: upwind implicit, 4: central implicit, 5: central implicit but upwind for neg. stratif., 6: higher order explicit, no Forester)
+Cffacver                          = 0.                  # Factor for including (1-CFL) in HO term vertical   (0d0: no, 1d0: yes)
+Jarhoxu                           = 0                   # Inlcude density gradient in advection term (0: no, 1: yes, 2: Also in barotrop and baroclin pressure term)
+Horadvtypzlayer                   = 0                   # Horizontal advection treatment of z-layers (1: default, 2: sigma-like)
+Zlayeratubybob                    = 0                   # Lowest connected cells governed by bob instead of by bL L/R
+Icgsolver                         = 4                   # Solver type (1: sobekGS_OMP, 2: sobekGS_OMPthreadsafe, 3: sobekGS, 4: sobekGS + Saadilud, 5: parallel/global Saad, 6: parallel/Petsc, 7: parallel/GS)
+Maxdegree                         = 6                   # Maximum degree in Gauss elimination
+FixedWeirScheme                   = 6                   # Fixed weir scheme (0: none, 1: compact stencil, 2: whole tile lifted, full subgrid weir + factor)
+FixedWeirContraction              = 1.                  # Fixed weir flow width contraction factor
+Fixedweirfrictscheme              = 1                   # Fixed weir friction scheme (0: friction based on hu, 1: friction based on subgrid weir friction scheme)
+Fixedweirtopwidth                 = 3.                  # Uniform width of the groyne part of fixed weirs
+Fixedweirtopfrictcoef             = -999.               # Uniform friction coefficient of the groyne part of fixed weirs
+Fixedweirtalud                    = 0.25                # Uniform talud slope of fixed weirs
+Izbndpos                          = 0                   # Position of z boundary (0: D3Dflow, 1: on net boundary, 2: on specifiend polyline)
+Tlfsmo                            = 0.                  # Fourier smoothing time (s) on water level boundaries
+Logprofatubndin                   = 1                   # ubnds inflow: 0=uniform U1, 1 = log U1, 2 = log U1 +(k-eps), 3=uniformk
+Slopedrop2D                       = 0.                  # Apply drop losses only if local bed slope > Slopedrop2D, (<=0: no drop losses)
+Drop3D                            = -999.               # Apply droplosses in 3D if z upwind below bob + 2/3 hu*drop3D
+Chkadvd                           = 0.1                 # Check advection terms if depth < chkadvdp, => less setbacks
+Trsh_u1Lb                         = 0.                  # 2D bedfriction in 3D below this threshold (m)
+Zwsbtol                           = 0.                  # tolerance for zws(kb-1) at bed
+Keepzlayeringatbed                = 1                   #  bedlayerthickness = zlayerthickness at bed 0 or 1
+Teta0                             = 0.55                # Theta of time integration (0.5 < theta < 1)
+Qhrelax                           = 1.d-2               # Relaxation on Q-h open boundaries
+Jbasqbnddownwindhs                = 0                   # Water depth scheme at discharge boundaries (0: original hu, 1: downwind hs)
+cstbnd                            = 0                   # Delft-3D type velocity treatment near boundaries for small coastal models (1: yes, 0: no)
+Maxitverticalforestersal          = 100                 # Forester iterations for salinity (0: no vertical filter for salinity, > 0: max nr of iterations)
+Maxitverticalforestertem          = 0                   # Forester iterations for temperature (0: no vertical filter for temperature, > 0: max nr of iterations)
+Jaorgsethu                        = 1                   # Velocity reconstruction scheme (0 : setumod, sethu, setau sequence, 1 : sethu, setau, setumod sequence (standard))
+Turbulencemodel                   = 3                   # Turbulence model (0: none, 1: constant, 2: algebraic, 3: k-epsilon, 4: k-tau)
+Turbulenceadvection               = 0                   # Turbulence advection (0: none, 3: horizontally explicit and vertically implicit)
+Eddyviscositybedfacmax            = 0.                  # Limit Eddyviscosity at bed )
+AntiCreep                         = 0                   # Include anti-creep calculation (0: no, 1: yes)
+Maxwaterleveldiff                 = 0.                  # upper bound (in m) on water level changes (<= 0: no bounds). Run will abort when violated.
+Maxvelocitydiff                   = 0.                  # upper bound (in m/s) on velocity changes (<= 0: no bounds). Run will abort when violated.
+MinTimestepBreak                  = 0.                  # smallest allowed timestep (in s), checked on a sliding average of several timesteps. Run will abort when violated.
+Epshu                             = 1.d-4               # Threshold water depth for wet and dry cells
+SobekDFM_umin                     = 0.                  # Minimal velocity treshold for weir losses in Sobek-DFM coupling.
+SobekDFM_umin_method              = 0                   # Method for minimal velocity treshold for weir losses in Sobek-DFM coupling.
+Vertadvtypmom                     = 3                   # vertical advection for u1: 0: No, 3: Upwind implicit, 4: Central implicit, 5: QUICK implicit.
+jaupwindsrc                       = 1                   # 1st-order upwind advection at sources/sinks (1) or higher-order (0)
+
+[physics]
+UnifFrictCoef                     = 0.2                 # Uniform friction coefficient (0: no friction)
+UnifFrictType                     = 3                   # Uniform friction type (0: Chezy, 1: Manning, 2: White-Colebrook, 3: idem, WAQUA style)
+UnifFrictCoef1D                   = 2.3d-2              # Uniform friction coefficient in 1D links (0: no friction)
+UnifFrictCoefLin                  = 0.                  # Uniform linear friction coefficient for ocean models (m/s) (0: no friction)
+Umodlin                           = 0.                  # Linear friction umod, for ifrctyp=4,5,6
+Vicouv                            = 1.                  # Uniform horizontal eddy viscosity (m2/s)
+Dicouv                            = 1.                  # Uniform horizontal eddy diffusivity (m2/s)
+Vicoww                            = 0.                  # Uniform vertical eddy viscosity (m2/s)
+Dicoww                            = 5.d-5               # Uniform vertical eddy diffusivity (m2/s)
+Vicwminb                          = 0.                  # Minimum visc in prod and buoyancy term (m2/s)
+Xlozmidov                         = 0.                  # Ozmidov length scale (m), default=0.0, no contribution of internal waves to vertical diffusion
+Smagorinsky                       = 0.                  # Smagorinsky factor in horizontal turbulence, e.g. 0.15
+Elder                             = 0.                  # Elder factor in horizontal turbulence
+irov                              = 0                   # 0=free slip, 1 = partial slip using wall_ks
+wall_ks                           = 0.                  # Wall roughness type (0: free slip, 1: partial slip using wall_ks)
+Rhomean                           = 1000.               # Average water density (kg/m3)
+Idensform                         = 0                   # Density calulation (0: uniform, 1: Eckard, 2: Unesco, 3: baroclinic case)
+Ag                                = 9.81                # Gravitational acceleration
+TidalForcing                      = 0                   # Tidal forcing, if jsferic=1 (0: no, 1: yes)
+SelfAttractionLoading             = 0                   # Self attraction and loading (0=no, 1=yes, 2=only self attraction)
+Doodsonstart                      = 55.565              # TRIWAQ: 55.565, D3D: 57.555
+Doodsonstop                       = 375.575             # TRIWAQ: 375.575, D3D: 275.555
+Doodsoneps                        = 0.                  # TRIWAQ = 0.0  400 cmps , D3D = 0.03   60 cmps
+Villemonte CD 1                   = 1.                  # Calibration coefficient for Villemonte. Default = 1.0.  NB. For Bloemberg data set 0.8 is recommended.
+Villemonte CD 2                   = 10.                 # Calibration coefficient for Villemonte. Default = 10.0. NB. For Bloemberg data set 0.8 is recommended.
+Salinity                          = 0                   # Include salinity, (0=no, 1=yes)
+InitialSalinity                   = 0.                  # Uniform initial salinity concentration (ppt)
+Sal0abovezlev                     = -999.               # Vertical level (m) above which salinity is set 0
+DeltaSalinity                     = -999.               # for testcases
+Backgroundsalinity                = 30.                 # Background salinity for eqn. of state (ppt)
+Backgroundwatertemperature        = 6.                  # Background water temperature for eqn. of state (deg C)
+Jadelvappos                       = 1                   # Only positive forced evaporation fluxes
+Temperature                       = 0                   # Include temperature (0: no, 1: only transport, 3: excess model of D3D, 5: composite (ocean) model)
+InitialTemperature                = 6.                  # Uniform initial water temperature (degC)
+Secchidepth                       = 1.                  # Water clarity parameter (m)
+Stanton                           = -1.                 # Coefficient for convective heat flux, if negative, Ccon = abs(Stanton)*Cdwind
+Dalton                            = -1.                 # Coefficient for evaporative heat flux, if negative, Ceva = abs(Dalton)*Cdwind
+Tempmax                           = -999.               # Limit the temperature
+Tempmin                           = 0.                  # Limit the temperature
+SecondaryFlow                     = 0                   # Secondary flow (0: no, 1: yes)
+EffectSpiral                      = 0.                  # Weight factor of the spiral flow intensity on transport angle
+BetaSpiral                        = 0.                  # Weight factor of the spiral flow intensity on flow dispersion stresses
+
+[sediment]
+Sedimentmodelnr                   = 0                   # Sediment model nr, (0=no, 1=Krone, 2=SvR2007)
+SedFile                           =                     # Sediment characteristics file (*.sed)
+MorFile                           =                     # Morphology settings file (*.mor)
+Nr_of_sedfractions                = 0                   # Nr of sediment fractions, (specify the next parameters for each fraction)
+MxgrKrone                         = 0                   # Highest fraction index treated by Krone
+
+[grw]
+Conductivity                      = 0.                  # non dimensionless K conductivity   saturated (m/s), Q = K*A*i (m3/s)
+h_aquiferuni                      = 20.                 # uniform height of carrying layer (m)
+h_unsatini                        = 0.200000002980232   # initial level groundwater is bedlevel - h_unsatini (m)
+
+[veg]
+Clveg                             = 0.8                 # Stem distance factor, default 0.8 ()
+Cdveg                             = 0.7                 # Stem Cd coefficient , default 0.7 ()
+Cbveg                             = 0.                  # Stem stiffness coefficient , default 0.7 ()
+Rhoveg                            = 0.                  # Stem Rho, if > 0, -> bouyant stick procedure, default 0.0 ()
+Stemheightstd                     = 0.                  # Stem height standard deviation fraction, e.g. 0.1  ()
+
+[wind]
+ICdtyp                            = 2                   # Wind drag coefficient type (1=Const; 2=Smith&Banke (2 pts); 3=S&B (3 pts); 4=Charnock 1955, 5=Whang 2005, 6=Wuest 2005)
+Cdbreakpoints                     = 6.3d-4 7.23d-3      # Wind drag coefficient break points
+Windspeedbreakpoints              = 0. 100.             # Wind speed break points (m/s)
+Relativewind                      = 0                   # Wind speed relative to top-layer water speed, 1=yes, 0 = no)
+Rhoair                            = 1.2                 # Air density (kg/m3)
+PavBnd                            = 0.                  # Average air pressure on open boundaries (N/m2) (only applied if > 0)
+Pavini                            = 0.                  # Average air pressure for initial water level correction (N/m2) (only applied if > 0)
+
+[waves]
+Wavemodelnr                       = 0                   # Wave model nr. (0: none, 1: fetch/depth limited hurdlestive, 2: Young-Verhagen, 3: SWAN, 4: wave group forcing, 5: uniform
+Wavenikuradse                     = 1.d-2               # Wave friction Nikuradse ks coefficient (m), used in Krone-Swart
+Rouwav                            = FR84                # Friction model for wave induced shear stress: FR84 (default) or: MS90, HT91, GM79, DS88, BK67, CJ85, OY88, VR04
+Gammax                            = 1.                  # Maximum wave height/water depth ratio
+
+[time]
+RefDate                           = 20160101            # Reference date (yyyymmdd)
+Tzone                             = 0.                  # Time zone assigned to input time series
+DtUser                            = 60.                 # Time interval (s) for external forcing update
+DtNodal                           = 21600.              # Time interval (s) for updating nodal factors in astronomical boundary conditions
+DtMax                             = 15.                 # Maximal computation timestep (s)
+Dtfacmax                          = 1.1                 # Max timestep increase factor ( )
+DtInit                            = 15.                 # Initial computation timestep (s)
+Timestepanalysis                  = 0                   # 0=no, 1=see file *.steps
+Tunit                             = H                   # Time unit for start/stop times (D, H, M or S)
+TStart                            = 0.                  # Start time w.r.t. RefDate (in TUnit)
+TStop                             = 72.                 # Stop  time w.r.t. RefDate (in TUnit)
+
+[restart]
+RestartFile                       =                     # Restart netcdf-file, either *_rst.nc or *_map.nc
+RestartDateTime                   = yyyymmdd_HHMMSS     # Restart date and time (YYYYMMDDHHMMSS) when restarting from *_map.nc
+
+[external forcing]
+ExtForceFile                      = wl_j95_5_hoog.ext   # Old format for external forcings file *.ext, link with tim/cmp-format boundary conditions specification
+ExtForceFileNew                   =                     # New format for external forcings file *.ext, link with bc-format boundary conditions specification
+Rainfall                          = 0                   # Include rainfall, (0=no, 1=yes)
+
+[trachytopes]
+TrtRou                            = Y                   # Include alluvial and vegetation roughness (trachytopes) (Y: yes, N: no)
+TrtDef                            = riverScape.ttd      # File (*.ttd) including trachytope definitions
+TrtL                              = ref_trachytopes.arl # File (*.arl) including distribution of trachytope definitions
+DtTrt                             = 60.                 # Trachytope roughness update time interval (s)
+
+[output]
+OutputDir                         =                     # Output directory of map-, his-, rst-, dat- and timings-files, default: DFM_OUTPUT_<modelname>. Set to . for current dir.
+FlowGeomFile                      =                     # Flow geometry NetCDF *_flowgeom.nc
+ObsFile                           = wl_j95_5_obs.xyn    # Points file *.xyn with observation stations with rows x, y, station name
+CrsFile                           = sections_crs.pli    # Polyline file *_crs.pli defining observation cross sections
+FouFile                           =                     # Fourier analysis input file *.fou
+HisFile                           =                     # HisFile name *_his.nc
+MapFile                           =                     # MapFile name *_map.nc
+HisInterval                       = 1800. 0. 259200.    # History output times, given as "interval" "start period" "end period" (s)
+XLSInterval                       = 0.                  # Interval (s) between XLS history
+MapInterval                       = 86400. 0. 259200.   # Map file output, given as "interval" "start period" "end period" (s)
+RstInterval                       = 86400. 0. 259200.   # Restart file output times, given as "interval" "start period" "end period" (s)
+S1incinterval                     = 0.                  # Interval (m) in incremental file for water levels S1
+WaqInterval                       = 0. 0. 259200.       # DELWAQ output times, given as "interval" "start period" "end period" (s)
+StatsInterval                     = -600.               # Interval (in s) between simulation statistics output.
+WriteBalancefile                  = 0                   # Write balance file (1: yes, 0: no)
+TimingsInterval                   = 0.                  # Timings statistics output interval
+TimeSplitInterval                 = 0X                  # Time splitting interval, after which a new output file is started. value+unit, e.g. '1 M', valid units: Y,M,D,h,m,s.
+MapFormat                         = 1                   # Map file format, 1: netCDF, 2: Tecplot, 3: netCFD and Tecplot, 4: NetCDF-UGRID
+Wrihis_balance                    = 1                   # Write mass balance totals to his file (1: yes, 0: no)
+Wrihis_sourcesink                 = 1                   # Write sources-sinks statistics to his file (1=yes, 0=no)
+Wrihis_structure_gen              = 1                   # Write general structure parameters to his file (1: yes, 0: no)
+Wrihis_structure_dam              = 1                   # Write dam parameters to his file (1: yes, 0: no)
+Wrihis_structure_pump             = 1                   # Write pump parameters to his file (1: yes, 0: no)
+Wrihis_structure_gate             = 1                   # Write gate parameters to his file (1: yes, 0: no)
+Wrihis_structure_weir             = 1                   # Write weir parameters to his file (1: yes, 0: no)
+Wrihis_turbulence                 = 1                   # Write k, eps and vicww to his file (1: yes, 0: no)
+Wrihis_wind                       = 1                   # Write wind velocities to his file (1: yes, 0: no)
+Wrihis_temperature                = 1                   # Write temperature to his file (1: yes, 0: no)
+Wrihis_heatflux                   = 0                   # Write heat flux to his file (1: yes, 0: no)
+Wrihis_salinity                   = 1                   # Write salinity to his file (1: yes, 0: no)
+Wrimap_waterlevel_s0              = 1                   # Write water levels for previous time step to map file (1: yes, 0: no)
+Wrimap_waterlevel_s1              = 1                   # Write water levels to map file (1: yes, 0: no)
+Wrimap_volume1                    = 0                   # Write volumes to map file (1: yes, 0: no)
+Wrimap_velocity_component_u0      = 1                   # Write velocity component for previous time step to map file (1: yes, 0: no)
+Wrimap_velocity_component_u1      = 1                   # Write velocity component to map file (1: yes, 0: no)
+Wrimap_velocity_vector            = 1                   # Write cell-center velocity vectors to map file (1: yes, 0: no)
+Wrimap_upward_velocity_component  = 0                   # Write upward velocity component on cell interfaces (1: yes, 0: no)
+Wrimap_density_rho                = 1                   # Write flow density to map file (1: yes, 0: no)
+Wrimap_horizontal_viscosity_viu   = 1                   # Write horizontal viscosity to map file (1: yes, 0: no)
+Wrimap_horizontal_diffusivity_diu = 1                   # Write horizontal diffusivity to map file (1: yes, 0: no)
+Wrimap_flow_flux_q1               = 1                   # Write flow flux to map file (1: yes, 0: no)
+Wrimap_spiral_flow                = 1                   # Write spiral flow to map file (1: yes, 0: no)
+Wrimap_numlimdt                   = 1                   # Write the number times a cell was Courant limiting to map file (1: yes, 0: no)
+Wrimap_taucurrent                 = 1                   # Write the shear stress to map file (1: yes, 0: no)
+Wrimap_chezy                      = 1                   # Write the chezy roughness to map file (1: yes, 0: no)
+Wrimap_turbulence                 = 1                   # Write vicww, k and eps to map file (1: yes, 0: no)
+Wrimap_trachytopes                = 1                   # Write trachytope roughnesses to map file (1: yes, 0: no)
+Wrimap_wind                       = 1                   # Write wind velocities to map file (1: yes, 0: no)
+MapOutputTimeVector               =                     # File (*.mpt) containing fixed map output times (s) w.r.t. RefDate
+FullGridOutput                    = 0                   # Full grid output mode (0: compact, 1: full time-varying grid data)
+EulerVelocities                   = 0                   # Euler velocities output (0: GLM, 1: Euler velocities)
+Wrirst_bnd                        = 1                   # Write waterlevel, bedlevel and coordinates of boundaries to restart files
+
+[particles]
+ParticlesFile                     = 
+AddTracer                         = 0                   # add tracer (1) or not (other)
+StartTime                         = 0.                  # starttime (if >0)
+TimeStep                          = 0.                  # time step (>0) or every computational time step
+** INFO   : **
+** INFO   : Start of the computation time loop
+** INFO   : Writing initial output to file(s)...
+** DEBUG  : Opened NetCDF file 'DFM_OUTPUT_ref\ref_his.nc' as #4.
+** DEBUG  : Opened NetCDF file 'DFM_OUTPUT_ref\ref_map.nc' as #5.
+** WARNING: Missing coordinate reference system. Now using default: projected_coordinate_system (EPSG:0).
+** DEBUG  : Opened NetCDF file 'DFM_OUTPUT_ref\ref_20160101_000000_rst.nc' as #6.
+** DEBUG  : Closed NetCDF file 'DFM_OUTPUT_ref\ref_20160101_000000_rst.nc.
+** INFO   : Done writing initial output to file(s).
+** INFO   :    Sim. time done   Sim. time left   Real time used   Real time left Steps left Complete% Interval-averaged time step
+** INFO   :       0d  0:02:00      2d 23:58:00      0d  0:00:06      0d  3:23:01       4318     0.0%     0.00000
+** INFO   :       0d  3:23:00      2d 20:37:00      0d  0:10:08      0d  3:25:34       4117     4.7%     2.99851
+** INFO   :       0d  6:45:00      2d 17:15:00      0d  0:20:10      0d  3:14:53       3915     9.4%     3.00000
+** INFO   :       0d 10:04:00      2d 13:56:00      0d  0:30:11      0d  3:05:39       3716    14.0%     3.00000
+** INFO   :       0d 13:24:00      2d 10:36:00      0d  0:40:11      0d  2:55:44       3516    18.6%     3.00000
+** INFO   :       0d 16:45:00      2d  7:15:00      0d  0:50:11      0d  2:45:33       3315    23.3%     3.00000
+** INFO   :       0d 20:07:00      2d  3:53:00      0d  1:00:13      0d  2:35:18       3113    27.9%     3.00000
+** INFO   :       0d 23:29:00      2d  0:31:00      0d  1:10:15      0d  2:25:08       2911    32.6%     3.00000
+** DEBUG  : Opened NetCDF file 'DFM_OUTPUT_ref\ref_20160102_000000_rst.nc' as #6.
+** DEBUG  : Closed NetCDF file 'DFM_OUTPUT_ref\ref_20160102_000000_rst.nc.
+** INFO   :       1d  2:50:00      1d 21:10:00      0d  1:20:17      0d  2:15:07       2710    37.3%     3.00000
+** INFO   :       1d  6:12:00      1d 17:48:00      0d  1:30:17      0d  2:04:58       2508    41.9%     3.00000
+** INFO   :       1d  9:34:00      1d 14:26:00      0d  1:40:18      0d  1:54:51       2306    46.6%     3.00000
+** INFO   :       1d 12:56:00      1d 11:04:00      0d  1:50:20      0d  1:44:46       2104    51.3%     3.00000
+** INFO   :       1d 16:18:00      1d  7:42:00      0d  2:00:22      0d  1:34:41       1902    56.0%     3.00000
+** INFO   :       1d 19:39:00      1d  4:21:00      0d  2:10:23      0d  1:24:41       1701    60.6%     3.00000
+** INFO   :       1d 23:01:00      1d  0:59:00      0d  2:20:23      0d  1:14:36       1499    65.3%     3.00000
+** DEBUG  : Opened NetCDF file 'DFM_OUTPUT_ref\ref_20160103_000000_rst.nc' as #6.
+** DEBUG  : Closed NetCDF file 'DFM_OUTPUT_ref\ref_20160103_000000_rst.nc.
+** INFO   :       2d  2:22:00      0d 21:38:00      0d  2:30:23      0d  1:04:36       1298    70.0%     3.00000
+** INFO   :       2d  5:44:00      0d 18:16:00      0d  2:40:26      0d  0:54:32       1096    74.6%     3.00000
+** INFO   :       2d  9:06:00      0d 14:54:00      0d  2:50:28      0d  0:44:29        894    79.3%     3.00000
+** INFO   :       2d 12:27:00      0d 11:33:00      0d  3:00:29      0d  0:34:29        693    84.0%     3.00000
+** INFO   :       2d 15:49:00      0d  8:11:00      0d  3:10:32      0d  0:24:26        491    88.6%     3.00000
+** INFO   :       2d 19:11:00      0d  4:49:00      0d  3:20:33      0d  0:14:23        289    93.3%     3.00000
+** INFO   :       2d 22:32:00      0d  1:28:00      0d  3:30:33      0d  0:04:23         88    98.0%     3.00000
+** DEBUG  : Opened NetCDF file 'DFM_OUTPUT_ref\ref_20160104_000000_rst.nc' as #6.
+** DEBUG  : Closed NetCDF file 'DFM_OUTPUT_ref\ref_20160104_000000_rst.nc.
+** INFO   : 
+** INFO   : 
+** INFO   : 
+** INFO   : nr of netnodes        ( )  :                    92450
+** INFO   : nr of netlinks        ( )  :                   212543
+** INFO   : nr of flownodes       ( )  :                    69147
+** INFO   : nr of openbnd cells   ( )  :                       34
+** INFO   : nr of 1D-flownodes    ( )  :                        0
+** INFO   : model area            (m2) :         0.1329356416E+09
+** INFO   : model volume          (m3) :         0.1156400955E+10
+** INFO   : 
+** INFO   : 
+** INFO   : 
+** INFO   : simulation period     (s)  :        259200.0000000000
+** INFO   : nr of timesteps       ( )  :         86416.0000000000
+** INFO   : average timestep      (s)  :             2.9994445473
+** INFO   : time inistep          (s)  :          5302.5020000021
+** INFO   : time setumod          (s)  :          1564.4240000000
+** INFO   : time furu             (s)  :           680.1639999999
+** INFO   : time solve            (s)  :          5711.3570000029
+** INFO   : time setexternalforc. (s)  :             0.2030000000
+** INFO   : time setexternalfbnd. (s)  :             2.0640000000
+** INFO   : time steps            (s)  :         12539.8599999675
+** INFO   : time steps + plots    (s)  :         12898.9529999999
+** INFO   : fraction solve/steps  ( )  :             0.4554562013
+** INFO   : total/(dnt*ndx)       (s)  :             0.0000021587
+** INFO   : av nr of cont. it s1it( )  :             0.0000000000
+** INFO   : time transport [s]         :            60.7460000001
+** INFO   : time debug     [s]         :             0.0000000000
+** INFO   : 
+** INFO   : 
+** INFO   : 
+** INFO   : Computation started  at: 13:15:06, 22-08-2017
+** INFO   : Computation finished at: 16:50:05, 22-08-2017
+** INFO   : 
+** INFO   : MPI    : no.
+** INFO   : OpenMP : yes.         #threads max : 1
+** INFO   : 
+** INFO   : 
+** INFO   : 
+** INFO   : 
+** INFO   : crosssection discharges (m3/s) :
+** INFO   :      10167.060
+** INFO   :      10167.080
+** INFO   :      10167.301
+** INFO   :      10166.954
+** INFO   :      10167.037
+** INFO   :      10167.067
+** INFO   :      10166.834
+** INFO   :      10166.818
+** INFO   :      10149.810
+** INFO   :      10166.957
+** INFO   :       8207.183
+** INFO   :      10166.854
+** INFO   :      10166.829
+** INFO   :      10166.815
+** INFO   :      10166.800
+** INFO   :      10166.783
+** INFO   :      10166.759
+** INFO   :      10166.735
+** INFO   :      10166.751
+** INFO   :      10166.758
+** INFO   :      10166.912
+** INFO   :      10166.650
+** INFO   :      10166.600
+** INFO   :      10166.573
+** INFO   :      10166.546
+** INFO   :      10166.523
+** INFO   :      10084.710
+** INFO   :      10166.469
+** INFO   :      10166.432
+** INFO   :      10166.371
+** INFO   :      10166.327
+** INFO   :      10166.281
+** INFO   :      10148.090
+** INFO   :      10166.210
+** INFO   :      10166.288
+** INFO   :      10166.176
+** INFO   :      10166.172
+** INFO   :      10166.039
+** INFO   :      10166.053
+** INFO   :      10156.718
+** INFO   :      10166.299
+** INFO   :      10165.784
+** INFO   :      10165.996
+** INFO   :      10165.966
+** INFO   :      10165.949
+** INFO   :      10165.902
+** INFO   :      10165.913
+** INFO   :      10165.855
+** INFO   :      10165.819
+** INFO   :      10165.790
+** INFO   :      10165.649
+** INFO   :      10165.734
+** INFO   :      10165.712
+** INFO   :      10165.670
+** INFO   :      10165.638
+** INFO   :      10165.615
+** INFO   :      10165.586
+** INFO   :       9939.781
+** INFO   :      10165.629
+** INFO   :      10165.531
+** INFO   :      10165.584
+** INFO   :      10165.479
+** INFO   :      10165.348
+** INFO   :      10165.347
+** INFO   :      10165.519
+** INFO   :      10165.452
+** INFO   :      10165.161
+** INFO   :      10165.383
+** INFO   :      10165.518
+** INFO   :      10165.519
+** INFO   :      10164.939
+** INFO   :      10155.385
+** INFO   :      10165.932
+** INFO   :      10165.802
+** INFO   :      10164.471
+** INFO   :       7839.865
+** INFO   :       8764.023
+** INFO   :      10166.269
+** INFO   :      10166.783
+** INFO   :      10164.678
+** INFO   :      10165.143
+** INFO   :      10164.873
+** INFO   :      10165.043
+** INFO   :      10162.244
+** INFO   :      10165.146
+** INFO   :      10164.983
+** INFO   :      10165.098
+** INFO   :      10165.047
+** INFO   :      10165.063
+** INFO   :      10165.018
+** INFO   :      10165.004
+** INFO   :      10165.009
+** INFO   : crosssection areas (m2) :
+** INFO   :       5695.696
+** INFO   :       6112.939
+** INFO   :       7102.004
+** INFO   :       7413.378
+** INFO   :       6416.204
+** INFO   :       7697.435
+** INFO   :       8079.755
+** INFO   :       7726.049
+** INFO   :       9886.751
+** INFO   :      15391.319
+** INFO   :       8921.003
+** INFO   :       7683.612
+** INFO   :       8000.712
+** INFO   :       6398.405
+** INFO   :       5861.134
+** INFO   :       7991.782
+** INFO   :       6248.990
+** INFO   :       8152.593
+** INFO   :       7273.606
+** INFO   :       7714.117
+** INFO   :       9873.542
+** INFO   :      25150.906
+** INFO   :      13658.095
+** INFO   :       6466.850
+** INFO   :      13500.420
+** INFO   :       7001.070
+** INFO   :       8351.346
+** INFO   :      12679.643
+** INFO   :      19809.344
+** INFO   :      28803.740
+** INFO   :      16841.126
+** INFO   :      11320.078
+** INFO   :      16729.294
+** INFO   :       9505.087
+** INFO   :       9735.748
+** INFO   :       8312.189
+** INFO   :       8090.700
+** INFO   :       7530.835
+** INFO   :      12698.453
+** INFO   :       9737.735
+** INFO   :       8065.281
+** INFO   :       8510.148
+** INFO   :       7996.718
+** INFO   :      18878.056
+** INFO   :       9253.124
+** INFO   :       8998.731
+** INFO   :      10736.151
+** INFO   :      10286.320
+** INFO   :      13173.980
+** INFO   :       9939.190
+** INFO   :      10600.493
+** INFO   :      16015.726
+** INFO   :      17123.067
+** INFO   :      18309.821
+** INFO   :       8656.131
+** INFO   :      17980.622
+** INFO   :      11942.751
+** INFO   :      12178.126
+** INFO   :       9580.821
+** INFO   :      14429.014
+** INFO   :      14462.877
+** INFO   :      18221.419
+** INFO   :      10203.999
+** INFO   :      10500.106
+** INFO   :       7938.396
+** INFO   :       8849.225
+** INFO   :       6891.914
+** INFO   :       7858.823
+** INFO   :       9030.917
+** INFO   :       7679.649
+** INFO   :       7230.023
+** INFO   :       9753.987
+** INFO   :      11288.880
+** INFO   :      12849.030
+** INFO   :      10658.090
+** INFO   :       4938.349
+** INFO   :       9960.255
+** INFO   :      15044.004
+** INFO   :      22130.516
+** INFO   :      12698.923
+** INFO   :      16373.236
+** INFO   :      17849.925
+** INFO   :       9469.477
+** INFO   :      12507.822
+** INFO   :      22330.251
+** INFO   :      22530.679
+** INFO   :      37867.440
+** INFO   :      32523.838
+** INFO   :      23449.475
+** INFO   :      26406.052
+** INFO   :      19619.803
+** INFO   :      11529.619

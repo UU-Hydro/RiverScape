@@ -1,0 +1,201 @@
+# Generated on 11/16/2015 13:31:27
+# Deltares, FM-Suite DFlowFM Model Version 1.0.0.32140, DFlow FM Version 1.1.149.42280
+
+[model]
+Program           = D-Flow FM
+Version           = 1.1.191.47343
+MDUFormatVersion  = 1.02
+AutoStart         = 2                   # Autostart simulation after loading MDU or not (0=no, 1=autostart, 2=autostartstop).
+
+[geometry]
+NetFile           = ref_net.nc # *_net.nc
+BathymetryFile    =                     # *.xyb
+DryPointsFile     = ref_dry_areas.pol # Dry points file *.xyz, third column dummy z values,or polygon file *.pol.
+WaterLevIniFile   = waterlevels.xyz     # Initial water levels sample file *.xyz
+LandBoundaryFile  =                     # Only for plotting
+ThinDamFile       = ref_thin_dams.pli      # *_thd.pli, Polyline(s) for tracing thin dams.
+FixedWeirFile     = ref_fixed_weirs_relative.pliz     # *._tdk.pli, Polyline(s) x,y,z, z = thin dyke top levels
+StructureFile     =
+ProflocFile       =                     # *_proflocation.xyz)    x,y,z, z = profile refnumber
+ProfdefFile       =                     # *_profdefinition.def) definition for all profile nrs
+ProfdefxyzFile    =
+Uniformwidth1D    = 2
+ManholeFile       =                     # *...
+WaterLevIni       =                     # Initial water level
+Bedlevuni         = -5
+Bedslope          = 0
+BedlevType        = 3                   # 1 : Bottom levels at waterlevel cells (=flow nodes), like tiles xz, yz, bl , bob = max(bl left, bl right)
+                                        # 2 : Bottom levels at velocity points  (=flow links),            xu, yu, blu, bob = blu,    bl = lowest connected link
+                                        # 3 : Bottom levels at velocity points  (=flow links), using mean network levels xk, yk, zk  bl = lowest connected link
+                                        # 4 : Bottom levels at velocity points  (=flow links), using min  network levels xk, yk, zk  bl = lowest connected link
+                                        # 5 : Bottom levels at velocity points  (=flow links), using max  network levels xk, yk, zk  bl = lowest connected link
+Blmeanbelow       = -999
+Blminabove        = -999
+PartitionFile     =                     # *_part.pol, polyline(s) x,y
+AngLat            = 0                   # Angle of latitude (deg), 0=no Coriolis
+AngLon            = 0
+Conveyance2D      = -1                  # -1:R=HU,0:R=H, 1:R=A/P, 2:K=analytic-1D conv, 3:K=analytic-2D conv
+Nonlin2D          = 0                   # Non-linear 2D volumes, only icm ibedlevtype = 3
+Sillheightmin     = 0                   # Weir treatment only if both sills larger than this value (m)
+Makeorthocenters  = 0
+Dcenterinside     = 1
+Bamin             = 1E-06
+OpenBoundaryTolerance= 3
+RenumberFlowNodes = 1
+Kmx               = 0
+Layertype         = 1
+Numtopsig         = 0
+SigmaGrowthFactor = 1
+
+[numerics]
+CFLMax                   = 0.7                 # Max. Courant nr.
+AdvecType                = 33                  # Adv type, 0=no, 1= Wenneker, qu-udzt, 2=1, q(uio-u), 3=Perot q(uio-u), 4=Perot q(ui-u), 5=Perot q(ui-u) without itself
+TimeStepType             = 2
+Limtyphu                 = 0
+Limtypmom                = 4                   # Limiter type for cell center advection velocity, 0=no, 1=minmod,2=vanLeer,3=Kooren,4=Monotone Central
+Limtypsa                 = 0                   # Limiter type for salinity transport,           0=no, 1=minmod,2=vanLeer,3=Kooren,4=Monotone Central
+TransportMethod          = 1
+Vertadvtypsal            = 5
+Icgsolver                = 4                   # Solver type , 1 = sobekGS_OMP, 2 = sobekGS_OMPthreadsafe, 3 = sobekGS, 4 = sobekGS + Saadilud
+Maxdegree                = 6
+FixedWeirScheme          = 6
+FixedWeirContraction     = 1
+FixedWeirfrictscheme     = 1
+Fixedweirtopwidth        = 3
+Fixedweirtopfrictcoef    = -999
+Fixedweirtalud           = 0.25
+Izbndpos                 = 0
+Tlfsmo                   = 0
+Slopedrop2D              = 0
+Chkadvd                  = 0.1
+Teta0                    = 0.55
+Qhrelax                  = 0.01
+Jbasqbnddownwindhs       = 0
+cstbnd                   = 0
+Maxitverticalforestersal = 100
+Maxitverticalforestertem = 0
+Jaorgsethu               = 1
+Turbulencemodel          = 3
+Turbulenceadvection      = 0
+AntiCreep                = 0
+Maxwaterleveldiff        = 0
+Maxvelocitydiff          = 0
+Epshu                    = 0.0001
+CFLWaveFrac              = 0.                  # Wave velocity fraction, total courant vel = u + cflw*wavevelocity
+
+[physics]
+UnifFrictCoef              = 0.2                 # Uniform friction coefficient, 0=no friction
+UnifFrictType              = 3                   # 0=Chezy, 1=Manning, 2=White Colebrook, 3=z0 etc
+UnifFrictCoef1D            = 0.023
+UnifFrictCoefLin           = 0
+Umodlin                    = 0
+Vicouv                     = 1                   # Uniform horizontal eddy viscosity
+Dicouv                     = 1
+Vicoww                     = 0                   # Uniform vertical eddy viscosity
+Dicoww                     = 5E-05
+Vicwminb                   = 0
+Smagorinsky                = 0                   # Add Smagorinsky horizontal turbulence : vicu = vicu + ( (Smagorinsky*dx)**2)*S, e.g. 0.1
+Elder                      = 0                   # Add Elder contribution                : vicu = vicu + Elder*kappa*ustar*H/6),   e.g. 1.0
+irov                       = 0                   # 0=free slip, 1 = partial slip using wall_ks
+wall_ks                    = 0                   # Nikuradse roughness for side walls, wall_z0=wall_ks/30
+Rhomean                    = 1000
+Idensform                  = 1
+Ag                         = 9.81
+TidalForcing               = 0                   # Tidal forcing (0=no, 1=yes) (only for jsferic == 1)
+Doodsonstart               = 55.565
+Doodsonstop                = 375.575
+Doodsoneps                 = 0
+Salinity                   = 0                   # Include salinity, (0=no, 1=yes)
+InitialSalinity            = 0
+Sal0abovezlev              = -999
+DeltaSalinity              = -999
+Backgroundsalinity         = 30
+Temperature                = 0
+InitialTemperature         = 6
+Secchidepth                = 1
+Stanton                    = -1
+Dalton                     = -1
+Backgroundwatertemperature = 6
+SecondaryFlow              = 0
+EffectSpiral               = 0
+BetaSpiral                 = 0
+
+[wind]
+ICdtyp                     = 2                   # ( ), Cd = const, 2=S&B 2 breakpoints, 3= S&B 3 breakpoints
+Cdbreakpoints              = 0.00063 0.00723     # ( ),   e.g. 0.00063  0.00723
+Windspeedbreakpoints       = 0 100               # (m/s), e.g. 0.0      100.0
+Rhoair                     = 1.2
+PavBnd                     = 0
+PavIni                     = 0
+
+[time]
+RefDate                    = 20160101            # Reference date (yyyymmdd)
+Tzone                      = 0
+DtUser                     = 60                  # User timestep in seconds (interval for external forcing update)
+DtNodal                    =
+DtMax                      = 15                  # Max timestep in seconds
+DtInit                     = 15                  # Initial timestep in seconds
+Tunit                      = H                   # Time units in MDU (H, M or S)
+TStart                     = 0                   # Start time w.r.t. RefDate (in TUnit)
+TStop                      = 72.                 # Stop  time w.r.t. RefDate (in TUnit)
+AutoTimestep               = 1                   # Use CFL timestep limit or not (1/0)
+                           
+[restart]                  
+RestartFile                =                     # Restart file, only from netcdf-file, hence: either *_rst.nc or *_map.nc
+RestartDateTime            =                     # Restart time (YYYYMMDDHHMMSS), only relevant in case of restart from *_map.nc
+                           
+[external forcing]         
+ExtForceFile               = wl_j95_5_hoog.ext   # *.ext
+ExtForceFileNew            =
+
+[trachytopes]
+TrtRou                     = Y                   # Include alluvial and vegetation roughness (trachytopes), (N=no, Y=yes)
+TrtDef                     = riverScape.ttd      # Filename including trachytope definitions
+TrtL                       = ref_trachytopes.arl
+TrtDt                      = 60
+DtTrt                      = 60.0                # Updates trachytope roughness at specific time interval
+
+[output]                   
+OutputDir                  =
+FlowGeomFile               =                     # *_flowgeom.nc Flow geometry file in NetCDF format.
+ObsFile                    = wl_j95_5_obs.xyn    # *.xyn Coords+name of observation stations.
+CrsFile                    = sections_crs.pli    # *_crs.pli Polyline(s) definining cross section(s).
+HisFile                    =                     # *_his.nc History file in NetCDF format.
+HisInterval                = 1800                # Interval (s) between history outputs
+XLSInterval                =                     # Interval (s) between XLS history
+MapFile                    =                     # *_map.nc Map file in NetCDF format.
+MapInterval                = 86400               # Interval (s) between map file outputs
+RstInterval                =                     # Interval (s) between map file outputs
+S1incinterval              =
+WaqInterval                =                     # Interval (in s) between Delwaq file outputs
+StatsInterval              =                     # Interval (in s) between simulation statistics output.
+Writebalancefile           = 0
+TimingsInterval            =
+MapFormat                  = 1                   # Map file format, 1: netCDF, 2: Tecplot, 3: netCFD and Tecplot
+Wrihis_balance             = 1
+Wrihis_structure_gen              = 1
+Wrihis_structure_dam              = 1
+Wrihis_structure_pump             = 1
+Wrihis_structure_gate             = 1
+Wrimap_waterlevel_s0              = 1
+Wrimap_waterlevel_s1              = 1
+Wrimap_velocity_component_u0      = 1
+Wrimap_velocity_component_u1      = 1
+Wrimap_velocity_vector            = 1
+Wrimap_upward_velocity_component  = 0
+Wrimap_density_rho                = 1
+Wrimap_horizontal_viscosity_viu   = 1
+Wrimap_horizontal_diffusivity_diu = 1
+Wrimap_flow_flux_q1               = 1
+Wrimap_spiral_flow                = 1
+Wrimap_numlimdt                   = 1
+Wrimap_taucurrent                 = 1
+Wrimap_chezy                      = 1
+Wrimap_turbulence                 = 1
+Wrimap_wind                       = 1
+Wrimap_heat_fluxes                = 0
+Richardsononoutput                = 1
+MapOutputTimeVector               =
+FullGridOutput                    = 0
+EulerVelocities                   = 0
+SnapshotDir                       = BMP         # Directory where snapshots/screendumps are saved.

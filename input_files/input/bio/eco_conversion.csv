@@ -1,0 +1,68 @@
+idx,ECO_CODE,values,ECOTOOP,rough_code,eco_simple
+27,HA-1,31,Overstromingsvrije akker,6,A
+26,HA-2,30,Overstromingsvrij bebouwd,22,S
+41,HB-1,46,Overstromingsvrij natuurlijk bos,18,BZ
+44,HB-2,49,Overstromingsvrij struweel,16,BZ
+43,HB-3,48,Overstromingsvrij productiebos,17,BP
+39,HB-4,44,Overstromingsvrije hoogstamboomgaard,19,BP
+38,HB-5,43,Overstromingsvrije laagstamboomgaard,19,BP
+12,HG-1,14,Overstromingsvrij natuurlijk grasland,13,GO
+10,HG-1-2,12,Overstromingsvrij grasland (natuurlijk of productie),8,GU
+13,HG-2,15,Overstromingsvrij productiegrasland,8,GP
+25,HM-1,29,Overstromingsvrij riet,5,M
+50,HP-1,55,Overstromingsvrije vegetatie met lage bedekking (5 - 25%),3,GU
+52,HR-1,57,Overstromingsvrije ruigte,41,RO
+53,I.1,58,Dynamisch zoet tot zwak brak ondiep water,1,ZO
+23,II.2,26,Zoete zandplaten,1,ON
+45,III.2-3,50,Matig tot sterk dynamisch hard substraat onder invloed van zoet of brak water,1,S
+18,IV.8-9,20,Helofytenmoeras (riet/moerasplanten) in oever,43,M
+54,IX.a,59,Akker in oever,6,A
+57,O-UA-1,62,Oeverwal of uiterwaard akker,6,A
+56,O-UA-2,61,Oeverwal of uiterwaard bebouwd,22,S
+37,O-UB-1,42,Oeverwal of uiterwaard natuurlijk bos,18,BZ
+63,O-UB-2,68,Oeverwal of uiterwaard struweel,16,BZ
+64,O-UB-3,69,Oeverwal of uiterwaard productiebos,17,BP
+19,O-UG-1,21,Oeverwal of uiterwaard natuurlijk grasland,13,GU
+24,O-UG-1-2,27,Oeverwal of uiterwaard grasland (natuurlijk of productie),8,GU
+22,O-UG-2,24,Oeverwal of uiterwaard productiegrasland,8,GP
+11,O-UK-1,13,Oeverwal of uiterwaard onberoeid (natuurlijk),1,ON
+17,O-UP-1,19,Oeverwal of uiterwaard vegetatie met lage bedekking (5 - 25%),3,GU
+29,O-UR-1,33,Oeverwal of uiterwaard ruigte,42,RU
+3,REST-H,4,Overstromingsvrij onbegroeid (antropogeen),22,S
+28,REST-O,32,Onbegroeid (antropogeen) in oever,22,S
+6,REST-O-U,8,Oeverwal of uiterwaard onbegroeid (antropogeen),22,S
+30,REST-U,34,Uiterwaard onbegroeid (antropogeen),22,S
+5,RnD,7,Diepe nevengeul,1,WN
+1,RnM,2,Matig diepe nevengeul,1,WN
+8,RnO,10,Ondiepe nevengeul,1,WN
+9,RtO,11,Ondiepe eenzijdig aangetakte nevengeul,1,WD
+15,RvD,17,Zeer diep water,1,WP
+33,RvM,37,Matig diep water,1,WP
+32,RvO,36,Ondiep water,11,WP
+2,RwD,3,Zeer diep water,1,WP
+4,RwM,6,Matig diep water,1,WP
+40,RwO,45,Ondiep water,1,WP
+51,RzD,56,Diep zomerbed,1,ZD
+7,RzM,9,Matig diep zomerbed,1,ZD
+49,RzO,54,Ondiep zomerbed,1,ZO
+55,UA-1,60,Uiterwaard akker,6,A
+58,UA-2,63,Uiterwaard bebouwd,22,S
+46,UB-1,51,Uiterwaard natuurlijk bos,18,BZ
+61,UB-2,66,Uiterwaard struweel,16,BZ
+62,UB-3,67,Uiterwaard productiebos,17,BP
+65,UB-4,72,Uiterwaard hoogstamboomgaard,19,BP
+66,UB-5,73,Uiterwaard laagstamboomgaard,19,BP
+21,UG-1,23,Uiterwaard natuurlijk grasland,13,GU
+16,UG-1-2,18,Uiterwaard grasland (natuurlijk of productie),8,GU
+20,UG-2,22,Uiterwaard productiegrasland,8,GP
+0,UM-1,1,Uiterwaard riet,5,M
+36,UP-1,41,Uiterwaard vegetatie met lage bedekking (5 - 25%),3,GU
+31,UR-1,35,Uiterwaard ruigte,42,RU
+35,V.1-2,40,Moerasruigte in oever,43,RU
+47,VI.2-3,52,Zachthout struweel in oever,16,BZ
+42,VI.4,47,Zachthout ooibos in oever,18,BZ
+34,VI.8,39,Productiebos in oever,17,BP
+60,VII.1,65,Moerassig overstromingsgrasland in oever,12,GU
+14,VII.1-3,16,Moerassig overstromingsgrasland/productiegrasland in oever,12,GU
+59,VII.3,64,Productiegrasland in oever,8,GP
+48,VII.4,53,Vegetatie met lage bedekking (5 - 25%) in oever,3,GU

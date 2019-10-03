@@ -1,0 +1,9 @@
+ID,smoothing,flpl_low_extstorage,flpl_low_localuse,flpl_low_polluted,groyne_low,minemb_extstorage,minemb_localuse,minemb_polluted,building_rem,forest_rem,land_acq,road_rem,relocation,raise_100cm,raise_50cm
+dikeraising_dummy-ID,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1
+groynelowering_dummy-ID,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+lowering_dummy-ID,0,1,1,1,0,1,1,1,1,1,1,1,0,0,0
+minemblowering_dummy-ID,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0
+relocation_dummy-ID,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0
+sidechannel_dummy-ID,0,1,1,1,0,1,1,1,1,1,1,1,0,0,0
+smoothing_dummy-ID,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+# multiplication table for the overview of cost to correct impreciseness due to the rasterization of data,,,,,,,,,,,,,,,
