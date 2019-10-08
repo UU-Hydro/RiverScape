@@ -604,15 +604,15 @@ class LandUseLandCover(object):
         
         # - also plot them using matplotlib
         if with_pcr_matplotlib_plot:
-            pcr.plot(self.backwaters       )
-            pcr.plot(self.ecotopes         )
-            pcr.plot(self.floodplain       )
-            pcr.plot(self.groyne_field     )
-            pcr.plot(self.main_channel     )
-            pcr.plot(self.trachytopes      )
-            pcr.plot(self.sections         )
-            pcr.plot(self.winter_bed       )
-            pcr.plot(self.real_estate_value)
+            backwaters        = self.backwaters        ; pcr.plot(backwaters       )
+            ecotopes          = self.ecotopes          ; pcr.plot(ecotopes         )
+            floodplain        = self.floodplain        ; pcr.plot(floodplain       )
+            groyne_field      = self.groyne_field      ; pcr.plot(groyne_field     )
+            main_channel      = self.main_channel      ; pcr.plot(main_channel     )
+            trachytopes       = self.trachytopes       ; pcr.plot(trachytopes      )
+            sections          = self.sections          ; pcr.plot(sections         )
+            winter_bed        = self.winter_bed        ; pcr.plot(winter_bed       )
+            real_estate_value = self.real_estate_value ; pcr.plot(real_estate_value)
 
 
 class RiverGeometry(object):
