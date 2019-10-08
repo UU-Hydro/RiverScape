@@ -576,15 +576,45 @@ class LandUseLandCover(object):
     def __init__(self, backwaters, ecotopes, floodplain, groyne_field,
                  main_channel, trachytopes, sections, winter_bed,
                  real_estate_value):
-        self.backwaters = backwaters
-        self.ecotopes = ecotopes
-        self.floodplain = floodplain
-        self.groyne_field = groyne_field
-        self.main_channel = main_channel
-        self.trachytopes = trachytopes
-        self.sections = sections
-        self.winter_bed = winter_bed
+        self.backwaters        = backwaters
+        self.ecotopes          = ecotopes
+        self.floodplain        = floodplain
+        self.groyne_field      = groyne_field
+        self.main_channel      = main_channel
+        self.trachytopes       = trachytopes
+        self.sections          = sections
+        self.winter_bed        = winter_bed
         self.real_estate_value = real_estate_value
+
+    def plot(self, with_pcr_matplotlib_plot = True):
+        """
+        Plot all PCRaster maps using aguila
+        """
+        #~ ll = [pcr_map for var, pcr_map in self.__dict__.iteritems()]
+        #~ pcr.aguila(ll)
+        pcr.aguila(\
+                   self.backwaters       ,\       
+                   self.ecotopes         ,\
+                   self.floodplain       ,\
+                   self.groyne_field     ,\
+                   self.main_channel     ,\
+                   self.trachytopes      ,\
+                   self.sections         ,\
+                   self.winter_bed       ,\
+                   self.real_estate_value
+                   )
+        
+        # - also plot them using matplotlib
+        if with_pcr_matplotlib_plot:
+            pcr.plot(self.backwaters       )
+            pcr.plot(self.ecotopes         )
+            pcr.plot(self.floodplain       )
+            pcr.plot(self.groyne_field     )
+            pcr.plot(self.main_channel     )
+            pcr.plot(self.trachytopes      )
+            pcr.plot(self.sections         )
+            pcr.plot(self.winter_bed       )
+            pcr.plot(self.real_estate_value)
 
 
 class RiverGeometry(object):
