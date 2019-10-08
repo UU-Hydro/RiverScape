@@ -14,6 +14,9 @@ from scipy.spatial import Delaunay
 from shapely.geometry import MultiLineString
 from shapely.ops import cascaded_union, polygonize
 import time
+import riverscape
+from bokeh.layouts import gridplot
+from bokeh.layouts import column
 
 #-import spatial modules
 import pcraster as pcr
@@ -42,7 +45,7 @@ def alpha_shape(points, alpha):
     parameters:
     points: 2d column array with x and y coordinates
     alpha: float, threshold for minimum edge length
-    
+
     Returns a shapely Polygon object.
     """
     tri = Delaunay(points)
@@ -56,12 +59,12 @@ def alpha_shape(points, alpha):
             return
          edges.add( (i, j) )
          edge_points.append(points[ [i, j] ])
-         
+
     for ia, ib, ic in tri.vertices:
          add_edge(ia, ib)
          add_edge(ib, ic)
          add_edge(ic, ia)
-         
+
     edges = set()
     edge_points = []
     # loop over triangles: ia, ib, ic = indices of triangle corners
@@ -83,7 +86,7 @@ def alpha_shape(points, alpha):
             add_edge(ia, ib)
             add_edge(ib, ic)
             add_edge(ic, ia)
-    
+
     m = MultiLineString(edge_points)
     triangles = list(polygonize(m))
     return cascaded_union(triangles)
@@ -94,7 +97,7 @@ def map2xy(pcr_map):
     ---------
     Parameters
         pcr_map: pcraster object
-    
+
     Returns a pandas DataFrame with 'x' and 'y' as column labels.
     """
     bool_map = pcr.boolean(pcr_map)
@@ -106,7 +109,7 @@ def map2xy(pcr_map):
 def alpha_shape_pcr(pcr_map, alpha_hull, sparse=None):
     """
     Extract the alpha hull of a PCRaster map.
-    Alpha shape is slow when a dense raster is used. Sparse is used in 
+    Alpha shape is slow when a dense raster is used. Sparse is used in
     combination with pcr_map to speed up the function when pcr_map represents
     parts of the outline, e.g. dikes, and sparse the inside area, e.g. winbed.
     -----------
@@ -115,7 +118,7 @@ def alpha_shape_pcr(pcr_map, alpha_hull, sparse=None):
         alpha_hull: float, representing the minimum cell length
         clone_file: path to PCRaster clone file, used as rasterizing template
         sparse: PCRaster object used to sparsely fill in the inside of pcr_map
-    
+
     Returns a PCRaster object.
     """
     xy_pcr = map2xy(pcr_map)
@@ -136,15 +139,15 @@ def alpha_shape_lastools(inMap, cloneFile, length = 1000):
     """
     Compute the alpha shape of a boolean map using lasboundary.exe of lastools.
     ------------
-    Parameters    
+    Parameters
     inMap    : PCRaster object
     cloneFile: PCRaster clone map on disk for bounding box and resolution.
     length   : smoothness of the alpha shape, higher values give smoother outline
     """
-    
+
     xmin, xmax, ymin, ymax = mapIO.getBoundingBox(cloneFile)
     cellLength = mapIO.getMapAttr(cloneFile)['cell_length']
-    
+
     pointArray = mapIO.pcr2col([inMap], -9999)
     np.savetxt('tmp.txt', pointArray)
     cmd1 = 'lasboundary -i tmp.txt -o tmp.shp -concavity %s' % length
@@ -152,9 +155,9 @@ def alpha_shape_lastools(inMap, cloneFile, length = 1000):
     cmd2 = ('gdal_rasterize -burn 1 -te %s %s %s %s -tr %s %s '
                           ' tmp.shp tmp.tif') %\
            (xmin, ymin, xmax, ymax, cellLength, cellLength)
-    subprocess.call(cmd2, shell=True)             
+    subprocess.call(cmd2, shell=True)
     subprocess.call('gdal_translate -of PCRaster -ot Float32 tmp.tif alphaMap.tmp')
-    
+
     alphaMap = pcr.readmap('alphaMap.tmp')
     alphaMap = pcr.ifthen(alphaMap == 1.0, pcr.scalar(length))
     return alphaMap
@@ -180,7 +183,7 @@ def read_geom_maps(map_dir):
                                                   'main_channel_width.map'))
     river_sides = pcr.readmap(os.path.join(map_dir, 'river_sides.map'))
     shore_line = pcr.readmap(os.path.join(map_dir, 'shore_line.map'))
-    geom = RiverGeometry(clone, dem, dist_to_main_dike, dist_to_groyne_field, 
+    geom = RiverGeometry(clone, dem, dist_to_main_dike, dist_to_groyne_field,
                          dist_to_main_channel, flpl_width,
                          flpl_narrow, flpl_wide,
                          main_channel_width, river_sides, shore_line)
@@ -199,7 +202,7 @@ def read_lulc_maps(map_dir):
     sections = pcr.readmap(os.path.join(map_dir, 'sections.map'))
     winter_bed = pcr.readmap(os.path.join(map_dir, 'winter_bed.map'))
     real_estate_value = pcr.readmap(os.path.join(map_dir, 'cost_building_tot.map'))
-    
+
     lulc = LandUseLandCover(backwaters, ecotopes, floodplain, groyne_field,
                  main_channel, trachytopes, sections, winter_bed,
                  real_estate_value)
@@ -214,7 +217,7 @@ def read_mesh_maps(map_dir):
     n_coor = pcr.readmap(os.path.join(map_dir, 'n_coor.map'))
     grid_ID = pcr.readmap(os.path.join(map_dir, 'grid_ID.map'))
     mesh = Mesh(fm_ID, m_coor, n_coor, grid_ID)
-    return mesh 
+    return mesh
 
 def read_axis_maps(map_dir):
     """
@@ -222,7 +225,7 @@ def read_axis_maps(map_dir):
     """
     location = pcr.readmap(os.path.join(map_dir, 'river_axis.map'))
     radius = pcr.readmap(os.path.join(map_dir, 'axis_radius.map'))
-    turning_direction = pcr.readmap(os.path.join(map_dir, 
+    turning_direction = pcr.readmap(os.path.join(map_dir,
                                                  'turning_direction.map'))
     rkm = pcr.readmap(os.path.join(map_dir, 'rkm_axis.map'))
     rkm_point = pcr.readmap(os.path.join(map_dir, 'rkm_point.map'))
@@ -253,7 +256,7 @@ def read_hydro_maps(map_dir):
     velocity = pcr.readmap(os.path.join(map_dir, 'velocity.map'))
     water_depth = pcr.readmap(os.path.join(map_dir, 'water_depth.map'))
     water_level = pcr.readmap(os.path.join(map_dir, 'water_level.map'))
-    
+
     # water levels exceeded a number of days per year
     wl_exc2d = pcr.readmap(os.path.join(map_dir, 'wl_exc2d.map'))
     wl_exc20d = pcr.readmap(os.path.join(map_dir, 'wl_exc20d.map'))
@@ -261,7 +264,7 @@ def read_hydro_maps(map_dir):
     wl_exc100d = pcr.readmap(os.path.join(map_dir, 'wl_exc100d.map'))
     wl_exc150d = pcr.readmap(os.path.join(map_dir, 'wl_exc150d.map'))
     wl_exc363d = pcr.readmap(os.path.join(map_dir, 'wl_exc363d.map'))
-    
+
     hydro = RiverHydro(chezy, nikuradse,
                        specific_q, velocity, water_depth, water_level,
                        wl_exc2d, wl_exc20d, wl_exc50d, wl_exc100d, wl_exc150d,
@@ -273,7 +276,7 @@ def read_map_with_legend(pcr_file):
     Read map and legend into LegendMap class for nominal or ordinal data.
     The legend needs 'key_label' pairs, separated by an underscore. For example
     '1_UM-1' links map values of 1 to 'UM-1'
-    
+
     Returns a MapLegend class
     """
     # Read a pcraster legend into a data frame
@@ -284,7 +287,7 @@ def read_map_with_legend(pcr_file):
     data = {'values':df.iloc[:,0],
              title: df.iloc[:,1].str.split('_', expand=True).iloc[:,1]}
     legend = pd.DataFrame(data=data)
-    
+
     pcr_map = pcr.readmap(pcr_file)
     return LegendMap(pcr_map, legend)
 
@@ -293,19 +296,19 @@ def report_map_with_legend(legend_map_class, pcr_file):
     Report an ordinal, or nominal map and attach a legend to it.
     """
     # Report the map
-    pcr.report(legend_map_class.pcr_map, pcr_file)    
-    
+    pcr.report(legend_map_class.pcr_map, pcr_file)
+
     # Create the legend DataFrame
     df = legend_map_class.legend_df
     columns = list(df.columns.values)
     columns.remove('values')
     title = columns[0]
-    
+
     df['labels'] = df.apply(lambda row: str(row['values']) + '_' + row[title],
                                    axis=1)
     legend = df.loc[:,['values', 'labels']]
     legend.columns = ['-0', title]
-    
+
     # Attach the legend
     legend.to_csv('tmp.legend', sep=' ', index=False)
     cmd = 'legend -f %s %s' % ('tmp.legend', pcr_file)
@@ -314,7 +317,7 @@ def report_map_with_legend(legend_map_class, pcr_file):
 def clone_attributes():
     """
     Get the map attributes from the PCRaster clone map.
-    
+
     Returns a list with: xmin, xmax, ymin, ymax, nr_rows, nr_cols, cell_size.
     """
     nr_rows = pcr.clone().nrRows()
@@ -347,7 +350,7 @@ def map_score_at_percentile(pcr_map, percentile):
     """
     values = pcr.pcr2numpy(pcr_map, -9999).flatten()
     non_missing_values = values[values[:] > -9999]
-    score_at_percentile = np.percentile(non_missing_values, percentile)    
+    score_at_percentile = np.percentile(non_missing_values, percentile)
     return score_at_percentile
 
 
@@ -364,14 +367,14 @@ def unitcell2unittrue(in_values, geom_type=None):
     """
     assert isinstance(geom_type, basestring)
     assert geom_type in ['length', 'area']
-    
+
     cell_length = pcr.clone().cellSize()
     cell_area = cell_length**2
     if geom_type == 'length':
         return in_values * cell_length
     if geom_type == 'area':
         return in_values * cell_area
-    
+
 def unittrue2unitcell(in_values, geom_type=None):
     """
     Convenience function to convert from 'unittrue' to 'unitcell' dependent on
@@ -385,7 +388,7 @@ def unittrue2unitcell(in_values, geom_type=None):
     """
     assert isinstance(geom_type, basestring)
     assert geom_type in ['length', 'area']
-    
+
     cell_length = pcr.clone().cellSize()
     cell_area = cell_length**2
     if geom_type == 'length':
@@ -396,15 +399,15 @@ def unittrue2unitcell(in_values, geom_type=None):
 def spread_values_from_points(values, points, mask=None):
     """
     Extrapolatie the 'values' at 'points' over the whole area or mask.
-    
-    Values are temporarily multiplied by 1000 and converted to ordinal values 
-    for the extrapolation. 
+
+    Values are temporarily multiplied by 1000 and converted to ordinal values
+    for the extrapolation.
     -----------
     Parameters:
         values: PCRaster map
         points: PCRaster map with the points for the spreading operation.
         mask:   boolean mask with area to limit the extrapolation to.
-    
+
     Returns a scalar map with extrapolated values.
     """
     point_values = pcr.ifthen(pcr.boolean(points), pcr.scalar(values))
@@ -444,7 +447,7 @@ def write_measure(msr, msr_root_dir):
     msr_dir_path = os.path.join(msr_root_dir, msr_dir_name)
     pcrRecipes.make_dir(msr_dir_path)
     print(msr_dir_path)
-    
+
     # Report the maps
     pcr.report(msr.area, os.path.join(msr_dir_path, 'area.map'))
     pcr.report(msr.dem, os.path.join(msr_dir_path, 'dem.map'))
@@ -456,7 +459,7 @@ def write_measure(msr, msr_root_dir):
                os.path.join(msr_dir_path, 'minemb_height.map'))
     pcr.report(msr.main_dike_height,
                os.path.join(msr_dir_path, 'main_dike_height.map'))
-    report_map_with_legend(msr.ecotopes, 
+    report_map_with_legend(msr.ecotopes,
                            os.path.join(msr_dir_path, 'ecotopes.map'))
     with open(os.path.join(msr_dir_path, 'settings.txt'), 'w') as outfile:
         for k,v in settings.items():
@@ -465,7 +468,7 @@ def write_measure(msr, msr_root_dir):
 
 class River(object):
     """
-    Generic attributes of a river section. 
+    Generic attributes of a river section.
     Attribures are grouped in:
         * geom: geomtric aspects (height, distances)
         * dikes: main embankment, minor embankments, groynes, height difference
@@ -474,9 +477,9 @@ class River(object):
         * lulc: land use and land cover
         * mesh: computational mesh
     """
-    
+
     def __init__(self, name, river_axis,
-                 main_dike, minemb, groynes, 
+                 main_dike, minemb, groynes,
                  hydro, mesh, land_use_land_cover, geometry):
         self.name = name
         self.axis = river_axis
@@ -488,7 +491,7 @@ class River(object):
         self.lulc = land_use_land_cover
         self.geom = geometry
 
-        
+
 class RiverAxis(object):
     """
     Attributes of the river axis.
@@ -506,16 +509,16 @@ class RiverAxis(object):
 
 class RiverEmbankments(object):
     """
-    Attributes of the river embankments.    
+    Attributes of the river embankments.
     """
     def __init__(self, location, length, volume, height):
         self.location = location
         self.length = length
         self.volume = volume
         self.height = height
-    
-    
-    def plot(self, with_pcr_matplotlib_plot = True):
+
+
+    def plot(self, with_pcr_matplotlib_plot = False):
         """
         Plot all PCRaster maps using aguila
         """
@@ -525,14 +528,14 @@ class RiverEmbankments(object):
                    self.length, \
                    self.volume, \
                    self.height)
-        
+
         # - also plot them using matplotlib
         if with_pcr_matplotlib_plot:
             location = self.location ; pcr.plot(location)
             length   = self.length   ; pcr.plot(length)
             volume   = self.volume   ; pcr.plot(volume)
             height   = self.height   ; pcr.plot(height)
-        
+
 
 
 class RiverHydro(object):
@@ -555,7 +558,7 @@ class RiverHydro(object):
          self.wl_exc100d = wl_exc100d
          self.wl_exc150d = wl_exc150d
          self.wl_exc363d = wl_exc363d
-         
+
 
 
 class Mesh(object):
@@ -586,7 +589,7 @@ class LandUseLandCover(object):
         self.winter_bed        = winter_bed
         self.real_estate_value = real_estate_value
 
-    def plot(self, with_pcr_matplotlib_plot = True):
+    def plot(self, with_pcr_matplotlib_plot = False):
         """
         Plot all PCRaster maps using aguila
         """
@@ -601,7 +604,7 @@ class LandUseLandCover(object):
                    self.sections         ,\
                    self.winter_bed       ,\
                    self.real_estate_value)
-        
+
         # - also plot them using matplotlib
         if with_pcr_matplotlib_plot:
             backwaters        = self.backwaters        ; pcr.plot(backwaters       )
@@ -668,22 +671,22 @@ class Measure(object):
         self.groyne_height = groyne_height
         self.minemb_height = minemb_height
         self.main_dike_height = main_dike_height
-    
+
     def split(self, mask):
         """
         Split up the measure into separate measures for each area in "mask".
         Returns a list of measure objects.
         """
         pass
-    
-    
+
+
     def combine(self, other):
         """
         Combine two measures into one using attribute-specific methods.
         ---
         input:
             other: Measure object
-            
+
         Attribute, methods:
             mrs_type: string concatenation with "|"
             ID: string concatenation with "|"
@@ -696,22 +699,22 @@ class Measure(object):
             minemb_height: like dem
             main_dike_height: like dem
         """
-        
+
         def c_height(dem1, dem2, area):
             """
             Combine maps by taking the minimum in case of overlap.
             """
             dummy = pcr.scalar(area * 10000)
             return pcr.min(pcr.cover(dem1, dummy), pcr.cover(dem, dummy))
-        
+
         def c_lulc(lulc_1, lulc_2, dem1, dem2):
             """
             Combine two land_use_land_cover maps. Lulc of minimnum height is
-            used in case of overlap.            
+            used in case of overlap.
             """
             lulc_overlap = pcr.ifthenelse(dem1 <= dem2, lulc_1, lulc_2)
             return pcr.cover(lulc_overlap, lulc_1, lulc_2)
-        
+
         assert isinstance(other, Measure)
         msr_type = self.measure_type + "|" + other.measure_type
         ID = str(self.ID) + "|" + str(other.ID)
@@ -719,21 +722,21 @@ class Measure(object):
         dem = c_height(self.dem, other.dem, area)
         groyne_height = c_height(self.groyne_height, other.groyne_height, area)
         minemb_height = c_height(self.minemb_height, other.minemb_height, area)
-        main_dike_height = c_height(self.main_dike_height, 
+        main_dike_height = c_height(self.main_dike_height,
                                           other.main_dike_height, area)
         ecotopes = c_lulc(self.ecotopes, other.ecotopes,
                           self.dem, other.dem)
         trachytopes = c_lulc(self.trachytopes, other.trachytopes,
                              self.dem, other.dem)
 
-        new_msr = Measure(msr_type, ID, area, dem, ecotopes, trachytopes, 
+        new_msr = Measure(msr_type, ID, area, dem, ecotopes, trachytopes,
                           groyne_height, minemb_height, main_dike_height)
         return new_msr
-    
-    def plot(self, with_pcr_matplotlib_plot = True):
-        pcr.aguila(self.area, self.dem, self.ecotopes.pcr_map, 
-                   self.trachytopes, self.groyne_height, 
-                   self.minemb_height, self.main_dike_height)
+
+    def plot(self, with_pcr_matplotlib_plot = False):
+        #pcr.aguila(self.area, self.dem, self.ecotopes.pcr_map,
+        #           self.trachytopes, self.groyne_height,
+        #           self.minemb_height, self.main_dike_height)
 
         if with_pcr_matplotlib_plot:
             area             = self.area                     ; pcr.plot(area)
@@ -743,8 +746,12 @@ class Measure(object):
             groyne_height    = self.groyne_height            ; pcr.plot(groyne_height)
             minemb_height    = self.minemb_height            ; pcr.plot(minemb_height)
             main_dike_height = self.main_dike_height         ; pcr.plot(main_dike_height)
-                   
-    
+
+
+
+        return (riverscape.plot(self.area) + riverscape.plot(self.dem) + riverscape.plot(self.ecotopes.pcr_map) + riverscape.plot(self.trachytopes) + riverscape.plot(self.groyne_height) + riverscape.plot(self.minemb_height) + riverscape.plot(self.main_dike_height)).cols(1)
+
+
     def mask_out(self, out_mask):
         """Limit the measure to the spatial extent of 'area'"""
         eco_masked = LegendMap(pcr.ifthen(out_mask, self.ecotopes.pcr_map),
@@ -769,17 +776,17 @@ class RiverMeasures(object):
         self.extent = clone_attributes()[0:4]
         self.cell_size = clone_attributes()[6]
         self.settings = {}
-    
+
     def lowering_area(self, percentile, mask=None):
         """
-        Designate areas with high potential for floodplain lowering. Areas 
+        Designate areas with high potential for floodplain lowering. Areas
         with high flow velocity and small water depths are prioritized.
         ----------
         Parameters
         percentile: 0-100, low value is most effecient locations
         mask: boolean PCRaster map, area of application at boolean True
-        
-        Returns a boolean map with the optimal area for flpl lowering. 
+
+        Returns a boolean map with the optimal area for flpl lowering.
         """
         # Mask out water depth of aquatic regions
         depth_detail = self.r.hydro.water_level - self.r.geom.dem
@@ -787,22 +794,22 @@ class RiverMeasures(object):
                                   depth_detail)
         depth_detail = pcr.ifthen(self.r.lulc.backwaters == pcr.boolean(0),
                                   depth_detail)
-        
+
         # Determine the priority map from depth and inversed flow velocity
         flpl_velocity = pcr.ifthen(self.r.lulc.floodplain,
                                    self.r.hydro.velocity)
         flpl_velocity_inv = pcr.mapmaximum(flpl_velocity) - flpl_velocity
         depth_velocity = depth_detail * flpl_velocity_inv
-        
+
         # Apply a mask if present
         if isinstance(mask, pcr._pcraster.Field) == True:
             depth_velocity = pcr.ifthen(mask, depth_velocity)
-        
+
         # Select regions with water depth times inv_velocity below percentile
         exceeded_area = percentile_slicing(depth_velocity, percentile)
         lowering_area = pcr.ifthen(exceeded_area == pcr.boolean(0),
                                    pcr.boolean(1))
-        
+
         return lowering_area
 
     def lowering_dem(self, ref_water_level, area):
@@ -812,7 +819,7 @@ class RiverMeasures(object):
         ref_height = spread_values_from_points(ref_water_level,
                                                self.r.axis.location)
         return pcr.ifthen(area, ref_height)
-    
+
     def lowering_measure(self, settings, mask=None, ID='dummy-ID'):
         """
         Create a Measure class for floodplain lowering.
@@ -829,7 +836,7 @@ class RiverMeasures(object):
         dem = pcr.ifthen(dem < self.r.geom.dem, dem)
 #        pcr.aguila(dem)
         area = pcr.ifthen(pcr.defined(dem), area)
-        ecotopes = assign_ecotopes(area, 
+        ecotopes = assign_ecotopes(area,
                                    self.settings['lowering_ecotope'],
                                    self.r.lulc.ecotopes.legend_df)
         trachytopes = pcr.ifthen(area, pcr.ordinal(trachytope_nr))
@@ -837,20 +844,20 @@ class RiverMeasures(object):
         minemb_height = pcr.ifthen(area, pcr.scalar(-9999))
         main_dike_height = pcr.scalar(mapIO.empty_map(area))
 
-        measure = Measure(msr_settings, 
+        measure = Measure(msr_settings,
                       area, dem, ecotopes, trachytopes,
                       groyne_height, minemb_height, main_dike_height)
         return measure
-        
+
     def reloc_alpha_area(self, alpha_hull, mask=None):
         """
         Determine the dike relocation areas using the alpha shape.
         ----------
         Parameters
-        alpha_hull: float in m for alpha shape. 
+        alpha_hull: float in m for alpha shape.
                     Higher values give larger relocations
         mask: boolean PCRaster map, area of application at boolean True
-        
+
         Returns a boolean map with the relocation area.
         """
         dikes = self.r.main_dike.location
@@ -862,7 +869,7 @@ class RiverMeasures(object):
         extra_winter_bed = pcr.cover(self.r.lulc.winter_bed, pcr.boolean(0)) ^\
                            pcr.boolean(concave_hull)
         return pcr.ifthen(extra_winter_bed, extra_winter_bed)
-    
+
     def reloc_dem(self, area):
         """
         Determine the DEM at the new floodplain area.
@@ -873,7 +880,7 @@ class RiverMeasures(object):
         outliers = percentile_slicing(pre_dem, 70)
         post_dem = pcr.ifthenelse(outliers, average_dem, pre_dem)
         return post_dem
-        
+
     def reloc_alpha_measure(self, settings, mask=None, ID='dummy-ID'):
         """
         Create a Measure class for dike relocation using alpha shapes.
@@ -885,12 +892,12 @@ class RiverMeasures(object):
         alpha = self.settings['relocation_alpha']
         trachytope_nr = self.settings['relocation_trachytope']
         area = self.reloc_alpha_area(alpha, mask=mask)
-        real_estate_smooth = pcr.windowaverage(self.r.lulc.real_estate_value, 250) 
+        real_estate_smooth = pcr.windowaverage(self.r.lulc.real_estate_value, 250)
         real_estate_bool = pcr.ifthenelse(real_estate_smooth > 3e5,
                                           pcr.boolean(1), pcr.boolean(0))
         area = pcr.ifthen(area ^ real_estate_bool, pcr.boolean(1))
         dem = self.reloc_dem(area)
-        ecotopes = assign_ecotopes(area, 
+        ecotopes = assign_ecotopes(area,
                                    self.settings['relocation_ecotope'],
                                    self.r.lulc.ecotopes.legend_df)
         trachytopes = pcr.ifthen(area, pcr.ordinal(trachytope_nr))
@@ -898,11 +905,11 @@ class RiverMeasures(object):
         minemb_height = pcr.scalar(mapIO.empty_map(area))
         main_dike_height = pcr.scalar(mapIO.empty_map(area))
 
-        measure = Measure(msr_settings, 
+        measure = Measure(msr_settings,
                       area, dem, ecotopes, trachytopes,
                       groyne_height, minemb_height, main_dike_height)
-        return measure    
-    
+        return measure
+
     def smoothing_area(self, percentile, mask=None):
         """
         Designate areas with high potential for vegetation roughness smoothing.
@@ -910,8 +917,8 @@ class RiverMeasures(object):
         Parameters
         percentile: 0-100, low value is most effecient locations
         mask: boolean PCRaster map, area of application at boolean True
-        
-        Returns a boolean map with the optimal area for roughness smoothing. 
+
+        Returns a boolean map with the optimal area for roughness smoothing.
         """
         #-determine floodplain roughness and multiply with specific discharge
         perc = 100 - percentile
@@ -920,11 +927,11 @@ class RiverMeasures(object):
         flpl_roughness = pcr.ifthen(self.r.lulc.backwaters == pcr.boolean(0),
                                     flpl_roughness)
         ks_q = flpl_roughness * self.r.hydro.specific_q
-        
+
         # Apply a mask if present
         if isinstance(mask, pcr._pcraster.Field) == True:
             ks_q = pcr.ifthen(mask, ks_q)
-        
+
         rough_area = percentile_slicing(ks_q, perc)
         return pcr.ifthen(rough_area, rough_area)
 
@@ -939,7 +946,7 @@ class RiverMeasures(object):
         trachytope_nr = self.settings['smoothing_trachytope']
         area = self.smoothing_area(percentile, mask=mask)
         dem = pcr.scalar(mapIO.empty_map(area))
-        ecotopes = assign_ecotopes(area, 
+        ecotopes = assign_ecotopes(area,
                                    self.settings['smoothing_ecotope'],
                                    self.r.lulc.ecotopes.legend_df)
         trachytopes = pcr.ifthen(area, pcr.ordinal(trachytope_nr))
@@ -947,22 +954,22 @@ class RiverMeasures(object):
         minor_emb_height = pcr.scalar(mapIO.empty_map(area))
         main_emb_height = pcr.scalar(mapIO.empty_map(area))
 
-        measure = Measure(self.settings, 
+        measure = Measure(self.settings,
                       area, dem, ecotopes, trachytopes,
                       groyne_height, minor_emb_height, main_emb_height)
         return measure
-    
+
     def side_channel_friction(self):
         """
         Create the friction map for positioning of the side channel.
-        
+
         High friction values are assigned to unsuitable areas for new channels:
             - distance to the major embankment: high friction close to the dike
             - distance to the main channel: high friction in the main channel
             - groyne field, diminishing further away from the channel
             - floodplain lakes: low friction at floodplain lakes
-        Friction values are tweaked to prevent highly sinuous channels. 
-        
+        Friction values are tweaked to prevent highly sinuous channels.
+
         Returns a global friction map over the whole river section.
         """
         # Determine global friction
@@ -990,7 +997,7 @@ class RiverMeasures(object):
         friction = low friction for suitable locations of the channel
         section = boolean map with floodplain extent
         """
-        
+
         #-determine start and end point of the channel
         section = pcr.cover(section, pcr.boolean(0))
         section_XL = pcr.ifthen(pcr.spreadmaxzone(section, 1,1,300),
@@ -1004,7 +1011,7 @@ class RiverMeasures(object):
          pcr.cover(n_coor_axis == pcr.areaminimum(n_coor_axis, section_XL), 0))
         end_point = pcr.ifthen(channel_mask, \
          pcr.cover(n_coor_axis == pcr.areamaximum(n_coor_axis, section_XL), 0))
-        
+
         #-determine location of the channel
         # determine channel as the shortest path over the friction field
         # do not allow routing over the main channel, except close to endpoints
@@ -1016,7 +1023,7 @@ class RiverMeasures(object):
         dist = pcr.ifthen(mask, pcr.spreadmax(start_point, 0, friction, 1e6))
         ldd = pcr.lddcreate(dist, 1e15,1e15,1e15,1e15)
         channel_center = pcr.path(ldd, end_point)
-        
+
         #-mask out the channel center line at the upstream end to decouple from
         # the main channel
         channel_dist = pcr.ifthen(channel_center, dist)
@@ -1032,7 +1039,7 @@ class RiverMeasures(object):
         channel  = pcr.cover(channel_downstream, pcr.boolean(0)) |\
                    pcr.cover(channel_upstream, pcr.boolean(0))
         channel = channel == True
-        
+
         db = False
         if db == True:
             pcr.report(ldd, 'ldd.map')
@@ -1047,23 +1054,23 @@ class RiverMeasures(object):
             pcr.report(start_point, 'sp.map')
             pcr.report(end_point, 'ep.map')
             pcr.report(friction, 'friction.map')
-          
+
         return channel
-    
+
     def channel_center_lines(self, friction, mask=None):
         """
         Determine the center lines of side channels within the mask area.
-        
+
         Position side channels on all large and wide floodplain sections
-        sections that currently do not have a side channel. Default friction 
-        is based on friction function, but this can be an external PCRaster 
-        map as well. 
+        sections that currently do not have a side channel. Default friction
+        is based on friction function, but this can be an external PCRaster
+        map as well.
         """
         #-select large wide floodplain sections only
         large_sections = pcr.ifthen(
                                pcr.areaarea(self.r.geom.flpl_wide) > 1e6,
                                self.r.geom.flpl_wide)
-        
+
         #-select floodplain sections without side channels currently present
         # based on roughness code 105, but omitting groyne fields (langsdammen)
         existing_channels = self.r.lulc.floodplain &\
@@ -1076,13 +1083,13 @@ class RiverMeasures(object):
                         large_sections)
         if isinstance(mask, pcr._pcraster.Field) == True:
             selected_sections = pcr.ifthen(mask, selected_sections)
-        
+
         # Loop over selected sections to position side channels
         flpl_IDs  = list(np.unique(pcr.pcr2numpy(selected_sections, -9999))[1:])
         center_lines = pcr.nominal(mapIO.emptyMap(self.r.geom.dem))
-        
+
         print(flpl_IDs)
-        
+
         for ID in flpl_IDs[:]:
         #~ for ID in flpl_IDs[:][0:2]:
             print(ID)
@@ -1090,42 +1097,42 @@ class RiverMeasures(object):
             channel = self.side_channel_positioning(friction, flpl_section)
             #~ pcr.aguila(channel)
             center_lines = pcr.cover(center_lines, pcr.ifthen(channel, pcr.nominal(float(ID))))
-            
+
         return center_lines
-    
+
     def side_channel_dem(self, center_lines):
         """
         Terrain height and bathymetry of the side channel project area.
         """
         ms = self.settings
-        
+
         # Determine the side channel bathymetry using a trapezoidal
         # cross sectional shape relative to the reference height.
         ref_height = spread_values_from_points(self.r.hydro.wl_exc363d,
                                                self.r.axis.location)
         dist_to_center = pcr.spread(pcr.cover(center_lines, 0), 0,1) # in m
-        
+
         #-determine the reference depth of the side channel, which is based
         # on the water levels that are exceeded 363 days/year
         chan_depth = ref_height - ms['channel_depth']
         chan_shore_depth = chan_depth + ms['channel_slope'] *\
                            (dist_to_center - ms['channel_width'] / 2)
         chan_dem = pcr.ifthenelse(dist_to_center <= ms['channel_width'] / 2,
-                            pcr.scalar(chan_depth), 
+                            pcr.scalar(chan_depth),
                             chan_shore_depth)
         chan_dem = pcr.ifthen(chan_dem < self.r.geom.dem, chan_dem)
         return chan_dem
-    
+
     def side_channel_area(self, dem):
         """Determine the area of the side channel areas based on the dem.
         ----------
         Parameters
-        dem: PCRaster map with terrain height where digging is required. 
-        
+        dem: PCRaster map with terrain height where digging is required.
+
         Returns a boolean map with the side channel area.
         """
         return pcr.ifthen(pcr.defined(dem), pcr.boolean(1))
-    
+
     def side_channel_ecotopes(self, area):
         """
         Assign ecotopes to the side channel area.
@@ -1134,14 +1141,14 @@ class RiverMeasures(object):
         eco_legend = self.r.lulc.ecotopes.legend_df
         ecotopes = assign_ecotopes(area, eco_string, eco_legend)
         return ecotopes
-    
+
     def side_channel_trachytopes(self, area):
         """
         Assign side channel trachytopes.
         """
         trachytope_nr = self.settings['channel_trachytope']
         return pcr.ifthen(area, pcr.ordinal(trachytope_nr))
-    
+
     def side_channel_measure(self, settings, mask=None, ID='dummy-ID'):
         """
         Create a measure class with all required attributes.
@@ -1164,7 +1171,7 @@ class RiverMeasures(object):
                           area, dem, ecotopes, trachytopes,
                           groyne_height, minemb_height, main_dike_height)
         return measure
-           
+
     def groyne_lowering_area(self,  mask=None):
         """
         Area where groyne lowering is applied.
@@ -1174,7 +1181,7 @@ class RiverMeasures(object):
         if isinstance(mask, pcr._pcraster.Field) == True:
             area = pcr.ifthen(mask, area)
         return area
-    
+
     def groyne_lowering_msr(self, settings, mask=None,  ID='dummy-ID'):
         """
         """
@@ -1184,7 +1191,7 @@ class RiverMeasures(object):
         msr_settings = self.settings.copy()
         ref_water_level_key = self.settings['groyne_ref_level']
         ref_water_level = self.r.hydro.__dict__[ref_water_level_key]
-        
+
         area = self.groyne_lowering_area(mask=mask)
         dem = pcr.scalar(mapIO.emptyMap(area))
         ecotopes = LegendMap(pcr.nominal(mapIO.emptyMap(area)),
@@ -1193,12 +1200,12 @@ class RiverMeasures(object):
         groyne_height = self.lowering_dem(ref_water_level, area)
         minemb_height = pcr.scalar(mapIO.emptyMap(area))
         main_dike_height = pcr.scalar(mapIO.emptyMap(area))
-        
+
         measure = Measure(msr_settings,
                       area, dem, ecotopes, trachytopes,
                       groyne_height, minemb_height, main_dike_height)
         return measure
-    
+
     def minemb_lowering_area(self, mask):
         """"
         Area where minor embankment lowering is applied.
@@ -1219,7 +1226,7 @@ class RiverMeasures(object):
         msr_settings = self.settings.copy()
         ref_water_level_key = self.settings['minemb_ref_level']
         ref_water_level = self.r.hydro.__dict__[ref_water_level_key]
-        
+
         area = self.minemb_lowering_area(mask=mask)
         dem = pcr.scalar(mapIO.emptyMap(area))
         ecotopes = LegendMap(pcr.nominal(mapIO.emptyMap(area)),
@@ -1228,12 +1235,12 @@ class RiverMeasures(object):
         groyne_height = pcr.scalar(mapIO.emptyMap(area))
         minemb_height = self.lowering_dem(ref_water_level, area)
         main_dike_height = pcr.scalar(mapIO.emptyMap(area))
-        
+
         measure = Measure(msr_settings,
                       area, dem, ecotopes, trachytopes,
                       groyne_height, minemb_height, main_dike_height)
         return measure
-    
+
     def main_dike_raising_msr(self, settings, mask=None, ID='dummy-ID'):
         """
         Create a Measure object representing dike raising.
@@ -1253,12 +1260,12 @@ class RiverMeasures(object):
         minemb_height = pcr.scalar(mapIO.emptyMap(area))
         main_dike_height = self.r.main_dike.height + settings['main_dike_dh']
         main_dike_height = pcr.ifthen(mask, main_dike_height)
-        
+
         measure = Measure(msr_settings,
                       area, dem, ecotopes, trachytopes,
                       groyne_height, minemb_height, main_dike_height)
-        return measure        
-    
+        return measure
+
 
 #%% Main
 if __name__ == "__main__":
@@ -1272,29 +1279,29 @@ if __name__ == "__main__":
     scratch_dir  = 'D:/projecten/RiverScapeWaal2/scratch'
     pcr.setglobaloption('unittrue')
     os.chdir(scratch_dir)
-    
+
     #-define input
     settings_smooth = OrderedDict([
                         ('smoothing_percentage', 100),
                         ('smoothing_ecotope', 'UG-2'),
                         ('smoothing_trachytope', 1201),
-                        
+
                         ('lowering_percentage', 100),
                         ('lowering_ecotope', 'UG-2'),
                         ('lowering_trachytope', 1201),
                         ('lowering_height', 'water_level_50d'),
-                        
+
                         ('channel_width', 75),
                         ('channel_depth', 2.5),
                         ('channel_slope', 1./3.),
                         ('channel_ecotope', 'RnM'),
                         ('channel_trachytope', 105),
-                        
+
                         ('relocation_alpha', 10000),
                         ('relocation_depth', 'AHN'),
                         ('relocation_ecotope', 'HG-2'),
                         ('relocation_trachytope', 1201),
-                        
+
                         ('groyne_ref_level', 'wl_exc150d'),
                         ('minemb_ref_level', 'wl_exc50d'),
                         ('main_dike_dh', 0.50),
@@ -1303,32 +1310,32 @@ if __name__ == "__main__":
                         ('smoothing_percentage', 100),
                         ('smoothing_ecotope', 'UG-1'),
                         ('smoothing_trachytope', 1202),
-                        
+
                         ('lowering_percentage', 100),
                         ('lowering_ecotope', 'UG-1'),
                         ('lowering_trachytope', 1202),
                         ('lowering_height', 'water_level_50d'),
-                        
+
                         ('channel_width', 50),
                         ('channel_depth', 1),
                         ('channel_slope', 1./7.),
                         ('channel_ecotope', 'RnM'),
                         ('channel_trachytope', 105),
-                        
+
                         ('relocation_alpha', 10000),
                         ('relocation_depth', 'AHN'),
                         ('relocation_ecotope', 'HG-1'),
                         ('relocation_trachytope', 1202),
-                        
+
                         ('groyne_ref_level', 'wl_exc150d'),
                         ('minemb_ref_level', 'wl_exc50d'),
                         ('main_dike_dh', 0.50),
                         ])
-        
+
     #-Waal XL
     current_dir = os.path.join(input_dir, 'reference_maps')
     pcr.setclone(os.path.join(current_dir, 'clone.map'))
-    
+
     #- Import data
     main_dike = read_dike_maps(current_dir, 'main_dike')
     minemb = read_dike_maps(current_dir, 'minemb')
@@ -1338,13 +1345,13 @@ if __name__ == "__main__":
     axis = read_axis_maps(current_dir)
     lulc = read_lulc_maps(current_dir)
     geom = read_geom_maps(current_dir)
-        
+
     #- initiate the model
-    waal = River('Waal', axis, main_dike, minemb, groynes, hydro, 
+    waal = River('Waal', axis, main_dike, minemb, groynes, hydro,
                  mesh, lulc, geom)
     waal_msr = RiverMeasures(waal)
     waal_msr.settings = settings_smooth
-    
+
 #    # Test measures
 #    test_measures = True
 #    if test_measures == True:
@@ -1364,5 +1371,5 @@ if __name__ == "__main__":
 #        pcrRecipes.make_dir(msr_root_dir)
 #        for msr in msr_list:
 #            write_measure(msr, msr_root_dir)
-    
+
 

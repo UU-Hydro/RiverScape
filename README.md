@@ -1,2 +1,11 @@
 # RiverScape
-This is Menno Straatsma's project. 
+
+
+A set of notebooks for evaluation of river management measures.
+
+
+## How to install
+
+
+
+## How to run
