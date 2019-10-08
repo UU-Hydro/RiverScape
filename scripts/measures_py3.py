@@ -593,7 +593,7 @@ class LandUseLandCover(object):
         #~ ll = [pcr_map for var, pcr_map in self.__dict__.iteritems()]
         #~ pcr.aguila(ll)
         pcr.aguila(self.backwaters       ,\
-                   self.ecotopes         ,\
+                   self.ecotopes.pcr_map ,\
                    self.floodplain       ,\
                    self.groyne_field     ,\
                    self.main_channel     ,\
@@ -605,7 +605,7 @@ class LandUseLandCover(object):
         # - also plot them using matplotlib
         if with_pcr_matplotlib_plot:
             backwaters        = self.backwaters        ; pcr.plot(backwaters       )
-            ecotopes          = self.ecotopes          ; pcr.plot(ecotopes         )
+            ecotopes          = self.ecotopes.pcr_map  ; pcr.plot(ecotopes)
             floodplain        = self.floodplain        ; pcr.plot(floodplain       )
             groyne_field      = self.groyne_field      ; pcr.plot(groyne_field     )
             main_channel      = self.main_channel      ; pcr.plot(main_channel     )
