@@ -1,0 +1,17 @@
+codes,major,minor,weights
+RL_NT,Red List,Near threatened,1
+RL_VU,Red List,Vulnerable,1
+RL_EN,Red List,Endangered,1
+RL_CR,Red List,Critically endangered,1
+RL_EX,Red List,Extinct,1
+FF_Table1,Flora- & Fauna Act,Table 1,1
+FF_Table2,Flora- & Fauna Act,Table 2,1
+FF_Table3,Flora- & Fauna Act,Table 3,1
+FF_Birds,Flora- & Fauna Act,Birds,1
+HabDir_II,Habitats Directive,Annex II,1
+HabDir_IV,Habitats Directive,Annex IV,1
+BirdDir_I,Birds Directive Annex I,,1
+BernConv_1,Bern Convention,,1
+BonnConv_1,Bonn Convention,,1
+BernConv_2,Bern Convention,,1
+BonnConv_2,Bonn Convention,,1

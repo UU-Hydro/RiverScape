@@ -1,0 +1,10 @@
+cost_type,cost,stddev,unit
+flpl_low_extstorage,7.2,1,euro/m3
+flpl_low_polluted,10.2,3.4,euro/m3
+flpl_low_localuse,3.1,0.8,euro/m3
+side_chan_extstorage,8.1,1.2,euro/m3
+side_chan_polluted,10.2,3.4,euro/m3
+side_chan_localuse,3.1,0.8,euro/m3
+minemb_extstorage,6.9,1,euro/m3
+minemb_polluted,10.2,3.4,euro/m3
+minemb_localuse,1.9,0.5,euro/m3
