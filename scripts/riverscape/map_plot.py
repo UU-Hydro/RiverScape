@@ -35,7 +35,7 @@ def _get_raster(raster):
 
 
 
-def plot(raster):
+def plot(raster, title=''):
   #geoviews.extension('bokeh')
 
   # casting should not be necessary...
@@ -52,6 +52,6 @@ def plot(raster):
 
   s = pcraster.clone().nrCols() / pcraster.clone().nrRows()
   if raster.dataType() == pcraster.Scalar:
-    return img.options(cmap='viridis', tools=['hover'], aspect=s, colorbar=True, frame_width=600)
+    return img.options(cmap='viridis', tools=['hover'], aspect=s, colorbar=True, frame_width=600).relabel(title)
   else:
-    return img.options(cmap='flag', tools=['hover'], aspect=s, frame_width=600)
+    return img.options(cmap='flag', tools=['hover'], aspect=s, frame_width=600).relabel(title)

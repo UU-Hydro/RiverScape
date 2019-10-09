@@ -749,7 +749,7 @@ class Measure(object):
 
 
 
-        return (riverscape.plot(self.area) + riverscape.plot(self.dem) + riverscape.plot(self.ecotopes.pcr_map) + riverscape.plot(self.trachytopes) + riverscape.plot(self.groyne_height) + riverscape.plot(self.minemb_height) + riverscape.plot(self.main_dike_height)).cols(1)
+        return (riverscape.plot(self.area, 'Area') + riverscape.plot(self.dem, 'Digital elevation map') + riverscape.plot(self.ecotopes.pcr_map, 'Ecotopes') + riverscape.plot(self.trachytopes, 'Trachytopes') + riverscape.plot(self.groyne_height, 'Groyne height') + riverscape.plot(self.minemb_height, 'Minor embankment height') + riverscape.plot(self.main_dike_height, 'Main dike height')).cols(1)
 
 
     def mask_out(self, out_mask):
