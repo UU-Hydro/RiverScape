@@ -17,6 +17,7 @@ import time
 import riverscape
 from bokeh.layouts import gridplot
 from bokeh.layouts import column
+import ipywidgets
 
 #-import spatial modules
 import pcraster as pcr
@@ -1066,6 +1067,12 @@ class RiverMeasures(object):
         is based on friction function, but this can be an external PCRaster
         map as well.
         """
+        # Calculation takes time, display a progress bar first to
+        # avoid one continuing
+        progress = ipywidgets.IntProgress(value=0,min=0,max=40,step=1,
+                                          description='Processing:',
+                                          bar_style='', orientation='horizontal')
+
         #-select large wide floodplain sections only
         large_sections = pcr.ifthen(
                                pcr.areaarea(self.r.geom.flpl_wide) > 1e6,
@@ -1088,15 +1095,19 @@ class RiverMeasures(object):
         flpl_IDs  = list(np.unique(pcr.pcr2numpy(selected_sections, -9999))[1:])
         center_lines = pcr.nominal(mapIO.emptyMap(self.r.geom.dem))
 
-        print(flpl_IDs)
+        # Update 'correct' maximum of progress bar
+        progress.max = len(flpl_IDs)
+        display(progress)
 
         for ID in flpl_IDs[:]:
         #~ for ID in flpl_IDs[:][0:2]:
-            print(ID)
+
             flpl_section = pcr.ifthen(pcr.scalar(self.r.geom.flpl_wide) == float(ID), pcr.boolean(1))
             channel = self.side_channel_positioning(friction, flpl_section)
             #~ pcr.aguila(channel)
             center_lines = pcr.cover(center_lines, pcr.ifthen(channel, pcr.nominal(float(ID))))
+
+            progress.value += 1
 
         return center_lines
 

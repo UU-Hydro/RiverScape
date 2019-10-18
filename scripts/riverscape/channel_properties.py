@@ -1,5 +1,6 @@
 import ipywidgets
 from ipywidgets import interact, interactive
+from ipywidgets.embed import embed_minimal_html, dependency_state
 from IPython.display import display
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -118,5 +119,6 @@ def channel_properties():
 
   res = interactive(_plot_channel, width=w, depth=d, slope=s)
   display(res)
+  #embed_minimal_html('export.html', views=[w,d,s], state=dependency_state([w,d,s]))
 
   return res

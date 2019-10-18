@@ -293,7 +293,7 @@ label = 'everywhere'
 
 ### Make your own side channel properties:
 
-You may want to modify the side channel properties using the followong interactive cell.
+You may want to modify the side channel properties using the following interactive cell. Note that height and width are not true to scale.
 
 
 ``` code
@@ -301,7 +301,6 @@ channel_values = channel_properties()
 ```
 
 
-    interactive(children=(IntSlider(value=50, description='Width [m]', max=200, min=5, step=5), FloatSlider(value=…
 
 
 Load the following cell to use your configuration.
