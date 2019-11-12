@@ -43,14 +43,11 @@ import pcraster as pcr
 ```
 
 Please also make sure that this notebook file is in the same folder as the RiverScape Python module files that must be loaded.
-
+You can then import the RiverScape Python module:
 
 ``` code
-# import RiverScape Python modules
-import mapIO
-import pcrRecipes
-import measures_py3 as msr
 from riverscape import *
+import geoviews
 geoviews.extension('bokeh')
 ```
 
@@ -71,11 +68,11 @@ scratch_dir  = os.path.join(output_dir, "tmp")
 You may also want to set the folder, interactively
 
 ``` code
-input_dir  = select_directory()
+# input_dir  = select_directory()
 ```
 
 ``` code
-output_dir = select_directory()
+# output_dir = select_directory()
 ```
 ``` code
 # make scratch directory and go to this folder
@@ -242,56 +239,37 @@ waal_msr = msr.RiverMeasures(waal)
 
 # Configuration for the Measures
 
-The following properties are the default/setting configuration to the Measures.
+First, you can have a look at the current specification of the ecotope and trachytope classes present in the area.
+The floodplain sections are depicted as well.
+Ecotopes are ...
+Trachytopes are ...
 
-
-``` code
-# Default setting/configuration to the Measures.
-settings = OrderedDict([
-                    ('smoothing_percentage', 100),
-                    ('smoothing_ecotope', 'UG-2'),
-                    ('smoothing_trachytope', 1201),
-
-                    ('lowering_percentage', 100),
-                    ('lowering_ecotope', 'UG-2'),
-                    ('lowering_trachytope', 1201),
-                    ('lowering_height', 'water_level_50d'),
-
-                    ('channel_width', 75),
-                    ('channel_depth', 2.5),
-                    ('channel_slope', 1./3.),
-                    ('channel_ecotope', 'RnM'),
-                    ('channel_trachytope', 105),
-
-                    ('relocation_alpha', 10000),
-                    ('relocation_depth', 'AHN'),
-                    ('relocation_ecotope', 'HG-2'),
-                    ('relocation_trachytope', 1201),
-
-                    ('groyne_ref_level', 'wl_exc150d'),
-                    ('minemb_ref_level', 'wl_exc50d'),
-                    ('main_dike_dh', 0.50),
-                    ])
-
-# Put the default setting/configuration to the Measures.
-waal_msr.settings = settings
-```
-
-As as an initial default setting, measures will be set everywhere.
-
+Open the maps with the following command.
 
 ``` code
-mask = pcr.boolean(1)
-label = 'everywhere'
+plot_eco_trachy_sec()
 ```
 
-<br>
+
+
 
 ## Side channel measure:
 
-
-
 ### Make your own side channel properties:
+
+
+<!-- The following properties are the default/setting configuration to the Measures. -->
+The measures are configured with certain properties.
+You can inspect and change a few of them:
+
+
+
+``` code
+settings = measures_settings()
+```
+
+
+
 
 You may want to modify the side channel properties using the following interactive cell. Note that height and width are not true to scale.
 
@@ -317,33 +295,62 @@ waal_msr.settings = settings
 
 ### Selecting the mask/region:
 
-Please define the mask/area where you want to put this measure. Please also give a label for this measure.
+Please select the areas where you want to perform this measure.
+
+
+
+
+
+
+Please also give a label for this measure.
+
 
 
 ``` code
+label = 'custom_label'
+```
+
+``` code
 # Default mask and label
-label = 'everywhere'
-mask = pcr.boolean(1)
+#label = 'everywhere'
+#mask = pcr.boolean(1)
 
 # TODO: Make interactive input for selecting mask for every measure.
 
 # - some examples to select a limited mask region
 
-label = "large_sections"
-mask = pcr.ifthen(pcr.areaarea(waal.geom.flpl_wide) > 1e6, pcr.boolean(1.0))
+#label = "large_sections"
+#mask = pcr.ifthen(pcr.areaarea(waal.geom.flpl_wide) > 1e6, pcr.boolean(1.0))
 
 # -- this will return floodplain with IDs < 5
-label = "edwin_sections"
-mask = pcr.ifthen(pcr.scalar(waal.geom.flpl_wide) < 5, pcr.boolean(1.0))
+#label = "edwin_sections"
+#mask = pcr.ifthen(pcr.scalar(waal.geom.flpl_wide) < 5, pcr.boolean(1.0))
 
 # - plot the chosen mask
-plot(mask)
-chosen_flpl_wide = pcr.ifthen(mask, waal.geom.flpl_wide)
-plot(chosen_flpl_wide)
+#plot(mask)
+#chosen_flpl_wide = pcr.ifthen(mask, waal.geom.flpl_wide)
+#plot(chosen_flpl_wide)
 ```
 
 
+``` code
 
+selection = select_area(waal.geom.flpl_wide)
+
+```
+``` code
+mask = generate_mask(waal.geom.flpl_wide, selection)
+
+```
+
+``` code
+plot(mask)
+```
+
+``` code
+chosen_flpl_wide = pcr.ifthen(mask, waal.geom.flpl_wide)
+plot(chosen_flpl_wide)
+```
 
 
 
