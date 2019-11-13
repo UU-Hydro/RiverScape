@@ -362,7 +362,7 @@ By running the following cell, the measure will be implemented.
 
 ``` code
 # measure by side channel constrcution
-# - this includes looping over flood plain IDs
+# - this includes looping over floodplain IDs
 chan_msr = waal_msr.side_channel_measure(settings, mask = mask, ID = label)
 ```
 
@@ -379,7 +379,7 @@ chan_msr.plot()
 
 
 
-## Flood plain lowering measure:
+## Floodplain lowering measure:
 
 Please set the ID/label for this measure and set the mask where you want to introduce this measure.
 

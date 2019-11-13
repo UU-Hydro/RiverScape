@@ -130,12 +130,15 @@ def plot_eco_trachy_sec():
   ))
 
 
-  fw = 950
-  fh = int(fw / 5)
+  # Educated guess of the width...
+  fw = 900
+  aspect = int(pcraster.clone().nrCols() / pcraster.clone().nrRows())
+  fh = int(fw / aspect)
 
+  nr_rows = pcraster.clone().nrRows()
+  nr_cols = pcraster.clone().nrCols()
 
-
-  subfig1 = figure(title='Ecotopes', x_range=(minx, maxx),y_range=(miny, maxy), plot_width=fw, plot_height=fh, tools=["hover", "pan", "wheel_zoom", "zoom_in", "zoom_out", "reset"], toolbar_location='above')
+  subfig1 = figure( plot_height=fh, plot_width=fw, title='Ecotopes', x_range=(minx, maxx),y_range=(miny, maxy), tools=['hover', 'pan', 'wheel_zoom', 'zoom_in', 'zoom_out', 'reset'], toolbar_location='above')
 
   subfig1.patches('x', 'y', source=eco_source
          ,fill_color={'field': 'name', 'transform':color_mapper}
@@ -144,15 +147,15 @@ def plot_eco_trachy_sec():
           )
 
   hover = subfig1.select_one(HoverTool)
-  hover.point_policy = "follow_mouse"
-  hover.tooltips = [("Ecotope id", "@name"),("Code", "@desc")]
+  hover.point_policy = 'follow_mouse'
+  hover.tooltips = [('Ecotope value', '@name')]
 
 
 
 
 
 
-  subfig2 = figure(title='Trachotypes',plot_width=fw, plot_height=fh, x_range=subfig1.x_range, y_range=subfig1.y_range, tools='hover')
+  subfig2 = figure(title='Trachotypes',plot_width=fw, plot_height=fh, x_range=subfig1.x_range, y_range=subfig1.y_range, tools=['hover', 'pan'])
 
 
   trach_source = ColumnDataSource(data=dict(
@@ -170,12 +173,12 @@ def plot_eco_trachy_sec():
 
 
   trach_hover = subfig2.select_one(HoverTool)
-  trach_hover.point_policy = "follow_mouse"
-  trach_hover.tooltips = [("Trachytope id", "@name"), ("Code", "@desc")]
+  trach_hover.point_policy = 'follow_mouse'
+  trach_hover.tooltips = [('Trachytope value', '@name')]
 
 
 
-  subfig3 = figure(title='Floodplain sections',plot_width=fw, plot_height=fh, x_range=subfig1.x_range, y_range=subfig1.y_range, tools='hover')
+  subfig3 = figure(title='Floodplain sections',plot_width=fw, plot_height=fh, x_range=subfig1.x_range, y_range=subfig1.y_range, tools=['hover', 'pan'])
 
   section_source = ColumnDataSource(data=dict(
     x=section_x, y=section_y,
@@ -192,8 +195,8 @@ def plot_eco_trachy_sec():
 
 
   eco_hover = subfig3.select_one(HoverTool)
-  eco_hover.point_policy = "follow_mouse"
-  eco_hover.tooltips = [("Floodplain section", "@name")]
+  eco_hover.point_policy = 'follow_mouse'
+  eco_hover.tooltips = [('Floodplain section', '@name')]
 
 
   subfig1.xgrid.grid_line_color = None

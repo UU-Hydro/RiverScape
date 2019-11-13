@@ -11,9 +11,10 @@ import warnings
 #from shapely.geometry import MultiLineString
 #from shapely.ops import cascaded_union, polygonize
 
-import riverscape.mapIO
-import riverscape.pcrRecipes as pcrRecipes
-import riverscape.measures_py3 as msr
+
+from . import mapIO
+from . import pcrRecipes
+from . import measures_py3 as msr
 
 
 

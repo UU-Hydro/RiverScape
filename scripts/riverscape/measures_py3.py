@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 #-import generic modules
 import os
 import string
@@ -14,7 +11,6 @@ from scipy.spatial import Delaunay
 from shapely.geometry import MultiLineString
 from shapely.ops import cascaded_union, polygonize
 import time
-import riverscape
 from bokeh.layouts import gridplot
 from bokeh.layouts import column
 import ipywidgets
@@ -23,8 +19,10 @@ import ipywidgets
 import pcraster as pcr
 
 #-import RiverScape modules
-import riverscape.mapIO as mapIO
-import riverscape.pcrRecipes as pcrRecipes
+from . import mapIO
+from . import pcrRecipes
+
+import riverscape
 
 def assign_ecotopes(area, eco_string, legend_df):
     """

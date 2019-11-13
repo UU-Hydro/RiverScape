@@ -12,7 +12,8 @@ import pcraster as pcr
 import pickle
 import pandas as pd
 import geopandas as gpd
-import riverscape.mapIO as mapIO
+
+from . import mapIO
 
 ############# numpy generic ############################################
 def sortByNthColumn(arr, colIdx):
