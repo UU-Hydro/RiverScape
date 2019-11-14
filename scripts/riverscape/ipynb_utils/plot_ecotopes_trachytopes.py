@@ -11,9 +11,6 @@ import pcraster
 from osgeo import ogr
 
 
-import riverscape.ipynb_utils as rsutils
-
-
 
 
 
