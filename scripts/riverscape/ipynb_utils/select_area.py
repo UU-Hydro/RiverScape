@@ -1,3 +1,4 @@
+import numpy
 
 import geoviews
 from .map_plot import plot
@@ -10,7 +11,7 @@ from ipywidgets import Layout
 from ipywidgets import GridspecLayout
 
 
-import pcraster as pcr
+import pcraster
 
 
 
@@ -18,6 +19,15 @@ import pcraster as pcr
 
 
 def select_area(raster):
+
+  # Get the list of IDs from the raster, use it for the dropdown field
+  raster_np = pcraster.pcr2numpy(raster, -9999)
+
+  raster_values = numpy.unique(raster_np)
+
+  raster_unique = numpy.unique(raster_values)
+
+  sections = numpy.delete(raster_unique, numpy.where(raster_unique == -9999))
 
 
 
@@ -30,9 +40,9 @@ def select_area(raster):
 
   style = {'description_width': 'initial'}
   w = ipywidgets.SelectMultiple(
-    options=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58'],
+    options=sections,
     rows=8,
-    description='Sections:',layout=Layout(width="50%"), style=style,
+    description='Sections:', layout=Layout(width="50%"), style=style,
     disabled=False
   )
 
@@ -56,9 +66,9 @@ def generate_mask(raster, areas):
   idx = ', '.join(str(index) for index in indices)
   print('Selected floodplain sections: {}'.format(idx))
 
-  selection = ')) | (raster==pcr.nominal('.join(str(index) for index in indices)
+  selection = ')) | (raster==pcraster.nominal('.join(str(index) for index in indices)
 
-  cmd = 'pcr.ifthen((raster==pcr.nominal({})), pcr.boolean(1))'.format(selection)
+  cmd = 'pcraster.ifthen((raster==pcraster.nominal({})), pcraster.boolean(1))'.format(selection)
 
   mask = eval(cmd)
 

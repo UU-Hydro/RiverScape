@@ -381,13 +381,35 @@ chan_msr.plot()
 
 ## Floodplain lowering measure:
 
-Please set the ID/label for this measure and set the mask where you want to introduce this measure.
+For the floodplain lowering measure you need to select new areas where you want to introduce this measure.
+First, give a new identifier:
+
+``` code
+ID = 'everywhere'
+```
+
+Then specify the sections that will form the new mask:
 
 
 ``` code
-mask = pcr.boolean(1)
-ID = 'everywhere'
+sections = pcr.readmap('flpl_sections.map')
+selection = select_area(sections)
 ```
+
+and generate the new mask
+
+``` code
+mask = generate_mask(sections, selection)
+```
+
+For checking purposes you could plot the mask map.
+
+
+``` code
+
+```
+
+As before, you can now perform the measure and visualise the results.
 
 
 ``` code
@@ -413,9 +435,25 @@ Please set the ID/label for this measure and set the mask where you want to intr
 
 
 ``` code
-mask = pcr.boolean(1)
 ID = 'everywhere'
 ```
+
+For the groyne lowering measure you can specify a specific area, defined by the distance.
+The minimum and maximum values should be between 867 and 960.
+
+``` code
+min_value = 890
+max_value = 910
+rkm = pcr.readmap('rkm_full.map')
+mask = pcr.ifthen((rkm >= min_value) & (rkm <= max_value), pcr.boolean(1))
+```
+
+Plot the new mask:
+
+``` code
+
+```
+
 
 
 ``` code
