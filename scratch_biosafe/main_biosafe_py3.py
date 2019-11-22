@@ -15,7 +15,6 @@ import pickle
 import subprocess
 
 from biosafe_py3 import *
-
         
 #%% initiate biosafe 
 
