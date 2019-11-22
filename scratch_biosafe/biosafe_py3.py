@@ -32,6 +32,7 @@ def zonalSumArea(nominalMap, areaClass):
  
     #-loop over the classes in nominalMap and compute the summed area per areaClass
     IDs = np.unique(pcr.pcr2numpy(nominalMap, -9999))[1:]
+    print(IDs)
     dfList = []
     for ID in IDs[:]:
         pcrID = pcr.nominal(ID)
