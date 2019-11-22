@@ -2,6 +2,7 @@
 import os
 import string
 import subprocess
+import tempfile
 import numpy as np
 from collections import OrderedDict
 import math
@@ -22,7 +23,7 @@ import pcraster as pcr
 from . import mapIO
 from . import pcrRecipes
 
-import riverscape
+from . import ipynb_utils
 
 def assign_ecotopes(area, eco_string, legend_df):
     """
@@ -148,12 +149,12 @@ def alpha_shape_lastools(inMap, cloneFile, length = 1000):
     pointArray = mapIO.pcr2col([inMap], -9999)
     np.savetxt('tmp.txt', pointArray)
     cmd1 = 'lasboundary -i tmp.txt -o tmp.shp -concavity %s' % length
-    subprocess.call(cmd1, shell=True)
+    subprocess.check_call(cmd1, shell=True)
     cmd2 = ('gdal_rasterize -burn 1 -te %s %s %s %s -tr %s %s '
                           ' tmp.shp tmp.tif') %\
            (xmin, ymin, xmax, ymax, cellLength, cellLength)
-    subprocess.call(cmd2, shell=True)
-    subprocess.call('gdal_translate -of PCRaster -ot Float32 tmp.tif alphaMap.tmp')
+    subprocess.check_call(cmd2, shell=True)
+    subprocess.check_call('gdal_translate -of PCRaster -ot Float32 tmp.tif alphaMap.tmp')
 
     alphaMap = pcr.readmap('alphaMap.tmp')
     alphaMap = pcr.ifthen(alphaMap == 1.0, pcr.scalar(length))
@@ -278,7 +279,7 @@ def read_map_with_legend(pcr_file):
     """
     # Read a pcraster legend into a data frame
     cmd = 'legend -w legend.tmp %s' % pcr_file
-    subprocess.call(cmd, shell = True)
+    subprocess.check_call(cmd, shell = True)
     df = pd.read_csv('legend.tmp', sep=' ')
     title = df.columns[1]
     data = {'values':df.iloc[:,0],
@@ -306,10 +307,12 @@ def report_map_with_legend(legend_map_class, pcr_file):
     legend = df.loc[:,['values', 'labels']]
     legend.columns = ['-0', title]
 
-    # Attach the legend
-    legend.to_csv('tmp.legend', sep=' ', index=False)
-    cmd = 'legend -f %s %s' % ('tmp.legend', pcr_file)
-    subprocess.call(cmd, shell = True)
+    with tempfile.TemporaryDirectory() as tmpdirname:
+      fname = os.path.join(tmpdirname, 'tmp_legend.txt')
+      # Attach the legend
+      legend.to_csv(fname, sep=' ', index=False)
+      cmd = 'legend -f {} {}'.format(fname, pcr_file)
+      subprocess.check_call(cmd, shell = True)
 
 def clone_attributes():
     """
@@ -746,7 +749,7 @@ class Measure(object):
 
 
 
-        return (riverscape.plot(self.area, 'Area') + riverscape.plot(self.dem, 'Digital elevation map') + riverscape.plot(self.ecotopes.pcr_map, 'Ecotopes') + riverscape.plot(self.trachytopes, 'Trachytopes') + riverscape.plot(self.groyne_height, 'Groyne height') + riverscape.plot(self.minemb_height, 'Minor embankment height') + riverscape.plot(self.main_dike_height, 'Main dike height')).cols(1)
+        return (ipynb_utils.plot(self.area, 'Area') + ipynb_utils.plot(self.dem, 'Digital elevation map') + ipynb_utils.plot(self.ecotopes.pcr_map, 'Ecotopes') + ipynb_utils.plot(self.trachytopes, 'Trachytopes') + ipynb_utils.plot(self.groyne_height, 'Groyne height') + ipynb_utils.plot(self.minemb_height, 'Minor embankment height') + ipynb_utils.plot(self.main_dike_height, 'Main dike height')).cols(1)
 
 
     def mask_out(self, out_mask):

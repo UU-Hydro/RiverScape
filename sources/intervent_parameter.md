@@ -438,7 +438,7 @@ Please set the ID/label for this measure and set the mask where you want to intr
 ID = 'everywhere'
 ```
 
-For the groyne lowering measure you can specify a specific area, defined by the distance.
+For the groyne lowering measure you can specify a specific area, defined by the distances from .
 The minimum and maximum values should be between 867 and 960.
 
 ``` code

@@ -1,16 +1,10 @@
 import warnings
 
-warnings.filterwarnings("ignore", category=FutureWarning)
-warnings.filterwarnings("ignore", category=RuntimeWarning)
+#warnings.filterwarnings("ignore", category=FutureWarning)
+#warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 
-#import numpy as np
-#import pandas as pd
-#import geopandas as gpd
-#from scipy.spatial import Delaunay
-#from shapely.geometry import MultiLineString
-#from shapely.ops import cascaded_union, polygonize
 
 
 from . import mapIO

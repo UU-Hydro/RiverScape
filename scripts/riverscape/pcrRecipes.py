@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #-modules
-import os, sys, subprocess, gc
+import os, sys, subprocess
 import uuid
 import time as tm
 import numpy as np
