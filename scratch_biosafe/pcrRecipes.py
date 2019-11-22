@@ -14,7 +14,7 @@ import pandas as pd
 import geopandas as gpd
 
 #~ from . import mapIO
-from . import mapIO
+import mapIO
 
 ############# numpy generic ############################################
 def sortByNthColumn(arr, colIdx):
