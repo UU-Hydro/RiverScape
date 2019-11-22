@@ -467,6 +467,7 @@ if __name__ == '__main__':
     input_dir  = os.path.join(root_dir, 'inputData')
     # - for testing on eejit, use input files from the following folder  
     input_dir_source = "/scratch/depfg/hydrowld/river_scape/source/from_menno/riverscape/input/bio/"
+    if os.path.exists(input_dir_source): shutil.rmtree(input_dir_source)
     shutil.copytree(input_dir_source, input_dir)
 
     scratch_dir = os.path.join(root_dir, 'scratch')
