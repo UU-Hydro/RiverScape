@@ -6,13 +6,14 @@ import pandas as pd
 import numpy as np
 import os
 import shutil
-
-import biosafeIO as bsIO
-import pcraster as pcr
-import mapIO
-import pcrRecipes as pcrr
 import pickle
 import subprocess
+
+import pcraster as pcr
+
+from . import biosafeIO as bsIO
+from . import pcrRecipes as pcrr
+from . import mapIO
 
 version = '0.1'
 
