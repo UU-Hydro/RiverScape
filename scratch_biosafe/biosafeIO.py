@@ -27,7 +27,7 @@ class from_xlsx_v3():
     def readTaxGroup(self, taxGroupSheetName):
         """Read the taxonomic group data from a BIOSAFE excel worksheet
         contains per specie both the links to laws as well as to ecotopes"""
-        print '\t', taxGroupSheetName
+        print('\t', taxGroupSheetName)
         speciesData  = pd.read_excel(self.xlsxFile, taxGroupSheetName, 
                                  skiprows = 2, 
                                  parse_cols = range(101))
@@ -59,7 +59,7 @@ class from_xlsx_v3():
         speciesData.fillna(value=0, inplace=True)
         
 #        #- test data type of columns
-#        print a.dtypes.isin([np.dtype('float64')]).values
+#        3 a.dtypes.isin([np.dtype('float64')]).values
         return speciesData
 
     def speciesLinks(self):
@@ -70,7 +70,7 @@ class from_xlsx_v3():
         Both are binary matrices
         """
         # Loop over the taxonomic groups to compile all data into a single dataframe
-        print '\nReading in BIOSAFE taxonomic group data from excel'
+        print('\nReading in BIOSAFE taxonomic group data from excel)'
         workSheets = ['Mammals', 'Birds', 'Herpetofauna', 'Fish',\
                         'Butterflies', 'DragonDamselflies', 'HigherPlants']
         dfList = []
@@ -130,7 +130,7 @@ def output2xlsx(model, filePath):
     FIS = model.FIS()
     TFHS = model.TFHS()
     
-    print 'Writing excel output to %s' % filePath
+    print('Writing excel output to %s' % filePath)
     writer = pd.ExcelWriter(filePath)
     model.weightsLegal.to_excel(writer, 'weightsLegal')
     model.linksLaw.to_excel(writer, 'linksLaw')
@@ -187,7 +187,7 @@ def output2csv(model, directoryPath):
     FIS = model.FIS()
     TFHS = model.TFHS()
     
-    print 'Writing csv output to %s' % directoryPath
+    print('Writing csv output to %s' % directoryPath)
     
     model.weightsLegal.to_csv(os.path.join(directoryPath, '01_weightsLegal.csv'))
     model.linksLaw.to_csv(os.path.join(directoryPath, '02_linksLaw.csv'))
