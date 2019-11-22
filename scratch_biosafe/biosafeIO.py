@@ -70,7 +70,7 @@ class from_xlsx_v3():
         Both are binary matrices
         """
         # Loop over the taxonomic groups to compile all data into a single dataframe
-        print('\nReading in BIOSAFE taxonomic group data from excel)'
+        print('\nReading in BIOSAFE taxonomic group data from excel')
         workSheets = ['Mammals', 'Birds', 'Herpetofauna', 'Fish',\
                         'Butterflies', 'DragonDamselflies', 'HigherPlants']
         dfList = []
