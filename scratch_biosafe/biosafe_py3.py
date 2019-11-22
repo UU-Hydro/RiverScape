@@ -239,7 +239,8 @@ class spatialBiosafe(object):
         ll = []
         for sectionID in sectionIDs:
             ll.append(self.sectionScores(sectionID))
-        paramLL = zip(*ll)
+        #~ paramLL = zip(*ll)
+        paramLL = list(zip(*ll))
                 
         dfParamLL = []
         for ii in range(len(self.params)):
