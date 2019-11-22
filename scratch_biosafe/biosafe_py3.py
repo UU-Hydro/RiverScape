@@ -111,7 +111,7 @@ def aggregateEcotopes(linksEco, lookupTable):
 def sumUpEcotopeAreaRaster(ecotopes, sections):
     """
     """
-    print '\nComputing surface area sum of ecotopes from raster'
+    print('\nComputing surface area sum of ecotopes from raster')
     #-prepare ecotope dataframe
     ecoMap = ecotopes.pcr_map
     ecoDf = ecotopes.legend_df.copy()
