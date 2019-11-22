@@ -465,9 +465,9 @@ if __name__ == '__main__':
     root_dir = "/scratch/depfg/sutan101/test_biosafe/"
 
     input_dir  = os.path.join(root_dir, 'inputData')
-    if os.path.exists(input_dir): shutil.rmtree(input_dir)
     # - for testing on eejit, use input files from the following folder  
     input_dir_source = "/scratch/depfg/hydrowld/river_scape/source/from_menno/riverscape/input/bio/"
+    if os.path.exists(input_dir): shutil.rmtree(input_dir)
     shutil.copytree(input_dir_source, input_dir)
 
     scratch_dir = os.path.join(root_dir, 'scratch')
@@ -495,7 +495,7 @@ if __name__ == '__main__':
     #%% test a single instance of biosafe
     legalWeights, linksLaw, linksEco = bsIO.from_csv(input_dir)
     bs = biosafe(legalWeights, linksLaw, linksEco, speciesPresence, ecotopeArea)
-    lut1 = pd.read_excel(excelFile, sheetname = 'lut_RWES').fillna(method='ffill')
+    lut1 = pd.read_excel(excelFile, sheet_name = 'lut_RWES').fillna(method='ffill')
         # this lookup table has:
         #       ecotope codes of BIOSAFE in the first column: oldEcotope
         #       aggregated/translated ectotopes in the second column: newEcotope
