@@ -470,6 +470,8 @@ if __name__ == '__main__':
     shutil.copytree(input_dir_source, input_dir)
 
     scratch_dir = os.path.join(root_dir, 'scratch')
+    if os.path.exists(scratch_dir): shutil.rmtree(scratch_dir)
+    os.makedirs(scratch_dir)
     os.chdir(scratch_dir)
     
     # Input data
