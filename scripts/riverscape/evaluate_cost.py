@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pcraster as pcr
 
-from .measures_py3 import Measure, read_measure, read_dike_maps
+from .measures import Measure, read_measure, read_dike_maps
 from . import ipynb_utils
 
 
