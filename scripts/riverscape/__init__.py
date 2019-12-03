@@ -12,8 +12,9 @@ from . import pcrRecipes
 
 from . import measures_py3 as msr
 
-from . import biosafe_py3 as biosafe
-from . import biosafeIO as bsIO
+#from . import biosafe_py3 as biosafe
+#from . import biosafeIO as bsIO
 
+from .evaluate_cost import *
 
 from .ipynb_utils import *
