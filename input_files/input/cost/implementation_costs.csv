@@ -1,0 +1,40 @@
+Category,Cost item,Per unit,Price,Standard deviation,Unit
+Real estate,Acquisition,,,,
+,,Agricultural area,6.7,0.8,EUR m−2
+,,Nature areas,1.2,0.2,EUR m−2
+,,Water areas,0.8,0.1,EUR m−2
+,,Built-up areas,190,50,EUR m−2
+,,Individual house,500,120,kEUR per piece
+,,Farms,900,220,kEUR per piece
+,,Business,1400,330,kEUR per piece
+,Demolition,,,,
+,,Individual house,20,3,kEUR per piece
+,,Farm,40,6,kEUR per piece
+,,Business,120,20,kEUR per piece
+Earthwork,Floodplain lowering,,,,
+,,Storage at 25 km,7.2,1,EUR m−3
+,,Additional cost of polluted soil,10.2,3.4,EUR m−3
+,,"Earthwork floodplain lowering, local usage",3.1,0.8,EUR m−3
+,Side channel,,,,
+,,Storage at 25 km,8.1,1.2,EUR m−3
+,,Additional cost of polluted soil,10.2,3.4,EUR m−3
+,,"Earthwork floodplain lowering, local usage",3.1,0.8,EUR m−3
+,Minor embankment,,,,
+,,Storage at 25 km,6.9,1,EUR m−3
+,,Additional cost of polluted soil,10.2,3.4,EUR m−3
+,,"Earthwork floodplain lowering, local usage",1.9,0.5,EUR m−3
+Roads and bridges,Removal,,,,
+,,"Bike lane removal, incl. dumping/recycling",14,1,EUR m−2
+,,"Road removal, incl. dumping/recycling",27,3,EUR m−2
+,,Bike lane construction (width < 2 m),28,3,EUR m−2
+,,Road construction (width < 7 m),50,10,EUR m−2
+Roughness smoothing,Removal,,,,
+,,Grass mowing and removal,540,170,EUR ha−1
+,,Herbaceous vegetation mowing and removal,810,270,EUR ha−1
+,,Forest clearing and removal,1330,440,EUR ha−1
+Groynes,Lowering and conversion,,,,
+,,Groyne lowering,650,170,EUR m−1
+,,Conversion to longitudinal training dam,1900,390,EUR m−1
+Dikes,Raising by one meter,,,,
+,,Upstream of river kilometer 933,3500,700,kEUR km−1
+,,Downstream of river kilometer 933,3600,700,kEUR km−1

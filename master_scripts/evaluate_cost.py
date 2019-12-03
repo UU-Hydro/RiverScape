@@ -18,8 +18,7 @@ def read_check_data(path_to_map, clone_file):
         unique_values = unique_values[unique_values > -9999]
         has_data = unique_values > 0
     except RuntimeError:
-        print 'WARNING: File %s does not exist. Empty map used instead'\
-                % path_to_map
+        print('WARNING: File {} does not exist. Empty map used instead'.format(path_to_map))
         clone = pcr.readmap(clone_file)
         pcr_map = pcr.ifthen(pcr.scalar(clone) == -9999, pcr.scalar(-9999))
         is_file = False
@@ -28,10 +27,10 @@ def read_check_data(path_to_map, clone_file):
 
 def area_total_value(values, area_class):
     """Calculate the total value over the area class.
-    
+
     values: map with values
     area_class: project area of the measure
-    
+
     Returns a float with the total value over the area class.
     """
     area_total = pcr.areatotal(pcr.scalar(values), pcr.nominal(area_class))
@@ -43,21 +42,21 @@ def area_total_value(values, area_class):
 
 #%% create cost classes
 class CostTypes(object):
-    """Generic attributes for all cost types. 
+    """Generic attributes for all cost types.
     Cost types are:
         * Vegetation removal
         * Earthwork on minor embankments and terrain height
         * Acquisition of land and buildings including demolition
         * Raising embankment by 50 or 100 cm
         * Relocating embankment"""
-    
+
     def __init__(self, name):
         self.name = name
-        
- 
+
+
 class CostPreparation(CostTypes):
     """
-    Class for cost calculation for preparation of the project area. 
+    Class for cost calculation for preparation of the project area.
     """
     def __init__(self, name,
                  land_acq_distr, roads_distr, smoothing_distr, buildings_distr,
@@ -68,19 +67,19 @@ class CostPreparation(CostTypes):
         self.smoothing_distr = smoothing_distr
         self.buildings_distr = buildings_distr
         self.smoothing_classes = smoothing_classes
-            
+
     def land_acquisition(self, area):
         """Calculate the cost and st.dev of land acquisition."""
         cost = area_total_value(self.land_acq_distr.mean, area)
         std = area_total_value(self.land_acq_distr.stddev, area)
         return cost, std
-    
+
     def road_removal(self, area):
         """Calculate costs and st.dev of road removal."""
         cost = area_total_value(self.roads_distr.mean, area)
         std = area_total_value(self.roads_distr.stddev, area)
         return cost, std
-    
+
     def forest_removal(self, area):
         """Calculate costs and st.dev of forest removal."""
         forested_area = self.smoothing_classes == 3
@@ -89,19 +88,19 @@ class CostPreparation(CostTypes):
         cost = area_total_value(self.smoothing_distr.mean, removal_area)
         std = area_total_value(self.smoothing_distr.stddev, removal_area)
         return cost, std
-    
+
     def buildings(self, area):
         """Calculate cost and st.dev of building acquisition and demolition."""
         cost = area_total_value(self.buildings_distr.mean, area)
         std = area_total_value(self.buildings_distr.stddev, area)
         return cost, std
-    
+
     def overview(self, msr):
         """Give an overview of the cost and st.dev in separate DataFrames.
         The row index is the name of the measure, the columns the cost type."""
         msr_type = msr.settings.loc['msr_type',1]
         name =  msr_type + '_' + msr.settings.loc['ID']
-        
+
         if msr_type in ['lowering', 'sidechannel', 'relocation']:
             land_acq_values = self.land_acquisition(msr.area)
             road_values = self.road_removal(msr.area)
@@ -111,28 +110,28 @@ class CostPreparation(CostTypes):
             land_acq_values = [0,0]
             road_values = [0,0]
             forest_values = [0,0]
-            building_values = [0,0] 
-        
+            building_values = [0,0]
+
         cost_data = {'land_acq': land_acq_values[0],
                      'road_rem': road_values[0],
                      'forest_rem': forest_values[0],
                      'building_rem': building_values[0]}
         cost_df = pd.DataFrame(data=cost_data, index=[name])
-        
+
         std_data = {'land_acq': land_acq_values[1],
                      'road_rem': road_values[1],
                      'forest_rem': forest_values[1],
                      'building_rem': building_values[1]}
         std_df = pd.DataFrame(data=std_data, index=[name])
         return cost_df, std_df
-        
-                            
+
+
 class CostEarthwork(CostTypes):
     """Cost for earthwork on the DEM.
-    Minor embankments are completely removed and the DEM is lowered, as is the 
+    Minor embankments are completely removed and the DEM is lowered, as is the
     case for floodplain lowering and side channel recreation. Cost depends on
     the pollution of the soil. """
-    
+
     def __init__(self, name,\
                minemb_ext_use, minemb_int_use, minemb_polluted,\
                dem, minemb, groyne,
@@ -141,17 +140,17 @@ class CostEarthwork(CostTypes):
         self.minemb_ext_use = minemb_ext_use        # distribution in euro/cell
         self.minemb_int_use = minemb_int_use
         self.minemb_polluted = minemb_polluted
-        
+
         self.ref_dem = dem                                # in m +OD
         self.minemb = minemb
         self.groyne = groyne
-                
+
         self.pollution_zones = pollution_zones            # ordinal 1-6
         self.cost_input = cost_input
-        
+
     def dem_lowering(self, msr, area_polluted):
         """Calculate the cost and standard deviation of lowering the DEM."""
-        
+
         if msr.settings.loc['msr_type',1] in ['sidechannel', 'lowering']:
             # Determine the total volumetric difference over the measure area
             # Assume that polluted area is < 0.5 m deep, see doc and Middelkoop.
@@ -159,7 +158,7 @@ class CostEarthwork(CostTypes):
             dh_polluted = pcr.ifthen(area_polluted, pcr.min(0.5, dh_tot))
 #            pcr.aguila(dh_polluted)
             dV_tot = dh_tot * pcr.cellarea()
-            dV_polluted = dh_polluted * pcr.cellarea() 
+            dV_polluted = dh_polluted * pcr.cellarea()
             volume_tot = area_total_value(dV_tot, msr.area)
             volume_polluted = area_total_value(dV_polluted, area_polluted)
         else:
@@ -172,12 +171,12 @@ class CostEarthwork(CostTypes):
         cost_out = cost_init.copy()
         cost_out = cost_out.append(cost_polluted)
         return cost_out
-    
+
     def minemb_lowering(self, msr, area_polluted):
         """Calculate the cost and std. dev. of removing minor embankment.
         The pollution threshold defines which classes of self.pollution_zones
         are classified as polluted. Here additional costs are calculated."""
-        
+
         if msr.settings.loc['msr_type',1] in ['sidechannel', 'lowering']:
             volume_tot = area_total_value(self.minemb.volume, msr.area)
             volume_polluted = area_total_value(self.minemb.volume, area_polluted)
@@ -190,16 +189,16 @@ class CostEarthwork(CostTypes):
         else:
             volume_tot = 0
             volume_polluted = 0
-        
+
         cost_data = self.cost_input.iloc[6:,:2]
         cost_clean = volume_tot * cost_data.drop('minemb_polluted')
         cost_polluted = volume_polluted * cost_data.loc['minemb_polluted']
         cost_out = cost_clean.append(cost_polluted)
         return cost_out
-       
+
     def groyne_lowering(self, msr):
         """Cost for earthworks for lowering of the groynes based on the
-        length of the existing groynes. 
+        length of the existing groynes.
         """
         if msr.settings.loc['msr_type',1] == 'groynelowering':
             groyne_lowering_cost = 650   # euro/m
@@ -215,45 +214,45 @@ class CostEarthwork(CostTypes):
                            index=[['groyne_low']],
                            columns=['cost', 'stddev'])
         return out
-    
+
     def overview(self, msr, pollution_threshold=2):
         """Give the overview of costs and st.dev for dem and minor embankments.
         """
         msr_type = msr.settings.loc['msr_type',1]
         name =  msr_type + '_' + msr.settings.loc['ID']
-        
+
         # Separate between clean and polluted areas
         area_clean = pcr.ifthen(self.pollution_zones >= pollution_threshold,\
                                 pcr.nominal(1))
         area_polluted = pcr.ifthen(self.pollution_zones < pollution_threshold,\
                                    pcr.nominal(1))
-        
+
         area_clean = pcr.defined(msr.area) & pcr.defined(area_clean)
         area_clean = pcr.ifthen(area_clean,  pcr.boolean(1))
         area_polluted = pcr.defined(msr.area) &\
                                     pcr.defined(area_polluted)
         area_polluted = pcr.ifthen(area_polluted, pcr.boolean(1))
-        
+
         # Calculate costs and stddev for all earthwork types.
-        flpl_low_values = self.dem_lowering(msr, area_polluted) 
+        flpl_low_values = self.dem_lowering(msr, area_polluted)
         minemb_low_values = self.minemb_lowering(msr, area_polluted)
-        groyne_lowering_values = self.groyne_lowering(msr)        
+        groyne_lowering_values = self.groyne_lowering(msr)
         cost_ew = pd.concat([flpl_low_values, groyne_lowering_values,
                              minemb_low_values])
-        
+
         cost_df = cost_ew.iloc[:,0:1].T
-        cost_df.index = [name] 
+        cost_df.index = [name]
         std_df = cost_ew.iloc[:,1:2].T
-        std_df.index = [name]     
+        std_df.index = [name]
         return cost_df, std_df
 
-                    
+
 class CostSmoothing(CostTypes):
-    """Cost for lowering the floodplain roughness, i.e. removal 
+    """Cost for lowering the floodplain roughness, i.e. removal
     of existing vegetation."""
     def __init__(self, name, smoothing_distr):
         CostTypes.__init__(self, name)
-        
+
         # cost distribution input
         self.smoothing_distr = smoothing_distr
 
@@ -262,9 +261,9 @@ class CostSmoothing(CostTypes):
         Returns a float."""
         cost = area_total_value(self.smoothing_distr.mean, msr_area)
         std = area_total_value(self.smoothing_distr.stddev, msr_area)
-        
+
         return cost, std
-    
+
     def overview(self, msr):
         """Give an overview of the cost and st.dev of smoothing."""
         if msr.settings.loc['msr_type',1] == 'smoothing':
@@ -274,7 +273,7 @@ class CostSmoothing(CostTypes):
         name = msr.settings.loc['msr_type',1] + '_' + msr.settings.loc['ID']
         cost_df = pd.DataFrame(data={'smoothing': cost}, index=[name])
         std_df = pd.DataFrame(data={'smoothing': std}, index=[name])
-        
+
         return cost_df, std_df
 
 class CostDikeRelocation(CostTypes):
@@ -284,7 +283,7 @@ class CostDikeRelocation(CostTypes):
         CostTypes.__init__(self, name)
         self.dike_reloc_distr = dike_reloc_distr
         self.dike_length = dike_length
-    
+
     def relocation(self, reloc_area):
         """Sum up the cost and st.dev of dike relocation."""
         reloc_area = pcr.cover(pcr.boolean(reloc_area), pcr.boolean(0))
@@ -293,25 +292,25 @@ class CostDikeRelocation(CostTypes):
         reloc_length = pcr.ifthen(reloc_buffered, self.dike_length)
         cost_spatial = 0.001 * reloc_length * self.dike_reloc_distr.mean
         std_spatial = 0.001 * reloc_length * self.dike_reloc_distr.stddev
-        
+
         area = pcr.ifthen(reloc_area, pcr.boolean(1))
         cost = area_total_value(cost_spatial, area)
         std = area_total_value(std_spatial, area)
-        
+
         return cost, std
-        
+
     def overview(self, msr):
         """Give an overview of cost and standard deviation of dike relocation.
         """
         if msr.settings.loc['msr_type',1] == 'relocation':
             cost, std = self.relocation(msr.area)
         else:
-            cost, std = 0, 0 
+            cost, std = 0, 0
         name = msr.settings.loc['msr_type',1] + '_' + msr.settings.loc['ID']
         cost_df = pd.DataFrame(data={'relocation': cost}, index=[name])
         std_df = pd.DataFrame(data={'relocation': std}, index=[name])
         return cost_df, std_df
-        
+
 class CostDikeRaising(CostTypes):
     """Calculate the cost of raising the embankment over 50 and 100 cm."""
     def __init__(self, name,
@@ -329,24 +328,24 @@ class CostDikeRaising(CostTypes):
         cost_spatial_100cm = 0.001 * raise_length * self.dike_raise100_distr.mean
         std_spatial_50cm = 0.001 * raise_length * self.dike_raise50_distr.stddev
         std_spatial_100cm = 0.001 * raise_length * self.dike_raise100_distr.stddev
-        
+
         cost_list =  [area_total_value(cost_spatial_50cm, raise_area),
                       area_total_value(cost_spatial_100cm, raise_area)]
         std_list =  [area_total_value(std_spatial_50cm, raise_area),
                       area_total_value(std_spatial_100cm, raise_area)]
         return cost_list, std_list
-    
+
     def overview(self, msr):
         """Give an overview of the cost and standard deviation of dike raising.
         """
         msr_type = msr.settings.loc['msr_type',1]
         name = msr_type + '_' + msr.settings.loc['ID']
-        
+
         if msr_type == 'dikeraising':
             cost, std = self.raising(msr.area)
         else:
             cost, std = [0, 0], [0, 0]
-            
+
         cost_df = pd.DataFrame(data={'raise_50cm': cost[0],
                                      'raise_100cm': cost[1]},
                                index=[name])
@@ -359,49 +358,49 @@ class CostDikeRaising(CostTypes):
 class CostDistribution(object):
     """Generic class for the spatial distribution of cost attributes.
     Attributes are the mean and standard deviation of the cost/sttdev per cell.
-    """    
+    """
     def __init__(self, mean, stddev):
         self.mean = mean
         self.stddev = stddev
-    
+
     def plot(self):
         pcr.aguila(self.mean, self.stddev)
-        
+
 
 def read_distribution(input_dir, cost_name):
     """Read pcr_maps with mean and stddev of 'cost_name' into a distribution.
-    
+
     Input:
     input_dir: path to the directory with the PCRaster maps
     cost_name: name of the cost attribute
-    
+
     Naming convention:
-    mean: 'cost_%s.map' % cost_name 
+    mean: 'cost_%s.map' % cost_name
     stddev: 'std_%s.map' % cost_name
-    
+
     Returns a CostDistribution class
     """
     mean = pcr.readmap(os.path.join(input_dir, 'cost_%s.map' % cost_name))
     stddev = pcr.readmap(os.path.join(input_dir, 'std_%s.map' % cost_name))
     return CostDistribution(mean, stddev)
-    
+
 def assess_effects(cost_types, maps_dir, cost_correction):
     """
     Determine all effects for all measures.
     """
     measure_names = [f for f in os.listdir(maps_dir)
                        if os.path.isdir(os.path.join(maps_dir,f))]
-    
+
     cost_list = []
-    std_list = []    
+    std_list = []
     for msr_name in measure_names[:]:
-        print msr_name
+        print(msr_name)
         measure_pathname = os.path.join(maps_dir, msr_name)
-        measure = read_measure(measure_pathname)    
+        measure = read_measure(measure_pathname)
         cost_all_types, std_all_types = assess_costs(cost_types, measure)
         cost_list.append(cost_all_types)
         std_list.append(std_all_types)
-        
+
     cost_all_msrs = pd.concat(cost_list)
     std_all_msrs = pd.concat(std_list)
     cost_all_msrs.index.name = 'id'
@@ -433,7 +432,7 @@ if __name__ == '__main__':
     scratch_dir = os.path.join(root_dir, 'scratch')
     pcr.setglobaloption('unittrue')
     os.chdir(scratch_dir)
-    
+
     # Read input maps
     pcr.setclone(os.path.join(ref_map_dir, 'clone.map'))
     depthToSand = pcr.readmap(os.path.join(cost_dir, 'depthToSand.map'))
@@ -445,7 +444,7 @@ if __name__ == '__main__':
     smoothing_cost_classes = pcr.readmap(os.path.join(cost_dir,
                                                      'smoothing_cost_classes.map'))
     dem = pcr.readmap(os.path.join(ref_map_dir, 'dem.map'))
-    
+
     # Read input distributions
     road_distr = read_distribution(cost_dir, 'roads')
     smoothing_distr = read_distribution(cost_dir, 'smoothing')
@@ -457,16 +456,16 @@ if __name__ == '__main__':
     minemb_ext_use_distr = read_distribution(cost_dir, 'minemb_ext_use')
     minemb_int_use_distr = read_distribution(cost_dir, 'minemb_int_use')
     minemb_polluted_distr = read_distribution(cost_dir, 'minemb_polluted')
-    
+
     groyne = read_dike_maps(ref_map_dir, 'groyne')
     minemb = read_dike_maps(ref_map_dir, 'minemb')
     main_dike = read_dike_maps(ref_map_dir, 'main_dike')
-    
+
     # Set earthwork values
     cost_input_ew = pd.read_csv(os.path.join(cost_dir, 'cost_ew.csv'), index_col=0)
     cost_correction = pd.read_csv(os.path.join(cost_dir, 'cost_correction.csv'),
                                   index_col=0, comment='#')
-    
+
     #%% Test the cost calculation
     msr_name = 'sidechannel_everywhere'
     label = 'everywhere'
@@ -483,9 +482,9 @@ if __name__ == '__main__':
     c_sm = CostSmoothing('dummy', smoothing_distr)
     sm_cost, sm_std = c_sm.overview(msr)
     if printing == True:
-        print sm_cost
-        print sm_std
-    
+        print(sm_cost)
+        print(sm_std)
+
     ### Earth work
     c_ew = CostEarthwork(label,
                  minemb_ext_use_distr, minemb_int_use_distr, minemb_polluted_distr,
@@ -494,44 +493,44 @@ if __name__ == '__main__':
                  cost_input_ew)
     ew_cost, ew_std = c_ew.overview(msr, pollution_threshold=2)
     if printing == True:
-        print ew_cost
-        print ew_std
-    
+        print(ew_cost)
+        print(ew_std)
+
     ### Land preparation
-    c_lp = CostPreparation(label, 
+    c_lp = CostPreparation(label,
                            land_acq_distr, road_distr, smoothing_distr,
                            building_distr, smoothing_cost_classes)
-    
+
     lp_cost, lp_std = c_lp.overview(msr)
     if printing == True:
-        print lp_cost
-        print lp_std
-    
+        print(lp_cost)
+        print(lp_std)
+
     ### Dike relocation
     c_dreloc = CostDikeRelocation(label, dike_reloc_distr, dike_length)
     dr_cost, dr_std = c_dreloc.overview(msr)
     if printing == True:
-        print dr_cost
-        print dr_std
-    
+        print(dr_cost)
+        print(dr_std)
+
     ### Dike raising
     c_draise = CostDikeRaising(label,
                                dike_raise50_distr, dike_raise100_distr,
                                dike_length)
     draise_cost, draise_std = c_draise.overview(msr)
     if printing == True:
-        print draise_cost
-        print draise_std
+        print(draise_cost)
+        print(draise_std)
     ppp
-    #%% evaluate all measures on cost       
+    #%% evaluate all measures on cost
     cost_types = [c_sm, c_ew, c_lp, c_dreloc, c_draise]
     cost_all_msrs, std_all_msrs = assess_effects(cost_types, msr_map_dir, cost_correction)
     cost_all_msrs.to_csv('cost_all.csv')
     std_all_msrs.to_csv('std_all.csv')
-    print cost_all_msrs
-    print std_all_msrs
-    
-    
+    print(cost_all_msrs)
+    print(std_all_msrs)
+
+
     #%% Visualization example
     import matplotlib.pyplot as plt
     side_channel = cost_all_msrs.loc['sidechannel_dummy-ID',:]

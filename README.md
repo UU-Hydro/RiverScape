@@ -11,15 +11,15 @@ A set of notebooks for evaluation of river management measures.
 
 A few steps are required to run the Jupyter notebooks:
 
- 1. You will need a working Python environment, we recommend to install Miniconda. Follow their instructions given at:  
- 
+ 1. You will need a working Python environment, we recommend to install Miniconda. Follow their instructions given at:
+
     [https://docs.conda.io/en/latest/miniconda.html](URL)
 
  2. Clone or download this repository.
 
- 3. Use the environment file to install all required modules:  
- 
-    `conda env create -f environment.yaml`
+ 3. Use the environment file to install all required modules:
+
+    `conda env create -f requirements.yaml`
 
 
 
@@ -27,10 +27,10 @@ A few steps are required to run the Jupyter notebooks:
 
 ## How to run
 
-Activate the environment:
+Activate the environment in a command prompt:
 
-`conda activate ...`
+`conda activate riverscape`
 
-Now you can run the notebooks with
+Change to the RiverScape directory. You can then run a notebooks e.g. with
 
-`jupyter-notebook ...`
+`jupyter-notebook intervent_parameter.ipynb`
