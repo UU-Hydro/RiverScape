@@ -10,6 +10,7 @@ try:
   from .select_area import *
 
   from .plot_costs import *
+  from .calculate_stakeholder import *
 
 except Exception as e:
   raise e
