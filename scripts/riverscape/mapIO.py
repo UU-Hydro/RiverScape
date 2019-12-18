@@ -316,7 +316,7 @@ def col2map(arr, cloneMapName, x=0, y=1, v=2, args = ''):
 	x,y,v (value) are the indices of the columns in arr"""
     g = np.hstack((arr[:,x:x+1],arr[:,y:y+1],arr[:,v:v+1]))
     np.savetxt('temp.txt', g, delimiter=',')
-    cmd = 'col2map --clone %s %s temp.txt temp.map'% (cloneMapName, args)
+    cmd = 'col2map --nothing --clone %s %s temp.txt temp.map'% (cloneMapName, args)
     print('\n', cmd)
     subprocess.call(cmd, shell=True)
     outMap = pcr.readmap('temp.map')
@@ -417,7 +417,7 @@ def readLegend(mapFile):
     """
     Read a pcraster legend into a dictionary.
     """
-    cmd = 'legend -w lut.tmp %s' % mapFile
+    cmd = 'legend --nothing -w lut.tmp %s' % mapFile
     subprocess.call(cmd, shell = True)
     lut = {}
     for line in file('lut.tmp', 'r').readlines()[1:]:
@@ -437,7 +437,7 @@ def reportLegend(mapFile, legendDict, title = None):
     for key in legendDict.keys():
         legendFile.write('%s %s_%s\n' % (key, key, legendDict[key]))
     legendFile.close()
-    cmd = 'legend -f %s %s' % ('tmp.legend', mapFile)
+    cmd = 'legend --nothing -f %s %s' % ('tmp.legend', mapFile)
     subprocess.call(cmd, shell = True)
 
 def readMapWithLegend(pcrFile):
@@ -478,7 +478,7 @@ def read_legend(pcr_file):
     """
     Read a pcraster legend into a data frame.
     """
-    cmd = 'legend -w legend.tmp %s' % pcr_file
+    cmd = 'legend --nothing -w legend.tmp %s' % pcr_file
     subprocess.call(cmd, shell = True)
     df = pd.read_csv('legend.tmp', sep=' ')
     title = df.columns[1]
@@ -507,7 +507,7 @@ def report_map_with_legend(legend_map_class, pcr_file):
 
     # Attach the legend
     legend.to_csv('tmp.legend', sep=' ', index=False)
-    cmd = 'legend -f %s %s' % ('tmp.legend', pcr_file)
+    cmd = 'legend --nothing -f %s %s' % ('tmp.legend', pcr_file)
     subprocess.call(cmd, shell = True)
 
 class LegendMap(object):

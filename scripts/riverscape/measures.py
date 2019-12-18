@@ -278,7 +278,7 @@ def read_map_with_legend(pcr_file):
     Returns a MapLegend class
     """
     # Read a pcraster legend into a data frame
-    cmd = 'legend -w legend.tmp %s' % pcr_file
+    cmd = 'legend --nothing -w legend.tmp %s' % pcr_file
     subprocess.check_call(cmd, shell = True)
     df = pd.read_csv('legend.tmp', sep=' ')
     title = df.columns[1]
@@ -311,7 +311,7 @@ def report_map_with_legend(legend_map_class, pcr_file):
       fname = os.path.join(tmpdirname, 'tmp_legend.txt')
       # Attach the legend
       legend.to_csv(fname, sep=' ', index=False)
-      cmd = 'legend -f {} {}'.format(fname, pcr_file)
+      cmd = 'legend --nothing -f {} {}'.format(fname, pcr_file)
       subprocess.check_call(cmd, shell = True)
 
 def clone_attributes():
