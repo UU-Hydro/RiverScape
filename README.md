@@ -15,12 +15,13 @@ A few steps are required to run the Jupyter notebooks:
 
     [https://docs.conda.io/en/latest/miniconda.html](URL)
 
- 2. Clone or download this repository.
-
- 3. Use the environment file to install all required modules:
+ 2. Use the environment file to install all required modules:
 
     `conda env create -f requirements.yaml`
 
+ 3. Clone or download this repository:
+
+    `git clone https://github.com/UU-Hydro/RiverScape.git`
 
 
 
