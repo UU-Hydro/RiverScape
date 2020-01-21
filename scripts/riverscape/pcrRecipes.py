@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #-modules
-import os, sys, subprocess, gc
+import os, sys, subprocess
 import uuid
 import time as tm
 import numpy as np
@@ -159,7 +159,7 @@ def col2map(arr, cloneMapName, x=0, y=1, v=2, args = ''):
 	x,y,v (value) are the indices of the columns in arr '''
 	g = np.hstack((arr[:,x:x+1],arr[:,y:y+1],arr[:,v:v+1]))
 	np.savetxt('temp.txt', g, delimiter=',')
-	cmd = 'col2map --clone %s %s temp.txt temp.map'% (cloneMapName, args)
+	cmd = 'col2map --nothing --clone %s %s temp.txt temp.map'% (cloneMapName, args)
 	print('\n', cmd)
 	subprocess.call(cmd, shell=True)
 	outMap = pcr.readmap('temp.map')

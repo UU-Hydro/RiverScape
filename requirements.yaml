@@ -1,0 +1,12 @@
+name: riverscape
+channels:
+- conda-forge
+- http://pcraster.geo.uu.nl/pcraster/pcraster/
+dependencies:
+- python=3.8
+- git
+- numpy
+- jupyter
+- geoviews
+- pysal
+- pcraster
