@@ -1,7 +1,17 @@
 # Landowner evaluation
 
+## Overview
 
+Decisions for adaptation measures require an overview of stakeholders involved,
+an information relevant e.g. for compensation or expropriation of landowners.
+The number of landowners can therefore be seen as proxy for governance complexity.
 This notebook assesses the number and types of land owners involved in the measure extent.
+
+
+
+## How to start
+
+
 First import the RiverScape and additional required Python modules to run this notebook.
 
 
