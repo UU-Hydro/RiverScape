@@ -46,8 +46,10 @@ def plot_water_level_change():
 
   lwidth = 2
 
+  toolset = ['pan', 'box_zoom', 'wheel_zoom', 'zoom_in', 'zoom_out', 'reset']
 
-  subfig1 = figure(plot_width=subplot_width, plot_height=subplot_height, tools=['pan', 'box_zoom', 'wheel_zoom', 'zoom_in', 'zoom_out', 'reset'], toolbar_location='above')
+
+  subfig1 = figure(plot_width=subplot_width, plot_height=subplot_height, tools=toolset, toolbar_location='above')
 
 
 
@@ -61,7 +63,7 @@ def plot_water_level_change():
 
 
 
-  subfig2 = figure(plot_width=subplot_width, plot_height=subplot_height, x_range=subfig1.x_range, y_range=subfig1.y_range, tools=[])
+  subfig2 = figure(plot_width=subplot_width, plot_height=subplot_height, x_range=subfig1.x_range, y_range=subfig1.y_range, tools=toolset)
 
 
 
@@ -72,7 +74,7 @@ def plot_water_level_change():
 
 
 
-  subfig3 = figure(plot_width=subplot_width, plot_height=subplot_height, x_range=subfig1.x_range, y_range=subfig1.y_range, tools=[])
+  subfig3 = figure(plot_width=subplot_width, plot_height=subplot_height, x_range=subfig1.x_range, y_range=subfig1.y_range, tools=toolset)
   subfig3.line(df['km'], df['smoothing_evr_natural'], color=colour_evr_natural, line_width=lwidth)
   subfig3.line(df['km'], df['smoothing_evr_smooth'], color=colour_evr_smooth, line_width=lwidth)
   subfig3.line(df['km'], df['smoothing_lrg_natural'], color=colour_lrg_natural, line_width=lwidth)
@@ -80,14 +82,14 @@ def plot_water_level_change():
 
 
 
-  subfig4 = figure(plot_width=subplot_width, plot_height=subplot_height, x_range=subfig1.x_range, y_range=subfig1.y_range, tools=[])
+  subfig4 = figure(plot_width=subplot_width, plot_height=subplot_height, x_range=subfig1.x_range, y_range=subfig1.y_range, tools=toolset)
   subfig4.line(df['km'], df['sidechannel_evr_natural'], color=colour_evr_natural, line_width=lwidth)
   subfig4.line(df['km'], df['sidechannel_evr_smooth'], color=colour_evr_smooth, line_width=lwidth)
   subfig4.line(df['km'], df['sidechannel_lrg_natural'], color=colour_lrg_natural, line_width=lwidth)
   subfig4.line(df['km'], df['sidechannel_lrg_smooth'], color=colour_lrg_smooth, line_width=lwidth)
 
 
-  subfig5 = figure(plot_width=subplot_width, plot_height=int(subplot_height + 0.2 * subplot_height), x_range=subfig1.x_range, y_range=subfig1.y_range, tools=[])
+  subfig5 = figure(plot_width=subplot_width, plot_height=int(subplot_height + 0.2 * subplot_height), x_range=subfig1.x_range, y_range=subfig1.y_range, tools=toolset)
   subfig5.line(df['km'], df['lowering_evr_natural'], color=colour_evr_natural, line_width=lwidth)
   subfig5.line(df['km'], df['lowering_evr_smooth'], color=colour_evr_smooth, line_width=lwidth)
   subfig5.line(df['km'], df['lowering_lrg_natural'], color=colour_lrg_natural, line_width=lwidth)

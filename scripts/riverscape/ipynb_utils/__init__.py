@@ -17,6 +17,9 @@ try:
   from .plot_scatter_pareto import *
   from .plot_measure import *
 
+  from .utils import *
+  from .plot_landowners import *
+
 except Exception as e:
   raise e
 
