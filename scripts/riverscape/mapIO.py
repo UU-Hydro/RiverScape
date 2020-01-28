@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os 
+import os
 import pcraster as pcr
 import fiona
 import subprocess
 import collections
-import ogr, gdal
+from osgeo import ogr, gdal
 import numpy as np
 #~ import pysal as ps # NOT NEEDED
 import pandas as pd
@@ -58,19 +58,19 @@ from shapely.geometry import mapping, Point, LineString, Polygon, MultiPolygon
 
 def vector2raster(fileFormat, cloneFile, inFile, attribute, layer = None):
     """Rasterize a vector dataset using the map attributes of the cloneFile.
-    
+
     fileFormat: ogr vector format string of inFile
     cloneFile:  PCRaster .map file
     inFile:     input vector file, or ESRI geodatabase
     topo:       topology type: polygon, line, point
     attribute:  item name of the attribute table
     layer:      'PAL', 'LAB', or 'ARC' for AVCBin polygon, point, or line coverages
-    layer:      layer in the fileGDB 
+    layer:      layer in the fileGDB
     """
     print('\n\tvector2raster of %s ' % inFile)
     xmin, xmax, ymin, ymax = getBoundingBox(cloneFile)
     cellLength = getMapAttr(cloneFile)['cell_length']
-        
+
     try:
         os.remove('tmp.tif')
         os.remove('tmp.map')
@@ -82,8 +82,8 @@ def vector2raster(fileFormat, cloneFile, inFile, attribute, layer = None):
                               '-ot Float64 '
                               '-a_nodata -9999 '
                               '-l %s '
-                              '-a %s ' 
-                              '-of GTiff ' 
+                              '-a %s '
+                              '-of GTiff '
                               '%s tmp.tif ') %\
               (xmin, ymin, xmax, ymax, cellLength, cellLength, layer, attribute, inFile)
     elif fileFormat == 'ESRI Shapefile':
@@ -91,8 +91,8 @@ def vector2raster(fileFormat, cloneFile, inFile, attribute, layer = None):
                               '-tr %s %s '
                               '-ot Float64 '
                               '-a_nodata -9999 '
-                              '-a %s ' 
-                              '-of GTiff ' 
+                              '-a %s '
+                              '-of GTiff '
                               '%s tmp.tif ' ) %\
               (xmin, ymin, xmax, ymax, cellLength, cellLength, attribute, inFile)
     print('\n', cmd)
@@ -106,18 +106,18 @@ def vector2raster(fileFormat, cloneFile, inFile, attribute, layer = None):
 
 def rasterizeFID(fileFormat, cloneFile, inFile, layer = None):
     """Rasterize a vector dataset using the map attributes of the cloneFile.
-    
+
     fileFormat: ogr vector format string of inFile
     cloneFile:  PCRaster .map file
     inFile:     input vector file, or ESRI geodatabase
     attribute:  item name of the attribute table
     layer:      'PAL', 'LAB', or 'ARC' for AVCBin polygon, point, or line coverages
-    layer:      layer in the fileGDB 
+    layer:      layer in the fileGDB
     """
     print('\n\trasterizeFID of layer %s in %s' % (layer, inFile))
     xmin, xmax, ymin, ymax = getBoundingBox(cloneFile)
     cellLength = getMapAttr(cloneFile)['cell_length']
-        
+
     try:
         os.remove('tmp.tif')
         os.remove('tmp.map')
@@ -128,8 +128,8 @@ def rasterizeFID(fileFormat, cloneFile, inFile, layer = None):
                               '-tr %s %s '
                               '-ot Float32 '
                               '-a_nodata -9999 '
-                              '-a FID -sql "select FID, * from %s" ' 
-                              '-of GTiff ' 
+                              '-a FID -sql "select FID, * from %s" '
+                              '-of GTiff '
                               '%s tmp.tif ') %\
               (xmin, ymin, xmax, ymax, cellLength, cellLength, layer, inFile)
     elif fileFormat == 'ESRI Shapefile':
@@ -137,8 +137,8 @@ def rasterizeFID(fileFormat, cloneFile, inFile, layer = None):
                               '-tr %s %s '
                               '-ot Float32 '
                               '-a_nodata -9999 '
-                              '-a FID -sql "select FID, * from %s" ' 
-                              '-of GTiff ' 
+                              '-a FID -sql "select FID, * from %s" '
+                              '-of GTiff '
                               '%s tmp.tif ') %\
               (xmin, ymin, xmax, ymax, cellLength, cellLength, layer, inFile)
         print(cmd)
@@ -162,10 +162,10 @@ def shapeString2Ordinal(inFile, outFile, inFieldName, outFieldName):
     source = fiona.open(inFile)
     for ii in xrange(len(source)):
         rec = next(source)
-        ll.append((rec['properties'][inFieldName]))  
+        ll.append((rec['properties'][inFieldName]))
     stringClasses = list(set(ll))
     source.close()
-    
+
     #-create a dictionary with strings a keys and integers as value
     lut = {stringClasses[k]:k+1 for k in range(len(stringClasses))}
 
@@ -178,7 +178,7 @@ def shapeString2Ordinal(inFile, outFile, inFieldName, outFieldName):
         dstSchema['properties'] = collections.OrderedDict([(inFieldName, inFieldDefinition),\
                                                             (outFieldName, 'int:8')])
         source.close()
-    
+
     #-fill output with records
     with fiona.open(outFile, 'w', dstDriver, dstSchema) as output:
         source = fiona.open(inFile)
@@ -194,34 +194,34 @@ def shapeString2Ordinal(inFile, outFile, inFieldName, outFieldName):
                                                                ])
             output.write(dstRecord)
     output.close()
-    
+
     return lut
 
 def pcr2Shapefile(srcMap, dstShape, fieldName):
     """
     polygonize a pcraster map into a shapefile
-    
+
     srcMap:       string, path to PCRaster map
     dstShape:     string, path to shapefile
     fieldName:    string, name of the item in the shapefile
     """
     gdal.UseExceptions()
-    
+
     #-create a new shapefile
     driver        = ogr.GetDriverByName("ESRI Shapefile")
     if os.path.exists(dstShape):
         driver.DeleteDataSource(dstShape)
-        
+
     destinationDataSet = driver.CreateDataSource(dstShape)
     destinationLayer   = destinationDataSet.CreateLayer('TEMP', srs = None )
     newField           = ogr.FieldDefn(fieldName, ogr.OFTInteger)
     destinationLayer.CreateField(newField)
-    
+
     #-open the source data and polygonize into new field
     sourceDataSet = gdal.Open(srcMap)
     sourceBand    = sourceDataSet.GetRasterBand(1)
     gdal.Polygonize(sourceBand, None, destinationLayer, 0, [], callback=None)
-    
+
     #-Destroy the destination dataset
     destinationDataSet.Destroy()
 
@@ -229,13 +229,13 @@ def stringVector2raster(inShp, inField, cloneFile, outMap, title = None):
     """Rasterizes a string field in inShp to a PCRaster map. The unique values
     in the shapefile are converted to nominal values. The values and strings
     are contained in the legend of the output map on disk
-    
+
     Input:
     inShp:   input shapefile,
     inField: field to be rasterized
     outMap:  PCRaster map written to disk
     """
-    
+
     # add a column to a copy of the shapefile
     gdf = gpd.read_file(inShp)
     classes = gdf[inField].unique()
@@ -244,7 +244,7 @@ def stringVector2raster(inShp, inField, cloneFile, outMap, title = None):
     gdf[outField] = gdf.apply(lambda row: lut[row[inField]], axis=1)
     gdf_subset = gdf.loc[:,['geometry', inField, 'TMP_FIELD']]
     gdf_subset.to_file('tmp.shp')
-    
+
     #-rasterize the copy of the shapefile and report the map with the legend.
     pcrMap = vector2raster('ESRI Shapefile', cloneFile, 'tmp.shp', outField)
     reportMapWithLegend(pcr.nominal(pcrMap), outMap,\
@@ -255,23 +255,23 @@ def stringVector2raster(inShp, inField, cloneFile, outMap, title = None):
 ################################################################################
 #%% IO with raster data #########################################################
 ################################################################################
-  
+
 def cropRaster(inFile, cloneFile):
     """Crop a raster using gdal_translate, return a pcraster object.
-    
+
     cloneFile:  PCRaster .map file
-    inFile:     input raster map 
+    inFile:     input raster map
     """
-    
+
     try:
         os.remove('tmp.map')
     except WindowsError:
         pass
-    
+
     xmin, xmax, ymin, ymax = getBoundingBox(cloneFile)
     cmd = ('gdal_translate -projwin %s %s %s %s '
                               '-ot Float32 '
-                              '-of PCRaster ' 
+                              '-of PCRaster '
                               '%s tmp.map ' ) %\
               (xmin, ymax, xmax, ymin, inFile)
     print('\n', cmd)
@@ -303,7 +303,7 @@ def makeMap(xmin, ymax, cellLength, nrRows, nrCols, outFile):
         pass
     cmd = 'mapattr -s -B -x %s -y %s -l %s -R %s -C %s %s' %\
           (xmin, ymax, cellLength, nrRows, nrCols, outFile)
-    
+
     subprocess.call(cmd, shell=True)
 
 def make_clone(nrRows, nrCols, cellSize, west, north):
@@ -316,7 +316,7 @@ def col2map(arr, cloneMapName, x=0, y=1, v=2, args = ''):
 	x,y,v (value) are the indices of the columns in arr"""
     g = np.hstack((arr[:,x:x+1],arr[:,y:y+1],arr[:,v:v+1]))
     np.savetxt('temp.txt', g, delimiter=',')
-    cmd = 'col2map --clone %s %s temp.txt temp.map'% (cloneMapName, args)
+    cmd = 'col2map --nothing --clone %s %s temp.txt temp.map'% (cloneMapName, args)
     print('\n', cmd)
     subprocess.call(cmd, shell=True)
     outMap = pcr.readmap('temp.map')
@@ -328,7 +328,7 @@ def col2map(arr, cloneMapName, x=0, y=1, v=2, args = ''):
 def pcr2col(listOfMaps, MV, selection = 'ONE_TRUE'):
     """converts a set of maps to a column array: X, Y, map values
        selection can be set to ALL, ALL_TRUE, ONE_TRUE"""
-    
+
     #-intersect all maps and get X and Y coordinates
     intersection = pcr.boolean(pcr.cover(listOfMaps[0],0))
     for mapX in listOfMaps[1:]:
@@ -337,19 +337,19 @@ def pcr2col(listOfMaps, MV, selection = 'ONE_TRUE'):
     xCoor = pcr.ifthen(intersection, pcr.xcoordinate(intersection))
     yCoor = pcr.ifthen(intersection, pcr.ycoordinate(intersection))
     pcr.setglobaloption("unitcell")
-    
+
     #-initiate outArray with xCoor and yCoor
     xCoorArr = pcr.pcr2numpy(xCoor, MV)
     yCoorArr = pcr.pcr2numpy(yCoor, MV)
     nRows, nCols = xCoorArr.shape
     nrCells  = nRows * nCols
     outArray = np.hstack((xCoorArr.reshape(nrCells,1), yCoorArr.reshape(nrCells,1)))
-    
+
     #-add subsequent maps
     for mapX in listOfMaps:
         arr = pcr.pcr2numpy(mapX, MV).reshape(nrCells,1)
         outArray = np.hstack((outArray, arr))
-    
+
     #-subset output based on selection criterium
     ll = []
     nrMaps = len(listOfMaps)
@@ -375,12 +375,12 @@ def pcr2col(listOfMaps, MV, selection = 'ONE_TRUE'):
 
 def xyzWAQUA2Pcr(xyzFile, gridIDMap, cloneFile):
     """read an WAQUA .xyz file into a raster map
-    
+
     xyzFile:    x,y,z,m,n,id column file with a one line header
     gridIDmap:  pcraster map with the rgf grid cell IDs
     cloneFile:  pcraster clonefile to be used in col2map
     """
-    
+
     xyz = np.loadtxt(xyzFile, delimiter = ',', skiprows=1)
     xyzPointMap = col2map(xyz, cloneFile, args = '-S -a -m -999999')
     xyzAreaMap = pcr.areaaverage(xyzPointMap, pcr.nominal(gridIDMap))
@@ -392,7 +392,7 @@ def getMapAttr(fileName):
     cmd = 'mapattr -p %s' % fileName
     raw = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True).communicate()[0]
     for row in raw.split('\n')[:-1]:
-        
+
         items = row.split()
         k,v = items[0], items[1]
         try:
@@ -417,7 +417,7 @@ def readLegend(mapFile):
     """
     Read a pcraster legend into a dictionary.
     """
-    cmd = 'legend -w lut.tmp %s' % mapFile
+    cmd = 'legend --nothing -w lut.tmp %s' % mapFile
     subprocess.call(cmd, shell = True)
     lut = {}
     for line in file('lut.tmp', 'r').readlines()[1:]:
@@ -437,7 +437,7 @@ def reportLegend(mapFile, legendDict, title = None):
     for key in legendDict.keys():
         legendFile.write('%s %s_%s\n' % (key, key, legendDict[key]))
     legendFile.close()
-    cmd = 'legend -f %s %s' % ('tmp.legend', mapFile)
+    cmd = 'legend --nothing -f %s %s' % ('tmp.legend', mapFile)
     subprocess.call(cmd, shell = True)
 
 def readMapWithLegend(pcrFile):
@@ -453,7 +453,7 @@ def readMapWithLegend(pcrFile):
 def reportMapWithLegend(pcrMap, pcrFile, legendDict, title = None):
     """
     Repor a PCRaster file and attach a legend to it
-    
+
     pcrMap: ordinal map
     legendDict:     keys = nominal values present in pcrMap
                     values = labels as strings
@@ -467,7 +467,7 @@ def read_map_with_legend(pcr_file):
     Read map and legend into LegendMap class for nominal or ordinal data.
     The legend needs 'key_label' pairs, separated by an underscore. For example
     '1_UM-1' links map values of 1 to 'UM-1'
-    
+
     Returns a MapLegend class
     """
     legend = read_legend(pcr_file)
@@ -478,7 +478,7 @@ def read_legend(pcr_file):
     """
     Read a pcraster legend into a data frame.
     """
-    cmd = 'legend -w legend.tmp %s' % pcr_file
+    cmd = 'legend --nothing -w legend.tmp %s' % pcr_file
     subprocess.call(cmd, shell = True)
     df = pd.read_csv('legend.tmp', sep=' ')
     title = df.columns[1]
@@ -492,22 +492,22 @@ def report_map_with_legend(legend_map_class, pcr_file):
     Report an ordinal, or nominal map and attach a legend to it.
     """
     # Report the map
-    pcr.report(legend_map_class.pcr_map, pcr_file)    
-    
+    pcr.report(legend_map_class.pcr_map, pcr_file)
+
     # Create the legend DataFrame
     df = legend_map_class.legend_df
     columns = list(df.columns.values)
     columns.remove('values')
     title = columns[0]
-    
+
     df['labels'] = df.apply(lambda row: str(row['values']) + '_' + row[title],
                                    axis=1)
     legend = df.loc[:,['values', 'labels']]
     legend.columns = ['-0', title]
-    
+
     # Attach the legend
     legend.to_csv('tmp.legend', sep=' ', index=False)
-    cmd = 'legend -f %s %s' % ('tmp.legend', pcr_file)
+    cmd = 'legend --nothing -f %s %s' % ('tmp.legend', pcr_file)
     subprocess.call(cmd, shell = True)
 
 class LegendMap(object):
@@ -527,22 +527,22 @@ def read_pli(pli_file):
     """
     Read a .pli file into a dictionary
     -------
-    input 
+    input
         pliFile: .pli, .pliz, or .pol input file for Delft3D-FM
     """
     def line2floats(line):
         return [float(i) for i in line.split()]
-        
+
     with open(pli_file) as f:
         lines  = f.read().splitlines()
-        
+
     #=loop over the polylines and store the data in a dictionary
     data = {}
     cnt = 0
     while cnt < len(lines):
         label = lines[cnt]
         nrow, ncol = lines[cnt+1].split()
-        nrow, ncol = int(nrow), int(ncol)    
+        nrow, ncol = int(nrow), int(ncol)
         pol_data = [line2floats(line) for line in lines[cnt+2: cnt+2+nrow]]
         cnt += nrow + 2
         data[label] = np.array(pol_data)
@@ -555,11 +555,11 @@ def pli_dict2geodataframe(pli_dict, out_type = 'Point'):
     Input:
         pliDict : dictionary with polyline data.
         outType : can be 'Point', 'LineString', or 'Polygon' GeoDataFrame
-    
+
     If 'LineString' or 'Polygon' is selected, attribute data will be lost.
     """
-    
-    container = [] 
+
+    container = []
     for label, data in pli_dict.iteritems():
         if out_type == 'Point':
             points = gpd.GeoSeries([Point(x,y) for x,y in data[:,0:2]])
@@ -569,13 +569,13 @@ def pli_dict2geodataframe(pli_dict, out_type = 'Point'):
             colNameList = ['geometry'] + list('abcdefghijklmnop')[0:data.shape[1]]
             gdf.columns = colNameList
             gdf['label'] = label
-            
+
         elif out_type == 'LineString':
             xyList = [[x,y] for x,y in data[:,0:2]]
             line = gpd.GeoSeries(LineString(xyList))
             gdf = gpd.GeoDataFrame(geometry = line)
             gdf['label'] = label
-        
+
         elif out_type == 'Polygon':
             try:
                 xyList = [[x,y] for x,y in data[:,0:2]]
@@ -592,7 +592,7 @@ def pli_dict2geodataframe(pli_dict, out_type = 'Point'):
 
 def geoDataFrame2pli(geodataframe, pli_file, geometry = 'Point'):
     """Converts a geopandas.GeoDataFrame to a pli file on disk.
-        
+
     Extension conventions are:
             .pli   for polyline files
             .pliz  for polyline files with addional attributes
@@ -600,7 +600,7 @@ def geoDataFrame2pli(geodataframe, pli_file, geometry = 'Point'):
     input:
         geoDataFrame  :    geopandas GeoDataFrame
         pliFile       :    path to the output file
-        geometry      :    shapely geometry (Point, LineString, Polygon)    
+        geometry      :    shapely geometry (Point, LineString, Polygon)
     Returns the file path.
     """
     print('Writing polyline data to:\n\t', pli_file)
@@ -622,7 +622,7 @@ def geoDataFrame2pli(geodataframe, pli_file, geometry = 'Point'):
                     #        now the whole polygon is removed
                     pass
                 else:
-                    x,y = pol.exterior.coords.xy 
+                    x,y = pol.exterior.coords.xy
                     xy_coords = np.array([[xy[0], xy[1]] for xy in zip(x,y)])
                     f.write(label+'\n')
                     f.write('%s %s\n' % xy_coords.shape)
@@ -638,11 +638,11 @@ def pliz2shp(in_pliz_file, out_shp_file, out_type = 'Point'):
         points = pli_dict2geodataframe(read_pli(in_pliz_file), out_type = 'Point')
         labels = points.label.str.split(':', expand = True)
         labels.columns = ['labelNr', 'labelType']
-        labeled_points = gpd.GeoDataFrame(pd.concat((points, labels), axis=1))       
+        labeled_points = gpd.GeoDataFrame(pd.concat((points, labels), axis=1))
         labeled_points.to_file(out_shp_file)
     elif out_type == 'LineString':
         lines = pli_dict2geodataframe(read_pli(in_pliz_file), out_type = 'LineString')
         labels = lines.label.str.split(':', expand = True)
         labels.columns = ['labelNr', 'labelType']
-        labeledLines = gpd.GeoDataFrame(pd.concat((lines, labels), axis=1))       
+        labeledLines = gpd.GeoDataFrame(pd.concat((lines, labels), axis=1))
         labeledLines.to_file(out_shp_file)

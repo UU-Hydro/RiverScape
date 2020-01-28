@@ -62,7 +62,6 @@ In the following please define the input and output folders.
 # Default locations
 input_dir    = '/home/schmi109/development/projects/RiverScape/input_files/input' #os.getcwd()
 output_dir   = os.getcwd()
-scratch_dir  = os.path.join(output_dir, "tmp")
 
 ```
 You may also want to set the folder, interactively
@@ -76,6 +75,7 @@ You may also want to set the folder, interactively
 ```
 ``` code
 # make scratch directory and go to this folder
+scratch_dir  = os.path.join(output_dir, "tmp")
 pcrRecipes.make_dir(scratch_dir)
 os.chdir(scratch_dir)
 
@@ -438,7 +438,7 @@ Please set the ID/label for this measure and set the mask where you want to intr
 ID = 'everywhere'
 ```
 
-For the groyne lowering measure you can specify a specific area, defined by the distance.
+For the groyne lowering measure you can specify a specific area, defined by the distances from .
 The minimum and maximum values should be between 867 and 960.
 
 ``` code
