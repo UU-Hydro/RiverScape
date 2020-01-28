@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import numpy as np
-import pysal as ps
+#~ import pysal as ps # NOT NEEDED
 import os, string
 
 class from_xlsx_v3():
@@ -250,6 +250,15 @@ def dbf2df(dbf_path, index=None, cols=False, incl_index=False):
         db.close()
         return pd.DataFrame(data)   
        
+def show_full_data_frame(data_frame):
+    
+    print(data_frame.shape)
+    
+    pd.options.display.max_rows = data_frame.shape[0]
+    pd.options.display.max_columns = data_frame.shape[1]
+    
+    return pd.DataFrame(data_frame)
+
 ###############################################################################
 #-test IO #####################################################################
 ###############################################################################
