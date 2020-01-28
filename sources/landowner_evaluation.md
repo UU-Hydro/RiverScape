@@ -1,40 +1,72 @@
-# Landowner evaluation
+# Evaluation of affected landowners
+
+## Overview
+
+Decisions for adaptation measures require an overview of stakeholders involved,
+an information relevant e.g. for compensation or expropriation of landowners.
+The number of landowners can therefore be seen as proxy for governance complexity.
+This notebook assesses the number and types of land owners involved in a measure extent.
 
 
-This notebook assesses the number and types of land owners involved in the measure extent.
+
+## How to start
+
+
+### Setting up the environment
+
 First import the RiverScape and additional required Python modules to run this notebook.
 
 
 ``` code
-import pandas
-import numpy
-from riverscape import *
+#import pandas
+#import numpy
 
 # Visualisation
 import geoviews
 geoviews.extension('bokeh')
+
+
+import riverscape
+
+%reload_ext autoreload
+%autoreload 2
 ```
 
-Evaluation is performed on a set of measures that you defined in the intervention planning notebook.
-Previously, you stored a set of measures to disk.
-Now choose the directory holding the measures that you want to evaluate.
-Select a subdirectory of the ```maps``` folder, such as ``lowering_everywhere``:
 
+### Specify the input data location
+
+The evaluation of affected landowners is performed on a set of measures.
+You can use the default example data measures to continue this notebook:
 
 ``` code
-measure_dir  = select_directory()
+measure_dir = riverscape.example_data_path()
 ```
 
+<!-- that you defined in the intervention planning notebook. -->
 
+In case you previously stored a set of measures to disk you can use those.
+Uncomment and execute the following line and choose the directory holding your measures.
+Select a subdirectory of the ``maps`` folder, such as ``lowering_everywhere``:
+
+<!-- choose a directory holding the measures that you want to evaluate. -->
+
+``` code
+# measure_dir = riverscape.select_directory()
+```
+
+## Landowners affected by measures
 
 Intended measures in particular areas may affect various stakeholders, such as citizens, companies or governmental institutions.
+You can visualise and inspect the areas affected by measures and the corresponding variety of ownerships:
+
+<!--
 Example is shown in the figure,
 on the left potential areas of a measure are shown,
-on the right an impression of the variety of ownerships.
+on the right an impression of the variety of ownerships.-->
 
-
-
-![title](landowners.png)
+``` code
+riverscape.plot_landowners(measure_dir)
+```
 
 
 The ownership is furthermore spread over individual owners within the area.
@@ -49,7 +81,7 @@ Note that the numbers fairly give an indication about the amount of involved sta
 
 
 ``` code
-affected = involved_stakeholders(measure_dir)
+affected = riverscape.involved_stakeholders(measure_dir)
 ```
 
 
