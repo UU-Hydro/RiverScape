@@ -279,6 +279,8 @@ In addition, you can visualise the results for the selected measures:
 riverscape.plot_costs(cost_all_msrs)
 ```
 
+## Saving the output table
+
 In case you want to keep the results you can store them to disk.
 The default location is the measure directory, change it if necessary.
 
@@ -286,6 +288,7 @@ The default location is the measure directory, change it if necessary.
 ``` code
 filename = 'cost_all.csv'
 path = os.path.join(measure_dir, filename)
+
 cost_all_msrs.to_csv(path)
 ```
 
