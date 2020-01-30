@@ -1,7 +1,8 @@
 # RiverScape
 
 
-A set of Jupyter notebooks for the evaluation of river management measures.
+This repository holds a set of Jupyter notebooks for the evaluation of river management measures,
+the RiverScape Python package and necessary input data.
 
 
 
@@ -17,7 +18,7 @@ A few steps are required to run the Jupyter notebooks:
 
     `conda env create -f requirements.yaml`
 
-    The requirements file will create a Python environment named `riverscape`. In case you prefer a different name you need to edit the `requirements.yaml` file.
+    The requirements file will create a environment named *riverscape* using Python 3.8. In case you prefer a different name or Python version you need to edit the *requirements.yaml* file.
 
  3. Activate the environment in a command prompt:
 
@@ -30,6 +31,7 @@ A few steps are required to run the Jupyter notebooks:
     This will clone RiverScape into the current working directory.
 
 General information on Jupyter notebooks and manuals can be found [here](https://jupyter.readthedocs.io/en/latest/).
+The user guide and short reference on Conda can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/cheatsheet.html).
 
 ## How to run
 
@@ -37,7 +39,7 @@ Activate the environment in a command prompt:
 
 `conda activate riverscape`
 
-Change to the RiverScape `scripts` directory.
+Change to the RiverScape *scripts* directory.
 You can start Jupyter from the command prompt and afterwards select a notebook in your browser:
 
 `jupyter-notebook`
@@ -68,10 +70,10 @@ The following Jupyter notebooks are provided:
 ## Exemplary output set of measures
 
 In case you want to run the evaluation notebooks without explicitly defining your own set of measures first you can load output data from a pre-defined set of measures.
-A single measure is included in the `output` folder.
+A single measure is included in the *output* folder.
 An ensemble of measures is provided as compressed file.
-Extract the file `example_measures_waal.zip` in the `outputs` folder.
-You'll get a `example_measures_waal` subfolder containing outputs of 17 measures.
+Extract the file *example_measures_waal.zip* in the *outputs* folder.
+You'll get a *example_measures_waal* subfolder containing outputs of 17 measures.
 
 
 
