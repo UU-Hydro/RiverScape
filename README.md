@@ -58,11 +58,13 @@ The following Jupyter notebooks are provided:
 
   1. Intervention planning: [intervent_parameter.ipynb](scripts/intervent_parameter.ipynb)
 
-  2. Evaluation of biodiversity: [biosafe.ipynb](scripts/biosafe.ipynb)
+  2. Evaluation of biodiversity: [biodiversity_evaluation.ipynb](scripts/biodiversity_evaluation.ipynb)
 
   3. Evaluation of implementation costs: [cost_evaluation.ipynb](scripts/cost_evaluation.ipynb)
 
   4. Evaluation of landowner involvement: [landowner_evaluation.ipynb](scripts/landowner_evaluation.ipynb)
+
+  5. Evaluation of an ensemble of measures: [measure_evaluation.ipynb](scripts/measure_evaluation.ipynb)
 
 
 
