@@ -144,8 +144,6 @@ minemb_int_use_distr = riverscape.read_distribution(cost_dir, 'minemb_int_use')
 minemb_polluted_distr = riverscape.read_distribution(cost_dir, 'minemb_polluted')
 ```
 
-<!--
-Datasets read as input distributions hold two maps, the mean values and the standard deviation values.-->
 
 You can plot these, e.g. for the roads, with the plot method of the individual objects.
 Most likely your main interest is only on the mean values, in that case just use plot directly.
@@ -291,10 +289,4 @@ path = os.path.join(measure_dir, filename)
 
 cost_all_msrs.to_csv(path)
 ```
-
-
-
-
-
-
 
