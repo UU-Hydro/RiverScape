@@ -33,11 +33,6 @@ geoviews.extension('bokeh')
 # Modelling
 import pcraster
 import riverscape
-%reload_ext autoreload
-%autoreload 2
-
-
-
 ```
 
 
@@ -51,7 +46,7 @@ You can use the default example data measures to continue this notebook:
 
 
 ``` code
-measure_dir = os.path.join(riverscape.example_data_path(), 'maps') #riverscape.example_data_path()
+measure_dir = riverscape.example_data_path()
 ```
 
 
@@ -251,7 +246,7 @@ c_dreloc = CostDikeRelocation(dike_reloc_distr, dike_length)
 
 ### Dike raising
 
-These type indicates the costs when raising the embankment 50 or 100 centimetres.
+These type indicate the costs when raising the embankment 50 or 100 centimetres.
 
 ``` code
 c_draise = CostDikeRaising(dike_raise50_distr, dike_raise100_distr, dike_length)
@@ -285,11 +280,13 @@ riverscape.plot_costs(cost_all_msrs)
 ```
 
 In case you want to keep the results you can store them to disk.
+The default location is the measure directory, change it if necessary.
 
 
 ``` code
 filename = 'cost_all.csv'
-cost_all_msrs.to_csv(filename)
+path = os.path.join(measure_dir, filename)
+cost_all_msrs.to_csv(path)
 ```
 
 
