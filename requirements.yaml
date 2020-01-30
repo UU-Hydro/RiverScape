@@ -8,5 +8,4 @@ dependencies:
 - numpy
 - jupyter
 - geoviews
-- pysal
 - pcraster
