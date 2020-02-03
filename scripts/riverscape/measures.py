@@ -1092,7 +1092,7 @@ class RiverMeasures(object):
 
         # Loop over selected sections to position side channels
         flpl_IDs  = list(np.unique(pcr.pcr2numpy(selected_sections, -9999))[1:])
-        print(flpl_IDs)
+
         center_lines = pcr.nominal(mapIO.emptyMap(self.r.geom.dem))
 
         # Update 'correct' maximum of progress bar

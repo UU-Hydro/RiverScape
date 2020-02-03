@@ -64,7 +64,7 @@ The following Jupyter notebooks are provided:
 
   4. Evaluation of landowner involvement: [landowner_evaluation.ipynb](scripts/landowner_evaluation.ipynb)
 
-  5. Evaluation of an ensemble of measures: [measure_evaluation.ipynb](scripts/measure_evaluation.ipynb)
+  5. Evaluation of an ensemble of pre-defined measures: [measure_evaluation.ipynb](scripts/measure_evaluation.ipynb)
 
 
 

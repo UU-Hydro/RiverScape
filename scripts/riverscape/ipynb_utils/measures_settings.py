@@ -3,6 +3,9 @@ import ipywidgets
 from collections import OrderedDict
 
 
+from ipywidgets import HBox, VBox
+from ipywidgets import Layout
+
 
 settings = OrderedDict([
                     ('smoothing_percentage', 100),
@@ -153,23 +156,57 @@ def measures_settings():
 
 
 
-  grid = ipywidgets.GridspecLayout(4, 2)
-  grid[0, 0] = smoothing_percentage
-  grid[0, 1] = ipywidgets.HTML(value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+  #grid = ipywidgets.GridspecLayout(6, 2)
+  #grid[0, 0] = smoothing_percentage
+  #grid[0, 1] = ipywidgets.HTML(value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
 
-  grid[1, 0] = smoothing_ecotope
-  grid[1, 1] = ipywidgets.HTML(value="Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.")
+  #grid[1, 0] = smoothing_ecotope
+  #grid[1, 1] = ipywidgets.HTML(value="Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.")
 
-  grid[2, 0] = smoothing_trachytope
-  grid[2, 1] = ipywidgets.HTML(value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+  #grid[2, 0] = smoothing_trachytope
+  #grid[2, 1] = ipywidgets.HTML(value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
 
-  grid[3, 0] = lowering_percentage
-  grid[3, 1] = ipywidgets.HTML(value="jeez, where is this whitespace coming from?")
+  #grid[3, 0] = lowering_percentage
+  #grid[3, 1] = ipywidgets.HTML(value="jeez, where is this whitespace coming from?")
 
+  #grid[4, 0] = relocation_ecotope
+  #grid[4, 1] = ipywidgets.HTML(value="jeez, where is this whitespace coming from?")
+
+
+  #grid[5, 0] = relocation_trachytope
+  #grid[5, 1] = ipywidgets.HTML(value="jeez, where is this whitespace coming from?")
+
+
+  #display(grid)
+
+  #grid
+
+  #display(relocation_ecotope)
+  #display(relocation_trachytope)
+
+
+  text1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+  hbox1 = HBox([smoothing_percentage, ipywidgets.HTML(value=text1, layout=Layout(width='60%')) ])
+
+  text2 = text1
+  hbox2 = HBox([smoothing_ecotope, ipywidgets.HTML(value=text2, layout=Layout(width='60%'))])
+
+  text3 = text1
+  hbox3 = HBox([smoothing_trachytope, ipywidgets.HTML(value=text3, layout=Layout(width='60%'))])
+
+  text4 = text1
+  hbox4 = HBox([lowering_percentage, ipywidgets.HTML(value=text4, layout=Layout(width='60%'))])
+
+  text5 = text1
+  hbox5 = HBox([relocation_ecotope, ipywidgets.HTML(value=text5, layout=Layout(width='60%'))])
+
+  text6 = text1
+  hbox6 = HBox([relocation_trachytope, ipywidgets.HTML(value=text6, layout=Layout(width='60%'))])
+
+
+  grid = VBox([hbox1, hbox2, hbox3, hbox4, hbox5, hbox6])
 
   display(grid)
-
-  display(relocation_ecotope)
-  display(relocation_trachytope)
 
   return settings
