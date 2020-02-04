@@ -3,7 +3,7 @@
 
 
 github:
-#	pandoc intervent_parameter.md -o ../scripts/intervent_parameter.ipynb
+	pandoc intervent_parameter.md -o ../scripts/intervent_parameter.ipynb
 	pandoc biodiversity_evaluation.md -o ../scripts/biodiversity_evaluation.ipynb
 	pandoc cost_evaluation.md -o ../scripts/cost_evaluation.ipynb
 	pandoc landowner_evaluation.md -o ../scripts/landowner_evaluation.ipynb
