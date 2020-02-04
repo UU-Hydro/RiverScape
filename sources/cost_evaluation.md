@@ -52,7 +52,7 @@ measure_dir = riverscape.example_data_path()
 
 Cost evaluation is performed on a set of measures that you defined in the intervention planning notebook.
 Previously, you stored a set of measures to disk.
-Now choose the directory holding the measures that you want to evaluate, select the ```maps``` folder:
+Now choose the directory holding the measures that you want to evaluate, select the *maps* folder:
 
 
 ``` code

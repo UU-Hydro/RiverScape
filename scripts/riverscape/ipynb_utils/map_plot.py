@@ -62,7 +62,7 @@ def plot(raster, title='', hover=None):
 
   s = pcraster.clone().nrCols() / pcraster.clone().nrRows()
 
-  width = 800
+  width = 770
 
   if raster.dataType() == pcraster.Scalar:
     return img.options(cmap='viridis', tools=hover, aspect=s, colorbar=True, frame_width=width, toolbar="above").relabel(title)

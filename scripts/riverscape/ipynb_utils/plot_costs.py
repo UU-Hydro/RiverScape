@@ -20,7 +20,7 @@ def plot_costs(cost_all_msrs):
     # label for the tab
     label = row_label[0]
     cost = cost_all_msrs.loc[row_label,:].tolist()
-    p = figure(x_range=column_labels, plot_width=800, plot_height=400, toolbar_location=None, tools='')
+    p = figure(x_range=column_labels, plot_width=900, plot_height=400, toolbar_location=None, tools='')
 
     p.vbar(x=column_labels, width=0.5, top=cost)
     p.xaxis.major_label_orientation = 120.0
