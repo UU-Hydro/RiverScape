@@ -18,7 +18,7 @@ def plot_costs(cost_all_msrs):
 
   for row_label in row_labels:
     # label for the tab
-    label = row_label[0].split('_', 1)[0]
+    label = row_label[0]
     cost = cost_all_msrs.loc[row_label,:].tolist()
     p = figure(x_range=column_labels, plot_width=800, plot_height=400, toolbar_location=None, tools='')
 
