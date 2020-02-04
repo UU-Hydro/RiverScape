@@ -252,7 +252,8 @@ def dbf2df(dbf_path, index=None, cols=False, incl_index=False):
        
 def show_full_data_frame(data_frame):
     
-    print(data_frame.shape)
+    msg = "The size/shape of data frame is (number of rows, columns): " + str(data_frame.shape)
+    print(msg)
     
     pd.options.display.max_rows = data_frame.shape[0]
     pd.options.display.max_columns = data_frame.shape[1]
