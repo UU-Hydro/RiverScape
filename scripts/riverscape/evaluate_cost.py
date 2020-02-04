@@ -52,18 +52,18 @@ class CostTypes(object):
         * Raising embankment by 50 or 100 cm
         * Relocating embankment"""
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        self.name = 'TerribleLongDefaultNameWithoutAnyUseAndToBeRemoved'
 
 
 class CostPreparation(CostTypes):
     """
     Class for cost calculation for preparation of the project area.
     """
-    def __init__(self, name,
+    def __init__(self,
                  land_acq_distr, roads_distr, smoothing_distr, buildings_distr,
                  smoothing_classes):
-        CostTypes.__init__(self, name)
+        CostTypes.__init__(self)
         self.land_acq_distr = land_acq_distr
         self.roads_distr = roads_distr
         self.smoothing_distr = smoothing_distr
@@ -134,11 +134,11 @@ class CostEarthwork(CostTypes):
     case for floodplain lowering and side channel recreation. Cost depends on
     the pollution of the soil. """
 
-    def __init__(self, name,\
+    def __init__(self, \
                minemb_ext_use, minemb_int_use, minemb_polluted,\
                dem, minemb, groyne,
                pollution_zones, cost_input):
-        CostTypes.__init__(self, name)
+        CostTypes.__init__(self)
         self.minemb_ext_use = minemb_ext_use        # distribution in euro/cell
         self.minemb_int_use = minemb_int_use
         self.minemb_polluted = minemb_polluted
@@ -252,8 +252,8 @@ class CostEarthwork(CostTypes):
 class CostSmoothing(CostTypes):
     """Cost for lowering the floodplain roughness, i.e. removal
     of existing vegetation."""
-    def __init__(self, name, smoothing_distr):
-        CostTypes.__init__(self, name)
+    def __init__(self, smoothing_distr):
+        CostTypes.__init__(self)
 
         # cost distribution input
         self.smoothing_distr = smoothing_distr
@@ -280,9 +280,9 @@ class CostSmoothing(CostTypes):
 
 class CostDikeRelocation(CostTypes):
     """Calculate the cost of embankment relocation over the measure area."""
-    def __init__(self, name,\
+    def __init__(self,\
                  dike_reloc_distr, dike_length):
-        CostTypes.__init__(self, name)
+        CostTypes.__init__(self)
         self.dike_reloc_distr = dike_reloc_distr
         self.dike_length = dike_length
 
@@ -315,10 +315,10 @@ class CostDikeRelocation(CostTypes):
 
 class CostDikeRaising(CostTypes):
     """Calculate the cost of raising the embankment over 50 and 100 cm."""
-    def __init__(self, name,
+    def __init__(self,
                  dike_raise50_distr, dike_raise100_distr,
                  dike_length):
-        self.name = name
+        #self.name = name
         self.dike_raise50_distr = dike_raise50_distr    # units: Euro/km
         self.dike_raise100_distr = dike_raise100_distr
         self.dike_length = dike_length
@@ -365,9 +365,13 @@ class CostDistribution(object):
         self.mean = mean
         self.stddev = stddev
 
-    def plot(self):
+    def plot(self, std_dev=None):
         #pcr.aguila(self.mean, self.stddev)
-        return (ipynb_utils.plot(self.mean, 'Mean values') + ipynb_utils.plot(self.stddev, 'Standard deviation')).cols(1)
+
+        if std_dev is None:
+          return ipynb_utils.plot(self.mean, 'Mean values')
+        else:
+          return (ipynb_utils.plot(self.mean, 'Mean values') + ipynb_utils.plot(self.stddev, 'Standard deviation')).cols(1)
 
 
 def read_distribution(input_dir, cost_name):

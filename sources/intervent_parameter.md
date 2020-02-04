@@ -1,26 +1,37 @@
-# Introduction
+# Intervention planning
+
+
+## Overview
 
 [//]: <> (General idea of this notebook.)
 This notebook facilitates using the RiverScape Python package (Straatsma and Kleinhans, 2018) to parameterize and position landscaping measures and update the input data for the two-dimensional (2D) flow model Delft3D Flexible Mesh (DFM).
 
 [//]: <> (Study area.)
-For the current notebook version, we would use the River Waal, which is the main distributary of the River Rhine in the Netherlands.
+For the current notebook version, we use the River Waal, which is the main distributary of the River Rhine in the Netherlands.
+For general concepts and detailed description of the approach used here in these notebooks we refer to the publications
+[Straatsma et al. (2017)](https://advances.sciencemag.org/content/3/11/e1602762) and
+[Straatsma et al. (2019)](https://doi.org/10.5194/nhess-19-1167-2019).
+
 
 [//]: <> (TODO: Add Fig. 3 of Straatsma and Kleinhans, 2018)
 
 
 
 
-## Requirement (Python modules/packages)
+
+## How to start
+
+
+
+### Setting up the environment
+
+[//]: ## Requirement (Python modules/packages)
 
 To run this notebook, please import the following Python modules.
 
 
 ``` code
-%load_ext autoreload
-%autoreload 2
-
-# import standard modules
+# Import standard modules
 import os
 import sys
 import string
@@ -29,13 +40,16 @@ import time
 import math
 import pprint as pp
 
-# import required modules/packages (which may require installation)
+# Import required modules/packages
 import numpy as np
 import pandas as pd
 import geopandas as gpd
 from scipy.spatial import Delaunay
 from shapely.geometry import MultiLineString
 from shapely.ops import cascaded_union, polygonize
+
+import geoviews
+geoviews.extension('bokeh')
 
 
 from collections import OrderedDict
@@ -46,50 +60,57 @@ Please also make sure that this notebook file is in the same folder as the River
 You can then import the RiverScape Python module:
 
 ``` code
-from riverscape import *
-import geoviews
-geoviews.extension('bokeh')
+import riverscape
+from riverscape import pcrRecipes
+from riverscape import msr
+
+%reload_ext autoreload
+%autoreload 2
 ```
 
 
 
-# Input and output folders
+### Input and output folders
 
 In the following please define the input and output folders.
 
 
 ``` code
 # Default locations
-input_dir    = '/home/schmi109/development/projects/RiverScape/input_files/input' #os.getcwd()
+input_dir= riverscape.input_data_path()
 output_dir   = os.getcwd()
-
 ```
-You may also want to set the folder, interactively
-
-``` code
-# input_dir  = select_directory()
-```
+You may also want to set the folder interactively.
+You need to uncomment the following lines:
 
 ``` code
-# output_dir = select_directory()
+# input_dir  = riverscape.select_directory()
 ```
+
 ``` code
-# make scratch directory and go to this folder
+# output_dir = riverscape.select_directory()
+```
+
+
+Finally, some temporary folder for calculations will be created:
+
+``` code
+# Create scratch directory and go to this folder
 scratch_dir  = os.path.join(output_dir, "tmp")
 pcrRecipes.make_dir(scratch_dir)
 os.chdir(scratch_dir)
 
 # print some statements about the folder locations:
-msg = "The input folder is set on   : {}".format(input_dir)
+msg = "The input folder is set on:   {}".format(input_dir)
 print(msg)
-msg = "The output folder is set on  : {}".format(output_dir)
+msg = "The output folder is set on:  {}".format(output_dir)
 print(msg)
-msg = "The scratch folder is set on : {}".format(scratch_dir)
+msg = "The scratch folder is set on: {}".format(scratch_dir)
 print(msg)
 ```
 
 
-# Start processing/calculation
+## Start processing/calculation
 
 To start processing, please load the following cells in order to set and test some basic configuration.
 
@@ -100,7 +121,7 @@ To start processing, please load the following cells in order to set and test so
 pcrRecipes.make_dir(scratch_dir)
 os.chdir(scratch_dir)
 
-# set global option for pcraster such that length of cells is computed in true length of cells
+# set global option for PCRaster such that length of cells is computed in true length of cells
 pcr.setglobaloption('unittrue')
 
 # set the pcraster clone map
@@ -112,9 +133,9 @@ pcr.setclone(os.path.join(current_dir, 'clone.map'))
 
 
 
-## Loading input files
+### Loading input files
 
-By running the following cells, the input files would be read. These input files consist of the following attributes of current/existing condition.
+By running the following cells, the input files would be read. These input files consist of the following attributes of current conditions:
 
 * main_dike: current/existing river embankment properties, e.g. length, volume and height
 * minemb: minor embankment properties, e.g. length, volume and height
@@ -125,15 +146,14 @@ By running the following cells, the input files would be read. These input files
 * geom: river geometry attributes, e.g. clone, dem, dist_to_main_dike, dist_to_groyne_field, dist_to_main_channel, flpl_width, flpl_narrow, flpl_wide, main_channel_width, river_side, shore_line
 * lulc: land use and land cover attributes, e.g. backwaters, ecotopos, floodplain, groyne_field, main_channel, trachytopes, sections, winter_bed, real_estate_value
 
-For further information about them, please check Menno and Kleinhans (2018), see e.g. their Table 2.
+For further information about them, please check [Straatsma and Kleinhans (2018)](https://doi.org/10.1016/j.envsoft.2017.12.010).
+
 
 
 ``` code
 # change to the 'current_dir' (input data) for reading/importing input data
 os.chdir(current_dir)
 
-
-#TODO: Check why do we need this? It seems that os.path.join does not work?
 
 # reading current/existing river embankment properties for main dikes, minor embankments and groynes
 # - for each, this will return location, length, volume, and height
@@ -163,27 +183,32 @@ print(msg)
 
 
 
-### Listing attributes/variables
+### Listing attributes and variables
 
 After succesfully reading the files/maps, you should be able to list the attributes/variables of main_dike, minemb, groynes, hydro, mesh, axis, geom, and lulc in the following.
 
 
 ``` code
 for obj in ["main_dike", "minemb", "groynes", "hydro", "mesh", "axis", "geom", "lulc"]:
-    print("\n")
-    print(obj)
-    print(vars()[obj].__dict__.keys())
+    obj_vars = vars()[obj].__dict__.keys()
+    print('{}'.format(obj))
+
+    for var in obj_vars:
+        print('\t{}'.format(var))
+
+    print()
 ```
+
 
 
 
 
 ### Visualizing existing attributes
 
-You may want to check existing attributes by plotting the corresponding raster maps. You can use the plot function for that, for example to plot the digital elevation model type:
+You may want to inspect existing attributes by plotting the corresponding raster maps. You can use the plot function for that, for example to plot the digital elevation model type:
 
 ``` python
-plot(geom.dem)
+riverscape.plot(geom.dem)
 ```
 
 
@@ -196,7 +221,7 @@ plot(geom.dem)
 
 ``` code
 # plot river main channel width
-plot(geom.main_channel_width)
+riverscape.plot(geom.main_channel_width)
 ```
 
 
@@ -204,21 +229,21 @@ plot(geom.main_channel_width)
 
 ``` code
 # plot height of main_dike
-plot(main_dike.height)
+riverscape.plot(main_dike.height)
 ```
 
 
 
 ``` code
 # plot flpl_wide IDs
-plot(geom.flpl_wide)
+riverscape.plot(geom.flpl_wide)
 ```
 
 
 
 <br>
 
-## Initiating the River and Its Measures
+## Initiating the River and its Measures
 
 Given the aforementioned attributes, the River Waal and its current measured would be initiated by executing the following cells.
 
@@ -226,8 +251,7 @@ Given the aforementioned attributes, the River Waal and its current measured wou
 
 ``` code
 # The River Wall is initiated based on the aforementioned given attributes.
-waal = msr.River('Waal', axis, main_dike, minemb, groynes, hydro,
-                         mesh, lulc, geom)
+waal = msr.River('Waal', axis, main_dike, minemb, groynes, hydro, mesh, lulc, geom)
 ```
 
 
@@ -237,17 +261,17 @@ waal_msr = msr.RiverMeasures(waal)
 ```
 
 
-# Configuration for the Measures
+# Specifing the different measures
 
 First, you can have a look at the current specification of the ecotope and trachytope classes present in the area.
 The floodplain sections are depicted as well.
-Ecotopes are ...
-Trachytopes are ...
+Ecotopes are homogeneous ecological landscape units wrt vegetation structure or succession stage.
+Trachytopes are spatially-distributed roughness values for the channel.
 
 Open the maps with the following command.
 
 ``` code
-plot_eco_trachy_sec()
+riverscape.plot_eco_trachy_sec()
 ```
 
 
@@ -258,14 +282,14 @@ plot_eco_trachy_sec()
 ### Make your own side channel properties:
 
 
-<!-- The following properties are the default/setting configuration to the Measures. -->
+[//]: <!-- The following properties are the default/setting configuration to the Measures. -->
 The measures are configured with certain properties.
 You can inspect and change a few of them:
 
 
 
 ``` code
-settings = measures_settings()
+settings = riverscape.measures_settings()
 ```
 
 
@@ -275,7 +299,7 @@ You may want to modify the side channel properties using the following interacti
 
 
 ``` code
-channel_values = channel_properties()
+channel_values = riverscape.channel_properties()
 ```
 
 
@@ -288,12 +312,19 @@ Load the following cell to use your configuration.
 settings['channel_width'] = channel_values.kwargs['width']
 settings['channel_depth'] = channel_values.kwargs['depth']
 settings['channel_slope'] = channel_values.kwargs['slope']
-pp.pprint(settings)
 waal_msr.settings = settings
 ```
 
+You can also print the current settings to check whether they are suitable:
 
-### Selecting the mask/region:
+``` code
+for cur in settings.items():
+    print('{}: {}'.format(cur[0], cur[1]))
+```
+
+
+
+### Selecting the region mask for measure area:
 
 Please select the areas where you want to perform this measure.
 
@@ -310,46 +341,45 @@ Please also give a label for this measure.
 label = 'custom_label'
 ```
 
+[//]: ``` code
+[//]: # Default mask and label
+[//]: #label = 'everywhere'
+[//]: #mask = pcr.boolean(1)
+[//]
+[//]: # TODO: Make interactive input for selecting mask for every measure.
+[//]
+[//]: # - some examples to select a limited mask region
+[//]
+[//]: #label = "large_sections"
+[//]: #mask = pcr.ifthen(pcr.areaarea(waal.geom.flpl_wide) > 1e6, pcr.boolean(1.0))
+[//]
+[//]: # -- this will return floodplain with IDs < 5
+[//]: #label = "edwin_sections"
+[//]: #mask = pcr.ifthen(pcr.scalar(waal.geom.flpl_wide) < 5, pcr.boolean(1.0))
+[//]
+[//]: # - plot the chosen mask
+[//]: #plot(mask)
+[//]: #chosen_flpl_wide = pcr.ifthen(mask, waal.geom.flpl_wide)
+[//]: #plot(chosen_flpl_wide)
+[//]: ```
+
+
 ``` code
-# Default mask and label
-#label = 'everywhere'
-#mask = pcr.boolean(1)
-
-# TODO: Make interactive input for selecting mask for every measure.
-
-# - some examples to select a limited mask region
-
-#label = "large_sections"
-#mask = pcr.ifthen(pcr.areaarea(waal.geom.flpl_wide) > 1e6, pcr.boolean(1.0))
-
-# -- this will return floodplain with IDs < 5
-#label = "edwin_sections"
-#mask = pcr.ifthen(pcr.scalar(waal.geom.flpl_wide) < 5, pcr.boolean(1.0))
-
-# - plot the chosen mask
-#plot(mask)
-#chosen_flpl_wide = pcr.ifthen(mask, waal.geom.flpl_wide)
-#plot(chosen_flpl_wide)
-```
-
-
-``` code
-
-selection = select_area(waal.geom.flpl_wide)
-
-```
-``` code
-mask = generate_mask(waal.geom.flpl_wide, selection)
+selection = riverscape.select_area(waal.geom.flpl_wide)
 
 ```
+``` code
+mask = riverscape.generate_mask(waal.geom.flpl_wide, selection)
+
+```
 
 ``` code
-plot(mask)
+riverscape.plot(mask)
 ```
 
 ``` code
 chosen_flpl_wide = pcr.ifthen(mask, waal.geom.flpl_wide)
-plot(chosen_flpl_wide)
+riverscape.plot(chosen_flpl_wide)
 ```
 
 
@@ -358,6 +388,7 @@ plot(chosen_flpl_wide)
 ### Implementing the measure
 
 By running the following cell, the measure will be implemented.
+Note that this step can consume noticeable computing time, depending on the number of areas you selected.
 
 
 ``` code
@@ -379,7 +410,7 @@ chan_msr.plot()
 
 
 
-## Floodplain lowering measure:
+## Floodplain lowering measure
 
 For the floodplain lowering measure you need to select new areas where you want to introduce this measure.
 First, give a new identifier:
@@ -393,13 +424,13 @@ Then specify the sections that will form the new mask:
 
 ``` code
 sections = pcr.readmap('flpl_sections.map')
-selection = select_area(sections)
+selection = riverscape.select_area(sections)
 ```
 
 and generate the new mask
 
 ``` code
-mask = generate_mask(sections, selection)
+mask = riverscape.generate_mask(sections, selection)
 ```
 
 For checking purposes you could plot the mask map.

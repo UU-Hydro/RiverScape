@@ -20,6 +20,6 @@ def input_data_path(directory=None):
 
 def example_data_path():
 
-  p = os.path.join(os.getcwd(), '..', 'outputs', 'sidechannel_evr_natural')
+  p = os.path.join(os.getcwd(), '..', 'outputs', 'example_single_measure', 'maps') # 'sidechannel_evr_natural')
 
   return p
