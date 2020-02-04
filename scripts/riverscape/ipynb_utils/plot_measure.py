@@ -1,10 +1,13 @@
 import ipywidgets
 import os
 
+from ipywidgets import interactive, fixed
+
 
 import pcraster
 
 from .map_plot import plot
+
 
 
 
@@ -31,23 +34,22 @@ def _plot_datasets(data_path, measure_dir):
 
 
 
+
 def plot_measures(data_path):
 
 
+  dd_style = {'description_width': 'initial'}
+
   w = ipywidgets.Dropdown(
       options=['dikeraising_evr_smooth', 'dikeraising_lrg_smooth', 'groynelowering_evr_smooth', 'groynelowering_lrg_smooth', 'lowering_evr_natural', 'lowering_evr_smooth', 'lowering_lrg_natural', 'lowering_lrg_smooth', 'minemblowering_evr_smooth', 'minemblowering_lrg_smooth', 'sidechannel_evr_natural', 'sidechannel_evr_smooth', 'sidechannel_lrg_natural', 'sidechannel_lrg_smooth', 'smoothing_evr_natural', 'smoothing_evr_smooth', 'smoothing_lrg_natural', 'smoothing_lrg_smooth'],
-      description='Measure to display:'
+      value='lowering_evr_smooth',
+      description='Select measure:',
+      style=dd_style
   )
 
 
+  res = interactive(_plot_datasets, data_path=fixed(data_path), measure_dir=w)
 
-  def on_change(change):
-      if change['type'] == 'change' and change['name'] == 'value':
-          selected = change['new']
+  display(res)
 
-          _plot_datasets(data_path, selected)
-
-  w.observe(on_change)
-
-  display(w)
 

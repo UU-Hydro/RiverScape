@@ -210,8 +210,9 @@ def plot_scatter(label=None, water=None, stakeholders=None, costs=None, potAll=N
 
   v1 = 'FI'
   v2 = 'cost_sum'
-  pp = pareto_points(df[[v1, v2]])
-  subfig33.line(pp[v1], pp[v2], line_width=20, color='gray', line_alpha=0.25)
+  pp = pareto_points(pd.concat([-df[[v1]], df[[v2]]], axis=1)) # pd.concat([df[[v1], -df[[v2]]], axis=1))
+                                #df[[v1, v2]])
+  subfig33.line(-pp[v1], pp[v2], line_width=20, color='gray', line_alpha=0.25)
 
   scatter33 = subfig33.scatter(x, y,  source=df, size='marker_size', marker=factor_mark('labels', markers, categories), color=factor_cmap('labels', colours, categories), fill_alpha=fill_alpha, line_width=line_width)
   subfig33.yaxis.major_label_text_font_size = '0pt'

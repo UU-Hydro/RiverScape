@@ -1,9 +1,12 @@
 # RiverScape
 
 
-This repository holds a set of Jupyter notebooks for the evaluation of river management measures,
-the RiverScape Python package and necessary input data.
+This repository holds a set of Jupyter notebooks for the interactive evaluation of river management measures, the RiverScape Python package and necessary input data.
 
+For a detailed description of the concepts, models and study area we refer to the reference publications
+[Straatsma and Kleinhans (2018)](https://doi.org/10.1016/j.envsoft.2017.12.010),
+[Straatsma et al. (2017)](https://advances.sciencemag.org/content/3/11/e1602762) and
+[Straatsma et al. (2019)](https://doi.org/10.5194/nhess-19-1167-2019).
 
 
 ## How to install
