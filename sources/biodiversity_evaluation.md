@@ -3,7 +3,7 @@
 ## Overview
 
 
-This notebook facilitates using the RiverScape Python package to evaluate the effects of RiverScape measures on biodivesity using the BIOSAFE model. If this is your first time running the notebook, we advise you to read its reference paper ([Straatsma et al. (2017)](https://advances.sciencemag.org/content/3/11/e1602762), including its [supplementary material](http://advances.sciencemag.org/cgi/content/full/3/11/e1602762/DC1)).
+This notebook facilitates using the RiverScape Python package to evaluate the effects of RiverScape measures on biodivesity using the BIOSAFE model. If this is your first time running the notebook, we advise you to read its reference paper ([Straatsma et al., 2017](https://advances.sciencemag.org/content/3/11/e1602762), including its [supplementary material](http://advances.sciencemag.org/cgi/content/full/3/11/e1602762/DC1)).
 
 
 
@@ -95,7 +95,7 @@ print(msg)
 os.chdir(root_dir)
 ```
 
-Output (scratch) folder
+Output folder
 ========================
 
 Please set your output folder. Please adjust if necessary.
@@ -124,11 +124,10 @@ msg = "The output folder is set on   : {}".format(output_folder)
 print(msg)
 ```
 
-The files in the input folder will be copied to the output folder.
+The files in the input folder will be copied to the output folder. The output folder will also be set as the working directory. All plots would be saved in this directory. 
 
 
 ``` code
-# if os.path.exists(output_folder): shutil.rmtree(output_folder)      !!! OLS: NO WAY, THIS IS FCKN DANGEROUS !!!
 shutil.copytree(input_dir_source, output_folder)
 
 # use the output folder as the working directory
@@ -138,14 +137,17 @@ os.chdir(output_folder)
 Reading input files
 ========================
 
-In this notebook, the Spreadsheet Application For Evaluation of BIOdiversity (BIOSAFE) model (REFERENCES) are applied to calculate biodiversity indices of protected and endangered species that are characteristic of the fluvial environment.
+To calculate biodiversity indices of protected and endangered species that are characteristic of the fluvial environment, this notebook applies the Spreadsheet Application For Evaluation of BIOdiversity (BIOSAFE) model (see e.g. [de Nooij et al., 2003](https://doi.org/10.1002/rra.779). The original spreadsheet file in an excel format is provided in the following location. We adopt the excel file to this notebook. 
 
 
 ``` code
 # the original excel file
-# excelFile = os.path.join(output_folder, 'BIOSAFE_20150629.xlsx')
+excelFile = os.path.join(output_folder, 'BIOSAFE_20150629.xlsx')
+msg = "The original excel file is given on {}".format(excelFile)
+print(msg)
 ```
 
+We adopt the spreadsheet/excel file to this notebook. 
 
 The first input to the spreadsheet is a matrix **legalWeights** (Legislative Weights) of user-specified weights for 16 different policy and legislative documents. The 16 legal documents considered are the most recent versions of: Dutch Red List species that are based on the criteria of the International Union for Conservation of Nature (IUCN), Dutch Flora and Fauna Act, EU Habitat Directive, EU Birds Directive, Bern Convention, and Bonn Convention. We assumed equal weights, attributing equal value to the protection by each of the legal and policy documents.
 
@@ -175,8 +177,6 @@ linksLaw = pd.read_csv(os.path.join(output_folder, 'linksLaw.csv'), index_col = 
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 bsIO.show_full_data_frame(linksLaw)
-
-#TODO: Formating 0 and 1 without decimal.
 ```
 
 The third input is **linksEco** (Ecotope Links), which is the relational matrix between species and ecotopes. The matrix is based on expert ecological judgement of species and their hydromorphological and vegetation habitat needs in different life stages.
@@ -199,8 +199,13 @@ The column titles in linksEco represent the ecotope classes used in this study. 
 
 
 ``` code
-excelFile = os.path.join(output_folder, 'BIOSAFE_20150629.xlsx')
-lut = pd.read_excel(excelFile, sheet_name = 'lut_RWES').fillna(method='ffill')
+# # using excel file
+# ~ excelFile = os.path.join(output_folder, 'BIOSAFE_20150629.xlsx')
+# ~ lut = pd.read_excel(excelFile, sheet_name = 'lut_RWES').fillna(method='ffill')
+
+# using csv file
+csvFile = os.path.join(output_folder, 'lut_RWES.csv')
+lut = pd.read_csv(csvFile, index_col = 0)
 ```
 
 
@@ -456,8 +461,8 @@ ecotopes = biosafe.read_map_with_legend(os.path.join(output_folder, 'ecotopes.ma
 
 
 ``` code
-plot(ecotopes.pcr_map)
-#TODO: Improving ecotope plotting.
+# # Plot the ecotope map (not needed)
+# ~ plot(ecotopes.pcr_map)
 ```
 
 The species presence and characteristics are given in the following database ndff_species.
@@ -483,7 +488,6 @@ bs_spatial = biosafe.spatialBiosafe(bs, ecotopes, flpl_sections, ndff_species,
                             params = ['FI', 'TFI'],
                             toFiles = None)
 FI, TFI = bs_spatial.spatial()
-#TODO: Remove the print statement '<class 'pcraster._pcraster.Field>'
 ```
 
 The calculated FI values for all floodplain IDs are given as follows.
@@ -514,8 +518,8 @@ msr_eco = biosafe.read_map_with_legend(os.path.join(output_folder, 'ecotopes_msr
 
 
 ``` code
-plot(msr_eco.pcr_map)
-#TODO: Improving ecotope plotting.
+# # Plot the ecotope map (not needed)
+# ~ plot(msr_eco.pcr_map)
 ```
 
 Note that this measure is only implemented in some parts of the model area (not for all floodplain IDs). Its reference/existing condition (before the measure), which is taken from them map **ecotopes** map, is given as **ref_eco**.
@@ -534,8 +538,8 @@ plot(sections)
 
 
 ``` code
-plot(ref_eco.pcr_map)
-#TODO: Improving ecotope plotting.
+# # Plot the ecotope map (not needed)
+# ~ plot(ref_eco.pcr_map)
 ```
 
 The BIOSAFE model for the reference/existing condition is calculated as follows. For this exercise, we just calculate the scores FI and TFI.
@@ -599,7 +603,3 @@ plt.savefig('comparison_biosafe_FI.png', dpi=300)
 comparison.to_csv('comparison_biosafe_FI.csv')
 ```
 
-
-``` code
-
-```
