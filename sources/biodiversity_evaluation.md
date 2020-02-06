@@ -13,13 +13,13 @@ its [supplementary
 material](http://advances.sciencemag.org/cgi/content/full/3/11/e1602762/DC1)).
 
 
-
-```python
+<!--
+``` code
 # to display all output from a cell
 from IPython.core.interactiveshell import InteractiveShell
 InteractiveShell.ast_node_interactivity = "all"
 # see: https://ipython.readthedocs.io/en/stable/config/options/terminal.html#configtrait-InteractiveShell.ast_node_interactivity
-```
+```-->
 
 Requirement (Python modules/packages)
 -----------------------------------------------------------
@@ -27,7 +27,7 @@ Requirement (Python modules/packages)
 To run this notebook, please import the following Python modules.
 
 
-```python
+``` code
 # import standard modules
 import os
 import shutil
@@ -54,10 +54,13 @@ the RiverScape Python module files that must be loaded. You can then
 import the RiverScape Python module by running the following cell.
 
 
-```python
+``` code
 from riverscape import *
 import geoviews
 geoviews.extension('bokeh')
+
+%reload_ext autoreload
+%autoreload 2
 ```
 
 Input folder
@@ -66,7 +69,7 @@ Input folder
 The input folder is given in the following location.
 
 
-```python
+``` code
 # set the current directory as the root directory
 try:
     if root_dir == None: root_dir = os.getcwd()
@@ -74,7 +77,7 @@ except:
     root_dir = os.getcwd()
 
 # by default, the input folder is given in the following location that is relative to the root directory (the current directory)
-github_input_dir_source = "../input_files/input/bio/"
+github_input_dir_source = os.path.join('..', 'input_files', 'input', 'bio')
 input_dir_source = os.path.join(root_dir, github_input_dir_source)
 ```
 
@@ -82,7 +85,7 @@ You may also want to set the input folder, interactively, by running the
 following cells.
 
 
-```python
+``` code
 # go to the above suggested 'input_dir_source'
 os.chdir(input_dir_source); input_dir_source = os.getcwd()
 
@@ -96,8 +99,8 @@ input_dir_source = get_input_dir_source
 ```
 
 
-```python
-msg = "The input folder is set on   : {}".format(input_dir_source)
+``` code
+msg = "The input folder is set to: {}".format(input_dir_source)
 print(msg)
 
 # return to the root folder for further processes.
@@ -107,31 +110,34 @@ os.chdir(root_dir)
 Output folder
 =============
 
-Please set your output folder. Please adjust if necessary.
+Please set your output folder. It will be generated in case it does not exist. Please adjust the location if necessary.
 
 
-```python
-output_folder = "/scratch-shared/edwinhs/riverscape/biosafe_development/test_biosafe_5/"
+``` code
+output_folder_name = 'output_bio'
+output_folder = os.path.join(os.getcwd(), output_folder_name)
+if not os.path.exists(output_folder):
+    os.mkdir(output_folder)
 ```
 
-You can also set the output folder, interactively, by running the
+You can also set the output folder interactively. Uncomment the following lines and run the
 following cells.
 
 
-```python
-# open an interactive window
-get_output_folder = ""
+``` code
+# # open an interactive window
+# get_output_folder = ""
 # get_output_folder = select_directory()
-# - if cancel or not used, we use the above defined 'output_folder'
-if get_output_folder == () or get_output_folder == "": get_output_folder = output_folder
+# # - if cancel or not used, we use the above defined 'output_folder'
+# if get_output_folder == () or get_output_folder == "": get_output_folder = output_folder
 
-output_folder = get_output_folder
+# output_folder = get_output_folder
 ```
 
+To inspect the output path print it:
 
-```python
-msg = "The output folder is set on   : {}".format(output_folder)
-print(msg)
+``` code
+print('Output folder set to: {}'.format(output_folder))
 ```
 
 The files in the input folder will be copied to the output folder. The
@@ -139,17 +145,17 @@ output folder will also be set as the working directory. All plots would
 be saved in this directory.
 
 
-```python
-# safe copying method 
+``` code
+# safe copying method
 source = os.listdir(input_dir_source)
 destination = output_folder
 for files in source:
     shutil.copy(os.path.join(input_dir_source, files), destination)
 
-#~ # dangerous copying method 
+#~ # dangerous copying method
 #~ if os.path.exists(output_folder): shutil.rmtree(output_folder)
 #~ shutil.copytree(input_dir_source, input_dir_source)
-    
+
 # use the output folder as the working directory
 os.chdir(output_folder)
 ```
@@ -166,7 +172,7 @@ an excel format is provided in the following location. We adopt the
 excel file to this notebook.
 
 
-```python
+``` code
 # the original excel file
 excelFile = os.path.join(output_folder, 'BIOSAFE_20150629.xlsx')
 msg = "The original excel file is given on {}".format(excelFile)
@@ -189,12 +195,12 @@ Please execute the following cells to load and visualize the
 **legalWeights** used in this study.
 
 
-```python
+``` code
 legalWeights = pd.read_csv(os.path.join(output_folder, 'legalWeights.csv'), index_col = 0)
 ```
 
 
-```python
+``` code
 bsIO.show_full_data_frame(legalWeights)
 ```
 
@@ -208,12 +214,12 @@ Please execute the following cells to load and visualize the
 **linksLaw** used in this study.
 
 
-```python
+``` code
 linksLaw = pd.read_csv(os.path.join(output_folder, 'linksLaw.csv'), index_col = 0)
 ```
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(linksLaw)
@@ -228,12 +234,12 @@ Please execute the following cells to load and visualize the
 **linksEco** used in this study.
 
 
-```python
+``` code
 linksEco = pd.read_csv(os.path.join(output_folder, 'linksEco.csv'), index_col = 0)
 ```
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(linksEco)
@@ -245,7 +251,7 @@ on the following relationship matrix **lut** that can be loaded and
 visualized by executing the following notebook cells.
 
 
-```python
+``` code
 #~ # using excel file
 #~ excelFile = os.path.join(output_folder, 'BIOSAFE_20150629.xlsx')
 #~ lut = pd.read_excel(excelFile, sheet_name = 'lut_RWES').fillna(method='ffill')
@@ -256,7 +262,7 @@ lut = pd.read_csv(csvFile, index_col = 0)
 ```
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(lut)
@@ -270,19 +276,19 @@ following notebook cells, we can derive and visualize the Ecotope Links
 **linksNewEcoAgg**, consisting oldEcotope and newEcotope.
 
 
-```python
+``` code
 linksNewEcoAgg = biosafe.aggregateEcotopes(linksEco, lut)
 ```
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(linksNewEcoAgg)
 ```
 
 
-```python
+``` code
 print(linksEco.shape)
 print(linksNewEcoAgg.shape)
 ```
@@ -299,7 +305,7 @@ particularly in the column **speciesPresence**, with the values 0 and 1
 indicating absent and present.
 
 
-```python
+``` code
 speciesPresence = pd.DataFrame(np.random.randint(2, size=len(linksLaw)),\
                     columns=['speciesPresence'], \
                     index=linksLaw.index)
@@ -307,12 +313,12 @@ speciesPresenceFull = speciesPresence
 ```
 
 
-```python
-# TODO: Menno has to define a method to simplify, to reduce the number of specieses. 
+``` code
+# TODO: Menno has to define a method to simplify, to reduce the number of specieses.
 ```
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(speciesPresence)
@@ -323,14 +329,14 @@ For this exercise, we simplify all areas of ecotope classes
 cell.
 
 
-```python
+``` code
 ecotopeArea = pd.DataFrame(np.ones(len(linksNewEcoAgg.columns)-1) * 1e5,\
                            columns = ['area_m2'],\
                            index = linksNewEcoAgg.columns.values[0:-1])
 ```
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(ecotopeArea)
@@ -345,14 +351,14 @@ defined above, the BIOSAFE model is initiated by running the following
 cell.
 
 
-```python
+``` code
 bs = biosafe.biosafe(legalWeights, linksLaw, linksNewEcoAgg, speciesPresence, ecotopeArea)
 ```
 
 Then, we can calculate all BIOSAFE scores (potential and actual ones).
 
 
-```python
+``` code
 SScoresSpecies = bs.SScoresSpecies()
 summarySScores = bs.taxGroupSums()
 SEcoPot = bs.SEcoPot()
@@ -375,14 +381,14 @@ FTEI = bs.FTEI()
 Exploring the BIOSAFE scores/indices
 ================================
 
-After running the BIOSAFE model, we would explore the BIOSAFE scores/indices by running the following cells. Note that we distinguish between **potential** biodiversity indices, which depend on ecotope presence only, and **actual** biodiversity indices, which combine ecotope and species presences. To understand the description of each score, we refer to the [supplementary material](http://advances.sciencemag.org/cgi/content/full/3/11/e1602762/DC1) of [Straatsma et al. (2017)](https://advances.sciencemag.org/content/3/11/e1602762) that provides all equations to calculate these scores. Figure S1 in the [supplementary material](http://advances.sciencemag.org/cgi/content/full/3/11/e1602762/DC1) shows the flow chart of the BIOSAFE methodology, while a graphical illustration of BIOSAFE score computation is given in Figure S2. 
+After running the BIOSAFE model, we would explore the BIOSAFE scores/indices by running the following cells. Note that we distinguish between **potential** biodiversity indices, which depend on ecotope presence only, and **actual** biodiversity indices, which combine ecotope and species presences. To understand the description of each score, we refer to the [supplementary material](http://advances.sciencemag.org/cgi/content/full/3/11/e1602762/DC1) of [Straatsma et al. (2017)](https://advances.sciencemag.org/content/3/11/e1602762) that provides all equations to calculate these scores. Figure S1 in the [supplementary material](http://advances.sciencemag.org/cgi/content/full/3/11/e1602762/DC1) shows the flow chart of the BIOSAFE methodology, while a graphical illustration of BIOSAFE score computation is given in Figure S2.
 
-Note that during this exploration, you may want to skip some cells for visualizing some values in data frames or clear their outputs after executing them, particularly if they involve large data frames. 
+Note that during this exploration, you may want to skip some cells for visualizing some values in data frames or clear their outputs after executing them, particularly if they involve large data frames.
 
 We start this exploration with **SScoresSpecies** that consists of the calculated potential and actual species scores, **Spotential** and **Sactual** (PSS and ASS in the paper). For each species, their calculated values are given as follows.
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(SScoresSpecies)
@@ -393,7 +399,7 @@ scores, **PTB** and **ATB**, can be calculated for each taxonomic group as follo
 taxonomic group biodiversity, **TBS**, saturation can also be calculated.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(summarySScores)
 ```
 
@@ -404,14 +410,14 @@ first one shows their potential scores, **SEcoPot**, while the latter
 contains their actual scores, **SEcoAct**.
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(SEcoPot)
 ```
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # bsIO.show_full_data_frame(SEcoAct)
@@ -421,7 +427,7 @@ For each taxonomic group and for each ecotope class, the sum of SEcoPot
 can be calculated as **PTE**, potential taxonomic group ecotope constant.
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 bsIO.show_full_data_frame(PTE)
@@ -431,7 +437,7 @@ For each taxonomic group and for each ecotope class, the sum of SEcoAct
 can be calculated as **ATE**, actual taxonomic group ecotope constant.
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 bsIO.show_full_data_frame(ATE)
@@ -441,7 +447,7 @@ Based on ATE and PTE, we can calculate **TES**, taxonomic group ecotope
 saturation index, for each taxonomic group and ecotope area.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(TES)
 ```
 
@@ -449,7 +455,7 @@ Based on PTB and PTE, we can calculate **TEI**, taxonomic group ecotope
 importance constant, for each taxonomic group and ecotope area.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(TEI)
 ```
 
@@ -458,7 +464,7 @@ taxonomic group ecotope constant, for each taxonomic group and ecotope
 area.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(ATEI)
 ```
 
@@ -467,7 +473,7 @@ group flood plain importance score, **TFI** (PotTax in the paper), can be
 calculated as follows.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(TFI)
 ```
 
@@ -475,7 +481,7 @@ The sum of TFI is reported as **FI** (PotAll in the paper), the potential floodp
 importance score.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(FI)
 ```
 
@@ -484,14 +490,14 @@ group flood plain importance score, **ATFI** (ActTax in the paper), can be
 calculated as follows.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(ATFI)
 ```
 
-The sum of ATFI is reported as the actual floodplain importance score, **AFI** (ActAll in the paper). 
+The sum of ATFI is reported as the actual floodplain importance score, **AFI** (ActAll in the paper).
 
 
-```python
+``` code
 bsIO.show_full_data_frame(AFI)
 ```
 
@@ -499,7 +505,7 @@ Based on AFI and FI, we can calculated the floodplain importance saturation, **F
 in the paper), as follows.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(FIS)
 ```
 
@@ -509,7 +515,7 @@ and FIS. TFIS describes the fraction/saturation of actual over potential
 biodiversity.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(TFIS)
 ```
 
@@ -519,12 +525,12 @@ describes the fraction of suitable ecotopes, weighed by law, for each
 taxonomic group.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(TFHS)
 ```
 
 
-```python
+``` code
 # bsIO.show_full_data_frame(FTEI)
 # FTEI is not found in the paper.
 # FTEI: Floodplain Taxonomic group Ecotope Importance
@@ -534,30 +540,30 @@ Running the BIOSAFE in a spatial mode
 =====================================
 
 In the following cells, we will demonstrate the BIOSAFE model in a
-spatial model. The BIOSAFE model will be fed by spatial data, particularly on ecotope distribution and species monitoring data. 
+spatial model. The BIOSAFE model will be fed by spatial data, particularly on ecotope distribution and species monitoring data.
 
 We assume the following floodplain section map **flpl\_sections**, which would be loaded and vizualized by executing the following notebook cells.
 
 
-```python
+``` code
 flpl_sections_f = os.path.join(output_folder, 'flpl_sections.map')
 flpl_sections = pcr.readmap(flpl_sections_f)
 ```
 
 
-```python
+``` code
 plot(flpl_sections)
 ```
 
-The following ecotope map **ecotopes** would be assumed. 
+The following ecotope map **ecotopes** would be assumed.
 
 
-```python
+``` code
 ecotopes = biosafe.read_map_with_legend(os.path.join(output_folder, 'ecotopes.map'))
 ```
 
 
-```python
+``` code
 #~ # plot the ecotope map (not needed)
 #~ plot(ecotopes.pcr_map)
 ```
@@ -565,12 +571,12 @@ ecotopes = biosafe.read_map_with_legend(os.path.join(output_folder, 'ecotopes.ma
 For the input related to species monitoring data, the following data frame of **ndff_species** is used (i.e. related to species presence and characteristics).
 
 
-```python
+``` code
 ndff_species = pd.read_pickle(os.path.join(output_folder, 'ndff_sub_BS_13.pkl'))
 ```
 
 
-```python
+``` code
 # Note: This cell is for visualizing data only and may be heavy.
 # You may want to skip it or clear its output after executing it.
 # ndff_species.shape
@@ -583,7 +589,7 @@ spatial model by running the following cell. Note that the inputs of
 scores **FI** and **TFI**.
 
 
-```python
+``` code
 bs_spatial = biosafe.spatialBiosafe(bs, ecotopes, flpl_sections, ndff_species,
                             params = ['FI', 'TFI'],
                             toFiles = None)
@@ -593,14 +599,14 @@ FI, TFI = bs_spatial.spatial()
 The calculated TFI values are given as follows, for each taxonomic group and for each floodplain section.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(TFI)
 ```
 
 Then, for each flood plain section, the calculated FI value is given as follows.
 
 
-```python
+``` code
 bsIO.show_full_data_frame(FI)
 ```
 
@@ -608,18 +614,18 @@ Assessing biodiversity change, before and after measure
 ===================================================
 
 The exercise in the following cells is an exercise to access such a floodplain
-measure to biodiversity change. 
+measure to biodiversity change.
 
 We assume such a measure is implemented in the following ecotope map
 **msr_eco**.
 
 
-```python
+``` code
 msr_eco = biosafe.read_map_with_legend(os.path.join(output_folder, 'ecotopes_msr.map'))
 ```
 
 
-```python
+``` code
 #~ # plot the ecotope map (not needed)
 #~ plot(msr_eco.pcr_map)
 ```
@@ -630,7 +636,7 @@ area (not for all floodplain IDs). Its reference/existing condition
 given as **ref\_eco**.
 
 
-```python
+``` code
 msr_area = pcr.defined(msr_eco.pcr_map)
 sections = pcr.ifthen(msr_area, pcr.nominal(1))
 ref_eco = biosafe.LegendMap(pcr.ifthen(msr_area, ecotopes.pcr_map), msr_eco.legend_df)
@@ -639,12 +645,12 @@ ref_eco = biosafe.LegendMap(pcr.ifthen(msr_area, ecotopes.pcr_map), msr_eco.lege
 The flood plain sections where the measure is implemented are illustrated below. We will evaluate biodiversity change within this area.
 
 
-```python
+``` code
 plot(sections)
 ```
 
 
-```python
+``` code
 #~ # plot the ecotope map (not needed)
 #~ plot(ref_eco.pcr_map)
 ```
@@ -656,7 +662,7 @@ The BIOSAFE model for the reference/existing condition is calculated as
 follows. For this exercise, we just calculate the scores **FI** and **TFI** (with the subscript **ref** indicating the reference condition, before the measure).
 
 
-```python
+``` code
 bs_ref = biosafe.spatialBiosafe(bs, ref_eco, sections, ndff_species,
                         params = ['FI', 'TFI'], toFiles = None)
 FI_ref, TFI_ref = bs_ref.spatial()
@@ -668,7 +674,7 @@ Biodiversity after the measure
 The BIOSAFE model for the measure condition is calculated as follows. We also calculate the scores **FI** and **TFI** (with the subscript **msr** indicating the condition after the measure).
 
 
-```python
+``` code
 bs_msr = biosafe.spatialBiosafe(bs, msr_eco, sections, ndff_species,
                         params = ['FI', 'TFI'], toFiles = None)
 FI_msr, TFI_msr = bs_msr.spatial()
@@ -677,19 +683,19 @@ FI_msr, TFI_msr = bs_msr.spatial()
 Evaluating biodiversity change
 ----------------------------------------------
 
-After implemeting the BIOSAFE model for the before and after measures, **bs_ref** and **bs_msr**, we can compare their scores. 
+After implemeting the BIOSAFE model for the before and after measures, **bs_ref** and **bs_msr**, we can compare their scores.
 
 We can compare and plot the **TFI** scores, before and after the
 measure.
 
 
-```python
+``` code
 #%% activating matplotlib visualization
 %matplotlib notebook
 ```
 
 
-```python
+``` code
 sns.set_style("ticks")
 # TFI_ref.drop(['xcoor', 'ycoor'], axis=1).plot.bar()
 # TFI_msr.drop(['xcoor', 'ycoor'], axis=1).plot.bar()
@@ -708,10 +714,10 @@ comparison.to_csv('comparison_biosafe_TFI.csv')
 ```
 
 We can also compare and plot the **FI** scores, before and after the
-measure, by running the following cells. 
+measure, by running the following cells.
 
 
-```python
+``` code
 sns.set_style("ticks")
 # FI_ref.drop(['xcoor', 'ycoor'], axis=1).plot.bar()
 # FI_msr.drop(['xcoor', 'ycoor'], axis=1).plot.bar()
@@ -725,6 +731,6 @@ comparison.to_csv('comparison_biosafe_FI.csv')
 ```
 
 
-```python
+``` code
 
 ```
