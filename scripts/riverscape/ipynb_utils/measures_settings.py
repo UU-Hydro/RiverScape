@@ -185,23 +185,23 @@ def measures_settings():
   #display(relocation_trachytope)
 
 
-  text1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  text1 = 'This user-specified percentage is required for vegetation roughness measure. The score at a specific percentile of the distribution is used as a threshold for positioning the roughness smoothing. Areas where alpha, the product of specific discharge and Nikuradse equivalent roughness length, exceeded the percentile score are selected for roughness smoothing. The percentile is calculated as 100 minus the user-specified percentage smoothing_percentage of the terrestrial floodplain area.'
 
   hbox1 = HBox([smoothing_percentage, ipywidgets.HTML(value=text1, layout=Layout(width='60%')) ])
 
-  text2 = text1
+  text2 = 'The (new) ecotope unit that is applied for the smoothing measure'
   hbox2 = HBox([smoothing_ecotope, ipywidgets.HTML(value=text2, layout=Layout(width='60%'))])
 
-  text3 = text1
+  text3 = 'The (new) trachytope unit that is applied for the smoothing measure'
   hbox3 = HBox([smoothing_trachytope, ipywidgets.HTML(value=text3, layout=Layout(width='60%'))])
 
-  text4 = text1
+  text4 = 'This user-specified percentage is required for floodplain lowering measure. Floodplain lowering is positioned where water depth exceeded the score at a certain percentile that equals 100 minus the user-specified lowering_percentage.'
   hbox4 = HBox([lowering_percentage, ipywidgets.HTML(value=text4, layout=Layout(width='60%'))])
 
-  text5 = text1
+  text5 = 'The (new) ecotope unit that is applied for the relocation measure'
   hbox5 = HBox([relocation_ecotope, ipywidgets.HTML(value=text5, layout=Layout(width='60%'))])
 
-  text6 = text1
+  text6 = 'The (new) trachytope unit that is applied for the relocation measure'
   hbox6 = HBox([relocation_trachytope, ipywidgets.HTML(value=text6, layout=Layout(width='60%'))])
 
 

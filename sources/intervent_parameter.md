@@ -3,17 +3,17 @@
 
 ## Overview
 
-[//]: <> (General idea of this notebook.)
+
 This notebook facilitates using the RiverScape Python package (Straatsma and Kleinhans, 2018) to parameterize and position landscaping measures and update the input data for the two-dimensional (2D) flow model Delft3D Flexible Mesh (DFM).
 
-[//]: <> (Study area.)
+
 For the current notebook version, we use the River Waal, which is the main distributary of the River Rhine in the Netherlands.
 For general concepts and detailed description of the approach used here in these notebooks we refer to the publications
 [Straatsma et al. (2017)](https://advances.sciencemag.org/content/3/11/e1602762) and
 [Straatsma et al. (2019)](https://doi.org/10.5194/nhess-19-1167-2019).
 
 
-[//]: <> (TODO: Add Fig. 3 of Straatsma and Kleinhans, 2018)
+
 
 
 
@@ -24,8 +24,6 @@ For general concepts and detailed description of the approach used here in these
 
 
 ### Setting up the environment
-
-[//]: ## Requirement (Python modules/packages)
 
 To run this notebook, please import the following Python modules.
 
@@ -77,8 +75,11 @@ In the following please define the input and output folders.
 
 ``` code
 # Default locations
-input_dir= riverscape.input_data_path()
-output_dir   = os.getcwd()
+input_dir = riverscape.input_data_path()
+output_folder_name = 'output_intervent'
+output_dir = os.path.join(os.getcwd(), output_folder_name)
+if not os.path.exists(output_dir):
+    os.mkdir(output_dir)
 ```
 You may also want to set the folder interactively.
 You need to uncomment the following lines:
@@ -241,8 +242,6 @@ riverscape.plot(geom.flpl_wide)
 
 
 
-<br>
-
 ## Initiating the River and its Measures
 
 Given the aforementioned attributes, the River Waal and its current measured would be initiated by executing the following cells.
@@ -265,10 +264,11 @@ waal_msr = msr.RiverMeasures(waal)
 
 First, you can have a look at the current specification of the ecotope and trachytope classes present in the area.
 The floodplain sections are depicted as well.
-Ecotopes are homogeneous ecological landscape units wrt vegetation structure or succession stage.
+Ecotopes are homogeneous ecological landscape units w.r.t. vegetation structure or succession stage.
 Trachytopes are spatially-distributed roughness values for the channel.
 
 Open the maps with the following command.
+Note that generating the plots may take a moment.
 
 ``` code
 riverscape.plot_eco_trachy_sec()
@@ -279,7 +279,7 @@ riverscape.plot_eco_trachy_sec()
 
 ## Side channel measure:
 
-### Make your own side channel properties:
+### Specify your own side channel properties:
 
 
 [//]: <!-- The following properties are the default/setting configuration to the Measures. -->
@@ -319,7 +319,7 @@ You can also print the current settings to check whether they are suitable:
 
 ``` code
 for cur in settings.items():
-    print('{}: {}'.format(cur[0], cur[1]))
+    print('{:21s}: {}'.format(cur[0], cur[1]))
 ```
 
 
@@ -341,36 +341,14 @@ Please also give a label for this measure.
 label = 'custom_label'
 ```
 
-[//]: ``` code
-[//]: # Default mask and label
-[//]: #label = 'everywhere'
-[//]: #mask = pcr.boolean(1)
-[//]
-[//]: # TODO: Make interactive input for selecting mask for every measure.
-[//]
-[//]: # - some examples to select a limited mask region
-[//]
-[//]: #label = "large_sections"
-[//]: #mask = pcr.ifthen(pcr.areaarea(waal.geom.flpl_wide) > 1e6, pcr.boolean(1.0))
-[//]
-[//]: # -- this will return floodplain with IDs < 5
-[//]: #label = "edwin_sections"
-[//]: #mask = pcr.ifthen(pcr.scalar(waal.geom.flpl_wide) < 5, pcr.boolean(1.0))
-[//]
-[//]: # - plot the chosen mask
-[//]: #plot(mask)
-[//]: #chosen_flpl_wide = pcr.ifthen(mask, waal.geom.flpl_wide)
-[//]: #plot(chosen_flpl_wide)
-[//]: ```
 
 
 ``` code
 selection = riverscape.select_area(waal.geom.flpl_wide)
-
 ```
+
 ``` code
 mask = riverscape.generate_mask(waal.geom.flpl_wide, selection)
-
 ```
 
 ``` code

@@ -58,7 +58,7 @@ def _plot_channel(width, depth, slope):
 
 
 
-  fig = plt.figure(figsize=(12, 2))
+  fig = plt.figure(figsize=(12, 2), dpi=300)
   ax = fig.add_subplot(111)
 
   # Plot soil
@@ -119,6 +119,5 @@ def channel_properties():
 
   res = interactive(_plot_channel, width=w, depth=d, slope=s)
   display(res)
-  #embed_minimal_html('export.html', views=[w,d,s], state=dependency_state([w,d,s]))
 
   return res
