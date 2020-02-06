@@ -313,10 +313,6 @@ speciesPresenceFull = speciesPresence
 ```
 
 
-``` code
-# TODO: Menno has to define a method to simplify, to reduce the number of specieses.
-```
-
 
 ``` code
 # Note: This cell is for visualizing data only and may be heavy.
