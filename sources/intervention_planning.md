@@ -563,6 +563,8 @@ smooth_msr.plot()
 Saving measures to the disk
 ========================
 
+You can store the PCRaster raster maps and setting file to disk:
+
 
 ``` code
 # list of measures

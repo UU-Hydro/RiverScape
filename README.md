@@ -59,7 +59,7 @@ You can also open individual notebooks directly by specifying the filename, e.g.
 
 The following Jupyter notebooks are provided:
 
-  1. Intervention planning: [intervent_parameter.ipynb](scripts/intervent_parameter.ipynb)
+  1. Intervention planning: [intervent_parameter.ipynb](scripts/intervention_planning.ipynb)
 
   2. Evaluation of biodiversity: [biodiversity_evaluation.ipynb](scripts/biodiversity_evaluation.ipynb)
 

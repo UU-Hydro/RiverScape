@@ -3,7 +3,7 @@
 
 
 github:
-	pandoc intervent_parameter.md -o ../scripts/intervent_parameter.ipynb
+	pandoc intervention_planning.md -o ../scripts/intervention_planning.ipynb
 	pandoc biodiversity_evaluation.md -o ../scripts/biodiversity_evaluation.ipynb
 	pandoc cost_evaluation.md -o ../scripts/cost_evaluation.ipynb
 	pandoc landowner_evaluation.md -o ../scripts/landowner_evaluation.ipynb
@@ -11,7 +11,7 @@ github:
 
 
 devel:
-	pandoc intervent_parameter.md -o ../scripts/intervent_parameter_dev.ipynb
+	pandoc intervention_planning.md -o ../scripts/intervention_planning_dev.ipynb
 	pandoc biodiversity_evaluation.md -o ../scripts/biodiversity_evaluation_dev.ipynb
 	pandoc cost_evaluation.md -o ../scripts/cost_evaluation_dev.ipynb
 	pandoc landowner_evaluation.md -o ../scripts/landowner_evaluation_dev.ipynb
