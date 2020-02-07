@@ -60,7 +60,11 @@ def generate_mask(raster, areas):
 
   if len(indices) == 0:
     print('\x1b[31m \nPlease select one or more floodplain sections before you proceed! \x1b[0m')
-    return
+    print('\x1b[31m \nNote: you can also continue with the default subset selection.\n\x1b[0m')
+
+    # To enable the 'autorun' of the intervention planning notebook we set some default values
+    indices = areas.options[0:5]
+
 
 
   idx = ', '.join(str(index) for index in indices)

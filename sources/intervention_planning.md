@@ -49,7 +49,6 @@ from shapely.ops import cascaded_union, polygonize
 import geoviews
 geoviews.extension('bokeh')
 
-
 from collections import OrderedDict
 import pcraster as pcr
 ```
@@ -66,7 +65,9 @@ from riverscape import msr
 %autoreload 2
 ```
 
-
+``` code
+%autosave 0
+```
 
 ### Input and output folders
 
@@ -563,7 +564,7 @@ smooth_msr.plot()
 Saving measures to the disk
 ========================
 
-You can store the PCRaster raster maps and setting file to disk:
+You can store the PCRaster output maps and setting files of your measures to disk:
 
 
 ``` code
@@ -571,7 +572,7 @@ You can store the PCRaster raster maps and setting file to disk:
 msr_list = [groyne_low_msr, minemb_low_msr,
             main_dike_raise_msr, lowering_msr, chan_msr, smooth_msr]
 # - preparing the directory
-msr_root_dir = os.path.join(output_dir, 'measures_ensemble/maps')
+msr_root_dir = os.path.join(output_dir, 'measures_ensemble', 'maps')
 pcrRecipes.make_dir(msr_root_dir)
 for measure in msr_list:
     msr.write_measure(measure, msr_root_dir)
