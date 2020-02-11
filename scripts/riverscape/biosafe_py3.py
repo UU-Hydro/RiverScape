@@ -105,7 +105,7 @@ def aggregateEcotopes(linksEco, lookupTable):
     for newEcotope in newEcotopes:
         oldEcotopes = lut[lut.newEcotope == newEcotope]
         ecoLinksNew = linksEco.loc[:,oldEcotopes.oldEcotope.values]
-        linksEcoNew[str(newEcotope)] = ecoLinksNew.sum(axis=1).clip_upper(1)
+        linksEcoNew[str(newEcotope)] = ecoLinksNew.sum(axis=1).clip(upper=1)
     linksEcoNew['taxonomicGroup'] = linksEco.taxonomicGroup
     return linksEcoNew
 
@@ -497,13 +497,13 @@ if __name__ == '__main__':
     #%% test a single instance of biosafe
     legalWeights, linksLaw, linksEco = bsIO.from_csv(input_dir)
     bs = biosafe(legalWeights, linksLaw, linksEco, speciesPresence, ecotopeArea)
-    
+
     lut1 = pd.read_excel(excelFile, sheet_name = 'lut_RWES').fillna(method='ffill')
         # this lookup table has:
         #       ecotope codes of BIOSAFE in the first column: oldEcotope
         #       aggregated/translated ectotopes in the second column: newEcotope
     linksEco1 = aggregateEcotopes(linksEco, lut1)
-    
+
     bs.linksEco = linksEco1
     ecotopeArea1 = pd.DataFrame(np.ones(len(linksEco1.columns)-1) * 1e5,\
                                columns = ['area_m2'],\

@@ -42,7 +42,6 @@ import pprint as pp
 import numpy as np
 import pandas as pd
 import geopandas as gpd
-import seaborn as sns
 
 import matplotlib.pyplot as plt
 
@@ -692,7 +691,6 @@ measure.
 
 
 ``` code
-sns.set_style("ticks")
 # TFI_ref.drop(['xcoor', 'ycoor'], axis=1).plot.bar()
 # TFI_msr.drop(['xcoor', 'ycoor'], axis=1).plot.bar()
 
@@ -714,7 +712,6 @@ measure, by running the following cells.
 
 
 ``` code
-sns.set_style("ticks")
 # FI_ref.drop(['xcoor', 'ycoor'], axis=1).plot.bar()
 # FI_msr.drop(['xcoor', 'ycoor'], axis=1).plot.bar()
 
