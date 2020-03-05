@@ -62,6 +62,12 @@ geoviews.extension('bokeh')
 %autoreload 2
 ```
 
+``` code
+#%% activating matplotlib visualization
+%matplotlib notebook
+```
+
+
 Input folder
 ============
 
@@ -682,12 +688,6 @@ After implemeting the BIOSAFE model for the before and after measures, **bs_ref*
 
 We can compare and plot the **TFI** scores, before and after the
 measure.
-
-
-``` code
-#%% activating matplotlib visualization
-%matplotlib notebook
-```
 
 
 ``` code
